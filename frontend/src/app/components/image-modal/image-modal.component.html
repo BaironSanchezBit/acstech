@@ -1,0 +1,12 @@
+<div #modalContent class="modal-background">
+  <div class="image-index">{{ currentImageIndex + 1 }} / {{ images.length }}</div>
+  <h2 class="title">{{ title }}</h2>
+  <button class="close" (click)="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+  <!-- Botón para pantalla completa -->
+  <button class="fullScreen" (click)="toggleFullScreen($event)"><i class="fa-solid fa-expand"></i></button>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+      <img [src]="getCurrentImage()" class="full-image" />
+      <button class="prev" (click)="changeImage(-1)">&#10094;</button>
+      <button class="next" (click)="changeImage(1)">&#10095;</button>
+  </div>
+</div>

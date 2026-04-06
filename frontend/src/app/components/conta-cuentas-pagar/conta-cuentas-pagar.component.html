@@ -1,0 +1,444 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+    <div class="divIngreso">
+        <div class="divTitle">
+            <div class="divTitleTwo">
+                <i class="fa-solid fa-circle-plus"></i>
+                <h1>AGREGAR CUENTA POR PAGAR</h1>
+                <button type="button" class="btn btn-primary" routerLink="/cuentas-por-pagar-fija">CUENTAS
+                    FIJAS</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-secondary">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">CLASIFICACIÓN</th>
+                        <th scope="col">TIPO</th>
+                        <th scope="col" *ngIf="cuentaPagarForm.get('clasificacion')?.value === 'Veh'">PLACA</th>
+                        <th scope="col">TERCERO</th>
+                        <th scope="col">CONCEPTO</th>
+                        <th scope="col">VALOR</th>
+                        <th scope="col">PRIORIDAD</th>
+                        <th scope="col">FECHA VENCIMIENTO</th>
+                    </tr>
+                </thead>
+                <tbody [formGroup]="cuentaPagarForm">
+                    <tr class="">
+                        <td scope="row">
+                            <select class="form-select" aria-label="Default select example"
+                                formControlName="clasificacion">
+                                <option selected>Selecciona</option>
+                                <option value="Prov">Prov</option>
+                                <option value="Veh">Veh</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select" aria-label="Default select example" formControlName="tipo">
+                                <option selected>Selecciona</option>
+                                <option value="Costo">Costo</option>
+                                <option value="Gasto">Gasto</option>
+                            </select>
+                        </td>
+                        <td *ngIf="cuentaPagarForm.get('clasificacion')?.value === 'Veh'">
+                            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+                                (input)="onMayuscula($event)" name="placa" (input)="onPlacaInput($event)" maxlength="6"
+                                matInput formControlName="placa" [matAutocomplete]="autoVehiculo">
+                            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+                                <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                                    {{ vehicle }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" formControlName="tercero"
+                                [formControl]="proveedoresControl" [matAutocomplete]="autoProveedor">
+                            <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let proveedor of proveedoresFiltrados | async"
+                                    [value]="proveedor.tercero">
+                                    {{ proveedor.tercero }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" placeholder="" aria-label="default input example"
+                                formControlName="concepto">
+                        </td>
+                        <td>
+                            <input class="form-control" (input)="onCurrencyInput($event)" type="text" placeholder=""
+                                aria-label="default input example" formControlName="valor">
+                        </td>
+                        <td>
+                            <select formControlName="prioridad"
+                                class="custom-selectForm"
+                                [ngStyle]="{'background-color': getSelectedColor(cuentaPagarForm.get('prioridad')?.value), 'color': getTextColor(cuentaPagarForm.get('prioridad')?.value)}">
+                                <option [value]="'CRÍTICO'" class="critical-option"
+                                    [ngStyle]="{'background-color': '#505157', 'color': '#ffffff'}">
+                                    &#9888; CRÍTICO
+                                </option>
+                                <option [value]="'ALTO'" class="high-option"
+                                    [ngStyle]="{'background-color': '#6645A9', 'color': '#ffffff'}">
+                                    ALTO
+                                </option>
+                                <option [value]="'MEDIO'" class="medium-option"
+                                    [ngStyle]="{'background-color': '#6365B7', 'color': '#ffffff'}">
+                                    MEDIO
+                                </option>
+                                <option [value]="'BAJO'" class="low-option"
+                                    [ngStyle]="{'background-color': '#79AFFD', 'color': '#ffffff'}">
+                                    BAJO
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" type="date" aria-label="default input example"
+                                formControlName="fechaVencimiento">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="divButton">
+            <button type="button" class="btn btn-success btnAgregar" (click)="crear()">Agregar</button>
+        </div>
+    </div>
+
+    <div class="divAll">
+        <div class="divTitleBtn">
+            <div class="divTitleTwo">
+                <i class="fa-brands fa-stack-overflow"></i>
+                <h1>CUENTAS POR PAGAR</h1>
+                <div class="ordenar-container">
+                    <select [(ngModel)]="filtroClasificacion" (change)="filtrarCuentas()">
+                        <option value="">Filtrar</option>
+                        <optgroup label="Clasificación">
+                            <option value="Veh">Veh</option>
+                            <option value="Prov">Prov</option>
+                        </optgroup>
+                    </select>
+                    <i class="fa-solid fa-filter ordenar-icon"></i>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger" routerLink="/historico-variables">HISTÓRICO</button>
+        </div>
+        <div class="divVista">
+            <div class="table-responsive">
+                <table class="table table-secondary table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">CLASIF</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col" *ngIf="filtroClasificacion === 'Veh'">PLACA</th>
+                            <th scope="col">TERCERO</th>
+                            <th scope="col">CONCEPTO</th>
+                            <th scope="col">SALDO</th>
+                            <th scope="col">PAGOS</th>
+                            <th scope="col">FECHA VENCIMIENTO</th>
+                            <th scope="col">DIAS VENCIDOS</th>
+                            <th scope="col">PRIORIDAD</th>
+                            <th scope="col">APRUEBA GERENCIA</th>
+                            <th scope="col">PAGADO</th>
+                            <th scope="col">SOLICITAR APROBACIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" *ngFor="let cuentaPagar of cuentasFiltrados">
+                            <td scope="row" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.clasificacion}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.tipo}}
+                            </td>
+                            <td *ngIf="cuentaPagar.clasificacion === 'Veh'" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.placa}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.tercero}}
+                            </td>
+                            <td class="text" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.concepto}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-danger' : cuentaPagar.saldo !== 0, 'text-success' : cuentaPagar.saldo === 0}"
+                                (click)="abrirModal(cuentaPagar)">
+                                {{formatSalary(cuentaPagar.saldo)}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{ formatSalary(sumarPagos(cuentaPagar.pagos)) }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{formatearFecha(cuentaPagar.fechaVencimiento)}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-primary': cuentaPagar.diasVencidos == 0, 'text-danger': cuentaPagar.diasVencidos > 0, 'text-success': cuentaPagar.diasVencidos < 0}"
+                                *ngIf="cuentaPagar.pagado" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.diasVencidos}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-primary': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) == 0, 'text-danger': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) > 0, 'text-success': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) < 0}"
+                                *ngIf="!cuentaPagar.pagado" (click)="abrirModal(cuentaPagar)">
+                                {{ calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) }}
+                            </td>
+                            <td>
+                                <select [(ngModel)]="cuentaPagar.prioridad" (change)="actualizarPrioridad(cuentaPagar)"
+                                    class="custom-select"
+                                    [ngStyle]="{'background-color': getSelectedColor(cuentaPagar.prioridad), 'color': getTextColor(cuentaPagar.prioridad)}">
+                                    <option [value]="'CRÍTICO'" class="critical-option"
+                                        [ngStyle]="{'background-color': '#505157', 'color': '#ffffff'}">
+                                        &#9888; CRÍTICO
+                                    </option>
+                                    <option [value]="'ALTO'" class="high-option"
+                                        [ngStyle]="{'background-color': '#6645A9', 'color': '#ffffff'}">
+                                        ALTO
+                                    </option>
+                                    <option [value]="'MEDIO'" class="medium-option"
+                                        [ngStyle]="{'background-color': '#6365B7', 'color': '#ffffff'}">
+                                        MEDIO
+                                    </option>
+                                    <option [value]="'BAJO'" class="low-option"
+                                        [ngStyle]="{'background-color': '#79AFFD', 'color': '#ffffff'}">
+                                        BAJO
+                                    </option>
+                                </select>
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagar.aprueba">APROBADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagar.aprueba">SIN APROBACIÓN</p>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="pagado" id="pagado{{cuentaPagar._id}}"
+                                    [(ngModel)]="cuentaPagar.pagado" [disabled]="!cuentaPagar.aprueba"
+                                    (change)="actualizarEstadoPago(cuentaPagar)">
+                            </td>
+                            <td>
+                                <button (click)="solicitarAprobacion(cuentaPagar)"
+                                    [ngClass]="{'btn-success': cuentaPagar.aprueba, 'btn-primary': !cuentaPagar.aprueba, 'btn-warning': cuentaPagar.solicita && !cuentaPagar.aprueba}"
+                                    class="btn" [disabled]="cuentaPagar.aprueba || cuentaPagar.solicita"><i
+                                        class="fa-solid fa-hand text-white"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <div class="divSaldo">
+                            <h1 class="m-0">TOTAL CPP</h1>
+                            <div class="divNumero">
+                                {{formatSalary(saldoTotal)}}
+                            </div>
+                        </div>
+                        <div class="divCuentas">
+                            <div class="davi" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img class="imgDavi" src="./assets/img/davi.png" alt="davivienda">
+                                <p>{{formatSalary(daviDisponible)}}</p>
+                            </div>
+                            <div class="banco" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                <img class="imgBanco" src="./assets/img/banco.png" alt="bancolombia">
+                                <p>{{formatSalary(bancolDisponible)}}</p>
+                            </div>
+                            <div class="banco" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                                <img class="imgBanco" src="./assets/img/efectivo.png" alt="efectivo">
+                                <p>{{formatSalary(efectivoDisponible)}}</p>
+                            </div>
+                            <div class="total">
+                                <img class="imgTotal" src="./assets/img/igual.png" alt="efectivo">
+                                <p>{{formatSalary(sumaDisponible)}}</p>
+                            </div>
+                        </div>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" class="modal-backdrop fade"></div>
+
+<div class="modal fade" id="detalleInventarioModal" tabindex="-1" aria-labelledby="modalLabel"
+    [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" aria-hidden="!mostrarModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header my-2">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLE DE CUENTA POR PAGAR</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="cuentaPagarEditForm">
+                    <div
+                        [ngClass]="{'col-md-4': filtroClasificacion === 'Veh', 'col-md-6': filtroClasificacion !== 'Veh'}">
+                        <label for="clasifEdit" class="form-label">CLASIFICACIÓN</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="clasifEdit">
+                            <option selected>Selecciona</option>
+                            <option value="Prov">Prov</option>
+                            <option value="Veh">Veh</option>
+                        </select>
+                    </div>
+                    <div
+                        [ngClass]="{'col-md-4': filtroClasificacion === 'Veh', 'col-md-6': filtroClasificacion !== 'Veh'}">
+                        <label for="tipoEdit" class="form-label">TIPO</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="tipoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="Costo">Costo</option>
+                            <option value="Gasto">Gasto</option>
+                        </select>
+                    </div>
+                    <div [ngClass]="{'col-md-4': filtroClasificacion === 'Veh'}" *ngIf="filtroClasificacion === 'Veh'">
+                        <label for="placaEdit" class="form-label">PLACA</label>
+                        <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+                            (input)="onMayuscula($event)" name="placa" (input)="onPlacaInput($event)" maxlength="6"
+                            matInput formControlName="placaEdit" [matAutocomplete]="autoVehiculoModal">
+                        <mat-autocomplete #autoVehiculoModal="matAutocomplete" [displayWith]="displayFnPlacaEdit">
+                            <mat-option *ngFor="let vehicle of opcionesFiltradasVehModal | async" [value]="vehicle">
+                                {{ vehicle }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                    <div class="col-6">
+                        <label for="terceroEdit" class="form-label">TERCERO</label>
+                        <input class="form-control" type="text" formControlName="terceroEdit"
+                            [formControl]="proveedoresControlEdit" [matAutocomplete]="autoProveedorEdit">
+                        <mat-autocomplete #autoProveedorEdit="matAutocomplete" [displayWith]="displayFnEdit">
+                            <mat-option *ngFor="let proveedor of proveedoresFiltradosEdit | async"
+                                [value]="proveedor.tercero">
+                                {{ proveedor.tercero }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fechaVencimientoEdit" class="form-label">FECHA VENCIMIENTO</label>
+                        <input type="date" class="form-control" id="fechaVencimientoEdit"
+                            formControlName="fechaVencimientoEdit">
+                    </div>
+                    <div class="col-12">
+                        <label for="conceptoEdit" class="form-label">CONCEPTO</label>
+                        <textarea class="form-control" name="conceptoEdit" id="conceptoEdit" cols="30" rows="3"
+                            formControlName="conceptoEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="valorEdit" class="form-label">VALOR</label>
+                        <input type="text" class="form-control" id="valorEdit" formControlName="valorEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="saldoEdit" class="form-label">SALDO</label>
+                        <input type="text" class="form-control" id="saldoEdit" formControlName="saldoEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <div class="col-md-1 text-start">
+                        <label for="pagosEdit" class="form-label">PAGOS</label>
+                        <button type="submit" class="btn btn-success" (click)="agregarPago()"
+                            [disabled]="!(cuentaSeleccionada?.aprueba && !(sumarPagos(cuentaSeleccionada?.pagos) === desformatearMoneda(cuentaPagarEditForm.get('valorEdit')?.value)))"><i
+                                class="fa-solid fa-plus"></i></button>
+                    </div>
+                </form>
+                <form [formGroup]="pagosEditForm">
+                    <h3 class="mt-3 mb-0 fw-bold" *ngIf="pagosEdit.length > 0">PAGOS REALIZADOS</h3>
+                    <div formArrayName="pagosEdit">
+                        <div *ngFor="let pago of pagosEdit.controls; let i = index" [formGroupName]="i">
+                            <div class="row my-2">
+                                <div class="col-md-3">
+                                    <label>Fecha de Pago</label>
+                                    <input type="date" class="form-control" id="fechaPago" formControlName="fechaPago">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Valor de Pago</label>
+                                    <input type="text" class="form-control" id="valor" formControlName="valor"
+                                        (input)="onCurrencyInput($event)">
+                                </div>
+                                <div class="col-md-1 text-start">
+                                    <label>Acción</label>
+                                    <button type="submit" class="btn btn-danger" (click)="eliminarPago(i)"
+                                        [disabled]="!(cuentaSeleccionada?.aprueba && !(sumarPagos(cuentaSeleccionada?.pagos) === desformatearMoneda(cuentaPagarEditForm.get('valorEdit')?.value)))"><i
+                                            class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary"
+                    (click)="actualizar(cuentaSeleccionada._id)">Actualizar</button>
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel">DISPONIBLE EN DAVIVIENDA</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="daviviendaForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">ENTIDAD FINANCIERA:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarDavi()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel2">DISPONIBLE EN BANCOLOMBIA</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="bancolombiaForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">ENTIDAD FINANCIERA:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarBancol()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel3">DISPONIBLE EN EFECTIVO</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="efectivoForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">TIPO:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarEfectivo()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>

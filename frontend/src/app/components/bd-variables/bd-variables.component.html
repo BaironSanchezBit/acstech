@@ -1,0 +1,122 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">VARIABLES</h1>
+    <button class="btn btn-success ms-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">VARIABLE</th>
+          <th scope="col">VALOR</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="cargar" class="table-group-divider">
+        <tr *ngFor="let variable of variables" (click)="seleccionarVariable(variable)">
+          <th scope="row">{{variable.nombre}}</th>
+          <td>{{variable.valor}}</td>
+          <td>
+            <button class="btn btn-warning ms-4" data-bs-toggle="modal" data-bs-target="#staticeditar">Editar</button>
+            <button class="btn btn-danger ms-4" (click)="eliminarDato(variable._id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row" [formGroup]="variablesForm">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre"
+                [ngClass]="{'is-invalid': variablesForm.get('nombre')?.invalid && variablesForm.get('nombre')?.touched}">
+              <label for="nombre">NOMBRE</label>
+              <div *ngIf="variablesForm.get('nombre')?.invalid && variablesForm.get('nombre')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un nombre válido.
+              </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="valor" name="valor" formControlName="valor"
+                [ngClass]="{'is-invalid': variablesForm.get('valor')?.invalid && variablesForm.get('valor')?.touched}">
+              <label for="valor">VALOR</label>
+              <div *ngIf="variablesForm.get('valor')?.invalid && variablesForm.get('valor')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un valor válido.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearVariable()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">EDITAR</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="nombre" placeholder="nombre"
+                [(ngModel)]="variableSeleccionado.nombre">
+              <label for="nombre">NOMBRE</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="valor" placeholder="valor"
+                [(ngModel)]="variableSeleccionado.valor">
+              <label for="valor">VALOR</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarDato()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

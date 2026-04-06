@@ -1,0 +1,232 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+    <div class="divAll">
+        <div class="divTitle">
+            <div class="divTitleTwo">
+                <i class="fa-solid fa-circle-chevron-left" routerLink="/cuentas-por-pagar-fija"
+                    *ngIf="cargo === 'Contabilidad' || 'Programador'"></i>
+                <i class="fa-solid fa-chart-simple" routerLink="/cuadro-gerencial"
+                    *ngIf="cargo === 'Gerencia' || 'Programador'"></i>
+                <h1>HISTÓRICO - CPP FIJAS</h1>
+                <button type="button" class="btn btn-danger" routerLink="/historico-variables">HISTÓRICO -
+                    VARIABLES</button>
+                <div class="filter-section">
+                    <select (change)="applyFilters()" [(ngModel)]="tipoFilter" class="form-select"
+                        aria-label="Default select example">
+                        <option selected value="">TIPO</option>
+                        <option value="AUTOMAGNO SAS">AUTOMAGNO SAS</option>
+                        <option value="ERWIN GONZALEZ">ERWIN GONZALEZ</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <input (input)="applyFilters()" [(ngModel)]="terceroFilter" placeholder="Filtrar por tercero"
+                        class="form-control">
+                    <p class="my-0 ms-2">Fecha: </p>
+                    <input type="date" (input)="applyFilters()" [(ngModel)]="fechaInicioFilter"
+                        placeholder="Filtrar por tercero" class="form-control">
+                    <p class="my-0 ms-2">-></p>
+                    <input type="date" (input)="applyFilters()" [(ngModel)]="fechaFinFilter"
+                        placeholder="Filtrar por tercero" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="divVista">
+            <div class="table-responsive">
+                <table class="table table-secondary table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">TIPO</th>
+                            <th scope="col">TERCERO</th>
+                            <th scope="col" class="concepto">CONCEPTO</th>
+                            <th scope="col">FECHA VENCI.</th>
+                            <th scope="col">SALDO</th>
+                            <th scope="col">PAGOS</th>
+                            <th scope="col">FECHA DE PAGO</th>
+                            <th scope="col">DIAS VENCIDOS</th>
+                            <th scope="col">APRUEBA GERENCIA</th>
+                            <th scope="col">PAGADO</th>
+                            <th scope="col">ESTADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cuentaPagarFija of cuentasFiltrados">
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.tipo }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.tercero }}
+                            </td>
+                            <td class="concepto" (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.concepto }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.fechaPago }}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-danger' : cuentaPagarFija.saldo2 !== 0, 'text-success' : cuentaPagarFija.saldo2 === 0}"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{formatSalary(cuentaPagarFija.saldo2)}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-danger' : cuentaPagarFija.sumaPagos !== cuentaPagarFija.valor2, 'text-success' : cuentaPagarFija.sumaPagos === cuentaPagarFija.valor2}"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ formatSalary(cuentaPagarFija.sumaPagos) }}
+                            </td>
+                            <td [ngClass]="{'text-danger': cuentaPagarFija.mensaje === 'Sin pagos'}"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.fecha || cuentaPagarFija.mensaje}}
+                            </td>
+                            <td class="fw-bold" [ngClass]="{'text-primary': cuentaPagarFija.diasVencidos2 == 0, 'text-danger': cuentaPagarFija.diasVencidos2 > 0, 'text-success': cuentaPagarFija.diasVencidos2 < 0}"
+                                *ngIf="cuentaPagarFija.pagado2"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.diasVencidos2 }}
+                            </td>
+                            <td class="fw-bold" [ngClass]="{'text-primary': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                            cuentaPagarFija.pagado2) == 0, 'text-danger': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) > 0, 'text-success': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) < 0}" *ngIf="!cuentaPagarFija.pagado2"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagarFija.aprueba2">
+                                    APROBADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagarFija.aprueba2">SIN
+                                    APROBACIÓN</p>
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagarFija.pagado2">
+                                    PAGADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagarFija.pagado2">SIN
+                                    PAGO</p>
+                            </td>
+                            <td [ngClass]="{'text-success': cuentaPagarFija.estado === 'ACTIVA', 'text-danger': cuentaPagarFija.estado === 'CANCELADA'}"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago)">
+                                {{cuentaPagarFija.estado}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <div class="divCuentas">
+                            <div class="davi">
+                                <img class="imgDavi" src="./assets/img/davi.png" alt="davivienda">
+                                <p>{{formatSalary(daviDisponible)}}</p>
+                            </div>
+                            <div class="banco">
+                                <img class="imgBanco" src="./assets/img/banco.png" alt="bancolombia">
+                                <p>{{formatSalary(bancolDisponible)}}</p>
+                            </div>
+                            <div class="banco">
+                                <img class="imgBanco" src="./assets/img/efectivo.png" alt="efectivo">
+                                <p>{{formatSalary(efectivoDisponible)}}</p>
+                            </div>
+                            <div class="total">
+                                <img class="imgTotal" src="./assets/img/igual.png" alt="efectivo">
+                                <p>{{formatSalary(sumaDisponible)}}</p>
+                            </div>
+                        </div>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+
+<div [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" class="modal-backdrop fade"></div>
+
+
+<div class="modal fade" id="detalleInventarioModal" tabindex="-1" aria-labelledby="modalLabel"
+    [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" aria-hidden="!mostrarModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header my-2">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLE DE CUENTA POR PAGAR</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="cuentaPagarFijaEditForm">
+                    <div class="col-md-6">
+                        <label for="tipoEdit" class="form-label">TIPO</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="tipoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="AUTOMAGNO SAS">AUTOMAGNO SAS</option>
+                            <option value="ERWIN GONZALEZ">ERWIN GONZALEZ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="terceroEdit" class="form-label">TERCERO</label>
+                        <input type="text" class="form-control" id="terceroEdit" formControlName="terceroEdit">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="numeroCuentaEdit" class="form-label">N° DE CUENTA</label>
+                        <textarea class="form-control" name="numeroCuentaEdit" id="numeroCuentaEdit" cols="30" rows="1"
+                            formControlName="numeroCuentaEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="conceptoEdit" class="form-label">CONCEPTO</label>
+                        <textarea class="form-control" name="conceptoEdit" id="conceptoEdit" cols="30" rows="1"
+                            formControlName="conceptoEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="diaEdit" class="form-label">DIA</label>
+                        <select class="form-select" aria-label="Select day" formControlName="diaEdit">
+                            <option *ngFor="let dia of dias" [value]="dia">{{ dia }}</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="estadoEdit" class="form-label">ESTADO</label>
+                        <select
+                            [ngClass]="{'text-success': cuentaPagarFijaEditForm.get('estadoEdit')?.value === 'ACTIVA', 'text-danger': cuentaPagarFijaEditForm.get('estadoEdit')?.value === 'CANCELADA'}"
+                            class="form-select" aria-label="Default select example" formControlName="estadoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="PAGADO">PAGADO</option>
+                            <option value="PARA PAGO">PARA PAGO</option>
+                            <option value="CANCELADO">CANCELADO</option>
+                            <option value="FINALIZADO">FINALIZADO</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="valorEdit" class="form-label">VALOR</label>
+                        <input type="text" class="form-control" id="valorEdit" formControlName="valorEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="saldoEdit" class="form-label">SALDO</label>
+                        <input
+                            [ngClass]="{'text-success': desformatearMoneda(cuentaPagarFijaEditForm.get('saldoEdit')?.value) === 0, 'text-danger': desformatearMoneda(cuentaPagarFijaEditForm.get('saldoEdit')?.value) !== 0}"
+                            type="text" class="form-control" id="saldoEdit" formControlName="saldoEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <h2 for="saldoEdit" class="form-label mt-2 mb-0">Pago del
+                        {{ cuentaSeleccionada?.fechaPago }}
+                    </h2>
+                </form>
+                <form [formGroup]="pagosEditForm">
+                    <h3 class="mt-3 mb-0 fw-bold" *ngIf="pagosEdit.length > 0">PAGOS REALIZADOS</h3>
+                    <div formArrayName="pagosEdit">
+                        <div *ngFor="let pago of pagosEdit.controls; let i = index" [formGroupName]="i">
+                            <div class="row my-2">
+                                <div class="col-md-3">
+                                    <label>Fecha de Pago</label>
+                                    <input type="date" class="form-control" id="fecha" formControlName="fecha">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Valor de Pago</label>
+                                    <input type="text" class="form-control" id="valor" formControlName="valor"
+                                        (input)="onCurrencyInput($event)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

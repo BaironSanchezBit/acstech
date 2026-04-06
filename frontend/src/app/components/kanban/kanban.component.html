@@ -1,0 +1,691 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+    <div class="filtro">
+        <div class="filtro">
+            <div class="select-container">
+                <input type="text" placeholder="Buscar..." #inputBusqueda
+                    (input)="filtrarInventarios(inputBusqueda.value)">
+                <i class="fa-solid fa-magnifying-glass select-icon"></i>
+            </div>
+            <div class="ordenar-container">
+                <select (change)="ordenarInventarios($event)">
+                    <option value="">Ordenar</option>
+                    <optgroup label="Compra">
+                        <option value="compraMenorMayor">Menor a Mayor</option>
+                        <option value="compraMayorMenor">Mayor a Menor</option>
+                    </optgroup>
+                    <optgroup label="Venta">
+                        <option value="ventaMenorMayor">Menor a Mayor</option>
+                        <option value="ventaMayorMenor">Mayor a Menor</option>
+                    </optgroup>
+                    <optgroup label="Kilometraje">
+                        <option value="kilometrajeMenorMayor">Menor a Mayor</option>
+                        <option value="kilometrajeMayorMenor">Mayor a Menor</option>
+                    </optgroup>
+                </select>
+                <i class="fa-solid fa-arrow-up-a-z ordenar-icon"></i>
+            </div>
+            <div class="select-container">
+                <select (change)="agregarFiltroUnificado($event)">
+                    <option value="">Seleccione un filtro</option>
+                    <optgroup label="Tipo Negocio">
+                        <option *ngFor="let tipoNego of todosLosFiltros.tipoNegocio"
+                            [value]="'tipoNegocio:' + tipoNego">{{tipoNego}}</option>
+                    </optgroup>
+                    <optgroup label="Estado del Inventario">
+                        <option *ngFor="let estado of todosLosFiltros.estadoInventario"
+                            [value]="'estadoInventario:' + estado">{{estado}}</option>
+                    </optgroup>
+                    <optgroup label="Proveedor">
+                        <option *ngFor="let proveedor of todosLosFiltros.proveedor" [value]="'proveedor:' + proveedor">
+                            {{proveedor}}</option>
+                    </optgroup>
+                </select>
+                <i class="fa-solid fa-filter select-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Filtros Activos -->
+        <div class="seleccionados" *ngFor="let categoria of getFiltrosActivosKeys()">
+            <div class="itemSeleccionado" *ngFor="let filtro of filtrosActivos[categoria]">
+                {{filtro}} <button (click)="eliminarFiltro(categoria, filtro)">X</button>
+            </div>
+        </div>
+    </div>
+    <div class="filaOne" cdkDropList #lista1="cdkDropList" [cdkDropListData]="inventarios"
+        (cdkDropListDropped)="onDrop($event)">
+        <div *ngFor="let preInventario of preInventariosFiltrados" class="draggable-item">
+            <div class="inventarioCursor" (click)="abrirModal2(preInventario)">
+                <div class="divFotoText">
+                    <img [src]="vehiculos[preInventario.vehiculo]?.imagenVehiculo || '../assets/img/noFoto.png'"
+                        class="imagenes" alt="Imagen no encontrada" (error)="manejarErrorImagen($event)">
+                    <div class="colores">
+                        <p class="tipoNegocio">{{preInventario.filtroBaseDatos?.tipoNegocio || 'N/A'}}</p>
+                        <p class="proveedor">{{preInventario.filtroBaseDatos?.proveedor || 'N/A'}}</p>
+                        <p [ngClass]="{
+                        'asignado': preInventario.filtroBaseDatos?.estadoInventario === 'ASIGNADO EN INICIALES', 
+                        'estadoInventario': preInventario.filtroBaseDatos?.estadoInventario === 'VENDIDO', 
+                        'disponible': preInventario.filtroBaseDatos?.estadoInventario === 'DISPONIBLE A LA VENTA',
+                        'declinado': preInventario.filtroBaseDatos?.estadoInventario === 'DECLINADO',
+                        'terminado': preInventario.filtroBaseDatos?.estadoInventario === 'TERMINADO',
+                        }">
+                            {{preInventario.filtroBaseDatos?.estadoInventario || 'N/A'}}
+                        </p>
+                    </div>
+                </div>
+                <p class="ingresando-label">INGRESANDO</p>
+                <div class="divInfoTwo">
+                    <h3 class="vehiculo">{{
+                            vehiculos[preInventario.vehiculo]?.marca || 'N/A' }}
+                            {{ vehiculos[preInventario.vehiculo]?.linea || 'N/A' }}
+                            {{ vehiculos[preInventario.vehiculo]?.version || 'N/A' }} -
+                            {{ vehiculos[preInventario.vehiculo]?.modelo || 'N/A' }}</h3>
+                    <p class="inventario"><i class="fa-regular fa-square-caret-right"></i>
+                        {{ vehiculos[preInventario.vehiculo]?.placa || 'N/A' }} - {{
+                        vehiculos[preInventario.vehiculo]?.ciudadPlaca || 'N/A' }}</p>
+                    <p class="inventario"><i class="fa-solid fa-gas-pump"></i>
+                        {{ vehiculos[preInventario.vehiculo]?.combustible || 'N/A' }}</p>
+                    <p class="inventario"><i class="fa-solid fa-gauge-high"></i>
+                        {{ formatearNumeroAMiles(preInventario.generadorContratos?.kilometraje) || 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="divLoad" *ngIf="!vehiculos[preInventario.vehiculo]">
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+            </div>
+        </div>
+        <div *ngFor="let inventario of inventariosPaginados" class="draggable-item">
+            <div class="inventarioCursor" *ngIf="clientes[inventario.cliente] && vehiculos[inventario.vehiculo]"
+                (click)="abrirModal(inventario)">
+                <div class="divFotoText">
+                    <img [src]="vehiculos[inventario.vehiculo].imagenVehiculo" class="imagenes"
+                        alt="Imagen no encontrada" (error)="manejarErrorImagen($event)">
+                </div>
+                <div class="colores">
+                    <p class="tipoNegocio">{{inventario.filtroBaseDatos.tipoNegocio}}</p>
+                    <p class="proveedor">{{inventario.filtroBaseDatos.proveedor}}</p>
+                    <div class="estado-container">
+                        <p [ngClass]="{
+                            'asignado': inventario.filtroBaseDatos.estadoInventario === 'ASIGNADO EN INICIALES',
+                            'estadoInventario': inventario.filtroBaseDatos.estadoInventario === 'VENDIDO',
+                            'disponible': inventario.filtroBaseDatos.estadoInventario === 'DISPONIBLE A LA VENTA',
+                            'declinado': inventario.filtroBaseDatos.estadoInventario === 'DECLINADO',
+                            'terminado': inventario.filtroBaseDatos.estadoInventario === 'TERMINADO',
+                            'devolucion': inventario.filtroBaseDatos.estadoInventario === 'EN DEVOLUCIÓN',
+                            'garantia': inventario.filtroBaseDatos.estadoInventario === 'EN GARANTÍA',
+                            'registro': inventario.filtroBaseDatos.estadoInventario === 'REGISTRO COMPRA AUTOMAGNO'
+                        }" (click)="toggleMenuEstado($event, inventario._id)" class="estado-clickeable">
+                            {{inventario.filtroBaseDatos.estadoInventario}}
+                        </p>
+                        <div class="estado-dropdown" *ngIf="mostrarMenuEstado === inventario._id">
+                            <div *ngFor="let estado of estadosInventario"
+                                class="estado-opcion"
+                                [class.estado-activo]="inventario.filtroBaseDatos.estadoInventario === estado"
+                                (click)="cambiarEstadoInventario($event, inventario, estado)">
+                                {{estado}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divInfoTwo">
+                    <div class="card-id-price">
+                        <span class="card-id"><i class="fa-solid fa-folder"></i> #{{inventario.inventoryId}}</span>
+                        <span class="card-price">{{formatSalary(inventario.precioPublicacion)}}</span>
+                    </div>
+                    <h3 class="vehiculo"><a class="vehiculo" [href]="inventario.link"
+                            target="_blank">{{ vehiculos[inventario.vehiculo].marca }}
+                            {{ vehiculos[inventario.vehiculo].linea }}
+                            {{ vehiculos[inventario.vehiculo].version }} -
+                            {{ vehiculos[inventario.vehiculo].modelo }}</a></h3>
+                    <p class="inventario"><i class="fa-regular fa-square-caret-right"></i>
+                        {{ vehiculos[inventario.vehiculo].placa }} - {{ vehiculos[inventario.vehiculo].ciudadPlaca }}</p>
+                    <p *ngIf="!compradores[inventario.comprador]" class="cliente"><i class="fa-solid fa-user"></i>
+                        {{ clientes[inventario.cliente].primerNombre }}
+                        {{ clientes[inventario.cliente].primerApellido }}</p>
+                    <p *ngIf="compradores[inventario.comprador]" class="cliente"><i class="fa-solid fa-user"></i>
+                        {{ compradores[inventario.comprador]?.primerNombre }}
+                        {{ compradores[inventario.comprador]?.primerApellido }}</p>
+                    <p *ngIf="(tieneCargo('Programador') || tieneCargo('Gerencia') || tieneCargo('Comercial 1') || tieneCargo('Comercial 2')) || tieneCargo('Coordinador de Operaciones')" class="cliente">
+                        <i class="fa-solid fa-mobile"></i> {{clientes[inventario.cliente].celularOne}}</p>
+                    <p class="inventario"><i class="fa-solid fa-gas-pump"></i> {{vehiculos[inventario.vehiculo].combustible}}</p>
+                    <p class="inventario"><i class="fa-solid fa-gauge-high"></i> {{formatearNumeroAMiles(inventario.generadorContratos.kilometraje)}}</p>
+                    <div class="card-footer-info">
+                        <p class="inventario">SOAT: {{formatSalary(inventario.documentosValoresIniciales.totalSoatValor)}}</p>
+                        <p class="inventario">IMP: {{formatSalary(inventario.documentosValoresIniciales.impAnoEnCursoValor)}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="divLoad" *ngIf="!clientes[inventario.cliente] || !vehiculos[inventario.vehiculo]">
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+            </div>
+        </div>
+        <div class="paginacion">
+            <button class="boton1" [disabled]="currentPage === 0" (click)="anteriorPagina()">Anterior</button>
+            <button class="boton2" [disabled]="(currentPage + 1) * pageSize >= totalItems"
+                (click)="siguientePagina()">Siguiente</button>
+            <p>Página {{ currentPage + 1 }} de {{ getTotalPages() }}</p>
+        </div>
+    </div>
+</section>
+
+<div class="modal-backdrop fade" [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'"></div>
+
+<div class="modal-backdrop fade" [class.show]="mostrarModalPre" [style.display]="mostrarModalPre ? 'block' : 'none'">
+</div>
+
+<!-- Modal -->
+<div class="modal animate__animated animate__zoomIn" id="detalleInventarioModal" tabindex="-1"
+    aria-labelledby="modalLabel" [class.show]="mostrarModal" [class.animate__fadeIn]="mostrarModal"
+    [style.display]="mostrarModal ? 'block' : 'none'" aria-hidden="!mostrarModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLES DEL INVENTARIO</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="colores d-flex justify-content-around w-100">
+                        <p class="tipoNegocio flex-grow-1 text-center">{{inventarioSeleccionado?.filtroBaseDatos?.tipoNegocio}}</p>
+                        <p class="proveedor flex-grow-1 text-center">{{inventarioSeleccionado?.filtroBaseDatos?.proveedor}}</p>
+                        <p class="estadoInventario flex-grow-1 text-center"
+                            [ngClass]="
+                        {'asignado': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'ASIGNADO EN INICIALES', 
+                        'estadoInventario': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'VENDIDO', 
+                        'disponible': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'DISPONIBLE A LA VENTA',
+                        'terminado': inventarioSeleccionado.filtroBaseDatos?.estadoInventario === 'TERMINADO'}">
+                            {{inventarioSeleccionado?.filtroBaseDatos?.estadoInventario}}
+                        </p>
+                        <p class="flex-grow-1 text-center"></p>
+                </div>
+                <div class="row">
+                    <!-- Columna para la imagen -->
+                    <div class="col-md-6 divImagenSelect">
+                        <img [src]="vehiculos[inventarioSeleccionado?.vehiculo]?.imagenVehiculo" alt=""
+                            class="imagenesSeleccionado img-fluid" (error)="manejarErrorImagen($event)">
+                    </div>
+                
+                    <!-- Columna para los botones -->
+                    <div class="col-md-6 botonesInventario">
+                        <button type="button" class="btn btn-success btn-block mb-2"
+                            (click)="sendInventoryId(inventarioSeleccionado?.inventoryId)">ABRIR INVENTARIO</button>
+                        <button type="button" class="btn btn-primary btn-block mb-2"
+                            (click)="sendInventoryIdVenta(inventarioSeleccionado?.inventoryId)">GENERAR VENTA</button>
+                        <button type="button" class="btn btn-info btn-block mb-2"
+                            (click)="sendInventoryIdCotiza(inventarioSeleccionado?.inventoryId)">GENERAR COTIZACIÓN</button>
+                        <button type="button" class="btn btn-danger btn-block mb-2"
+                            (click)="sendInventoryIdAlist(inventarioSeleccionado?.inventoryId)">CONTROL ACCESORIOS</button>
+                    </div>
+                </div>
+                <!--<div class="divImagenSelect">
+                    <img [src]="vehiculos[inventarioSeleccionado?.vehiculo]?.imagenVehiculo" alt=""
+                        class="imagenesSeleccionado" (error)="manejarErrorImagen($event)">
+                </div>-->      
+
+                <div class="divModal">
+                    <div class="divModalOne">
+                        <h3 class="vehiculoTwo"><i class="fa-solid fa-car"></i>
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.marca }} {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.linea }}
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.version }} - {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.modelo }},
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.combustible
+                            }},
+                            {{ vehiculos[inventarioSeleccionado?.vehiculo]?.placa }} de {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.ciudadPlaca }} {{inventarioSeleccionado.inventoryId}}.
+                        </h3>
+
+                        <div class="accordion" id="accordionImportante">
+                            <div class="accordion-item">
+                                <h1 class="accordion-header" id="headingImportante">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImportante" aria-expanded="true" aria-controls="collapseImportante">
+                                        <h2><i class="fa-solid fa-shapes"></i> Importante:</h2>
+                                    </button>
+                                </h1>
+                                <div id="collapseImportante" class="accordion-collapse collapse show" aria-labelledby="headingImportante" data-bs-parent="#accordionImportante">
+                                    <div class="accordion-body">
+                                        <!-- Contenedor de 3 columnas -->
+                                        <div class="row">
+                                            <!-- Columna 1 -->
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="copiaLlave" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.copiaLlave)" disabled>
+                                                    <label class="form-check-label" for="copiaLlave"><strong>COPIA LLAVE</strong></label>
+                                                </div>  
+                                            </div>
+                        
+                                            <!-- Columna 2 -->
+                                            <div class="col-md-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                                        [ngModel]="inventarioSeleccionado?.variablesLiquidacionVentas?.tieneCredito" disabled>
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        TIENE CREDITO
+                                                    </label>
+                                                </div>
+                                            </div>
+                        
+                                            <!-- Columna 3 -->
+                                            <div class="col-md-4">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion" id="accordionAccesorios">
+                            <div class="accordion-item">
+                                <h1 class="accordion-header" id="headingAccesorios">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDescripcion" aria-expanded="false" aria-controls="collapseDescripcion">
+                                        <h2><i class="fa-solid fa-shapes"></i> Descripción:</h2>
+                                    </button>
+                                </h1>
+                                <div id="collapseDescripcion" class="accordion-collapse collapse" aria-labelledby="headingDescripcion" data-bs-parent="#collapseDescripcion">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        <div class="divDescripcion">
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>PRECIO PUBLICADO:</strong>
+                                                <input rows="1" [(ngModel)]="formattedPrecioPublicacion"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChangePrecioPublicado($event); onCurrencyInput($event)">
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="inventario mb-2"><strong>PRECIO PUBLICADO: </strong>
+                                                {{formatSalary(inventarioSeleccionado?.precioPublicacion)
+                                                }} (COP)
+                                            </p>
+                                            <p *ngIf="inventarioSeleccionado" class="datosExtra mb-2">
+                                                <strong>PRECIO SEPARACIÓN:</strong>&nbsp;
+                                                {{formatSalary(inventarioSeleccionado?.precioPublicacion * 0.05)}}
+                                            </p>
+                                            <p class="inventario mb-2"><strong>CILINDRAJE: </strong>
+                                                {{formatearNumeroAMiles(vehiculos[inventarioSeleccionado?.vehiculo]?.cilindraje)
+                                                }}
+                                            </p>
+                                            <p class="inventario mb-2"><strong>MODELO: </strong>
+                                                {{vehiculos[inventarioSeleccionado?.vehiculo]?.modelo
+                                                }}
+                                            </p>
+                                            <p class="inventario mb-2"><strong>KILOMETRAJE: </strong>
+                                                {{formatearNumeroAMiles(inventarioSeleccionado?.generadorContratos?.kilometraje)
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )"
+                                                class="inventario mb-2"><strong>NÚMERO DUEÑOS: </strong>
+                                                {{inventarioSeleccionado?.numeroDuenos
+                                                }}
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>NÚMERO DUEÑOS:</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.numeroDuenos"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('numeroDuenos', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>PONTENCIA (Hp): </strong>
+                                                {{inventarioSeleccionado?.potencia
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>TORQUE (Nm): </strong>
+                                                {{inventarioSeleccionado?.torque
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>CAPACIDAD TANQUE: </strong>
+                                                {{inventarioSeleccionado?.capacidadTanque
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>CONSUMO (Km/gal): </strong>
+                                                {{inventarioSeleccionado?.consumo
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>AUTONOMÍA: </strong>
+                                                {{inventarioSeleccionado?.autonomia
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>TIEMPO DE CARGA: </strong>
+                                                {{inventarioSeleccionado?.tiempoCarga
+                                                }}
+                                            </p>
+                                            <p *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )" class="inventario mb-2">
+                                                <strong>CAPACIDAD BATERÍA: </strong>
+                                                {{inventarioSeleccionado?.capacidadBateria
+                                                }}
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>POTENCIA (Hp):</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.potencia"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('potencia', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>TORQUE (Nm):</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.torque"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('torque', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>CAPACIDAD TANQUE:</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.capacidadTanque"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('capacidadTanque', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )&& inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>CONSUMO (Km/gal):</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.consumo"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('consumo', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>AUTONOMÍA:</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.autonomia"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('autonomia', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>TIEMPO DE CARGA:</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.tiempoCarga"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('tiempoCarga', $event)"></textarea>
+                                            </p>
+                                            <p *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') ) && inventarioSeleccionado"
+                                                class="datosExtra mb-2">
+                                                <strong>CAPACIDAD BATERÍA:</strong>
+                                                <textarea rows="1" [(ngModel)]="inventarioSeleccionado.capacidadBateria"
+                                                    class="dotted-borderTres"
+                                                    (input)="onInputChange('capacidadBateria', $event)"></textarea>
+                                            </p>
+                                            <p class="inventario fw-bold mb-2">SOAT:</p>
+                                            <ul>
+                                                <li>Valor:
+                                                    {{formatSalary(inventarioSeleccionado?.documentosValoresIniciales?.totalSoatValor)}}
+                                                </li>
+                                                <li>Vigencia hasta:
+                                                    {{formatearFechaALetras(inventarioSeleccionado?.documentosValoresIniciales?.fechaFinSoat)}}
+                                                </li>
+                                            </ul>
+        
+                                            <p class="inventario fw-bold mb-2">IMPUESTO:</p>
+                                            <ul>
+                                                <li>Valor:
+                                                    {{formatSalary(inventarioSeleccionado?.documentosValoresIniciales?.impAnoEnCursoValor)}}
+                                                </li>
+                                                <li>Vigencia hasta:
+                                                    {{formatearFechaALetras(inventarioSeleccionado?.documentosValoresIniciales?.fechaFinImpuesto)}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="DivInfoKanba col-md-8">
+                                        <div *ngIf="!(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )  && inventarioSeleccionado"
+                                        class="divExtraTotal">
+                                        <h1>Más Información</h1>
+                                        <div class="divExtraTotal" *ngIf="inventarioSeleccionado">
+                                            <div class="divExtra" *ngFor="let extra of inventarioSeleccionado.infoExtra; let i = index">
+                                                <textarea rows="1" [(ngModel)]="extra.descripcion"
+                                                    (input)="updateInfoExtra(); adjustHeight($event, i)"
+                                                    placeholder="Título" class="dotted-border fw-bold"
+                                                    #extraDescription disabled></textarea>
+                                                <textarea rows="1" [(ngModel)]="extra.campo"
+                                                    (input)="updateInfoExtra(); adjustHeight($event, i)"
+                                                    placeholder="Descripción" class="dotted-borderTwo"
+                                                    #extraField disabled>
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col2-width">
+                                        <div *ngIf="(tieneCargo('Director de Comunicaciones') || tieneCargo('Gerente') || tieneCargo('Coordinador de Operaciones') || tieneCargo('Comercial 2') )  && inventarioSeleccionado"
+                                        class="divExtraTotal">
+                                        <div class="divExtraTotal" *ngIf="inventarioSeleccionado">
+                                            <div class="divExtra" *ngFor="let extra of inventarioSeleccionado.infoExtra; let i = index">
+                                                <textarea rows="1" [(ngModel)]="extra.descripcion"
+                                                    (input)="updateInfoExtra(); adjustHeight($event, i)"
+                                                    placeholder="Título" class="dotted-border fw-bold"
+                                                    #extraDescription></textarea>
+                                                <textarea rows="1" [(ngModel)]="extra.campo"
+                                                    (input)="updateInfoExtra(); adjustHeight($event, i)"
+                                                    placeholder="Descripción" class="dotted-borderTwo"
+                                                    #extraField>
+                                                </textarea>
+                                                <button (click)="removeInfoExtra(i)" class="btn btn-danger btnx px-2 p-1"><i
+                                                    class="fa-solid fa-xmark"></i>
+                                                </button>
+                                            </div>
+                                            <button class="btn btn-primary px-2 py-1" (click)="addInfoExtra()"><i
+                                                class="fa-solid fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divModalInfo">
+                            <div class="divModalInto">                                
+                                
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion" id="accordionAdjuntos">
+                    <div class="accordion-item">
+                        <h1 class="accordion-header" id="headingAccesorios">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdjuntos" aria-expanded="false" aria-controls="collapseAdjuntos">
+                                <h2><i class="fa-solid fa-paperclip"></i> Adjuntos: </h2>
+                            </button>
+                        </h1>
+                        <div id="collapseAdjuntos" class="accordion-collapse collapse" aria-labelledby="headingAdjuntos" data-bs-parent="#collapseAdjuntos">
+                            
+                            <div class="adjunto">
+                                <div class="divAdjuto">
+                                    <div class="divFoto" *ngFor="let adjunto of adjuntosToShow; let j = index">
+                                        <ng-container *ngIf="isImage(adjunto); else fileLink">
+                                            <img [src]="adjunto" alt="Archivo adjunto" class="photo"
+                                                (click)="openModal([adjunto], 0)">
+                                            <h3>{{splif(adjunto)}}</h3>
+                                        </ng-container>
+                                        <ng-template #fileLink>
+                                            <a [href]="adjunto" target="_blank">
+                                                <img [src]="getDefaultIcon(adjunto)" alt="Archivo adjunto" class="photo">
+                                                <h3>{{splif(adjunto)}}</h3>
+                                            </a>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="noHay" *ngIf="adjuntos.length === 0">
+                                    <p>No hay archivos Adjuntos</p>
+                                </div>
+                                <div *ngIf="adjuntos.length > 5">
+                                    <button class="btnMostrar" (click)="toggleAdjuntos()">
+                                        {{ mostrarTodosAdjuntos ? 'Mostrar menos adjuntos' : 'Ver todos los adjuntos (' +
+                                        (adjuntos.length - 5) + ' ocultos)' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordionAccesorios">
+                    <div class="accordion-item">
+                        <h1 class="accordion-header" id="headingAccesorios">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAccesorios" aria-expanded="false" aria-controls="collapseAccesorios">
+                                <h2><i class="fa-solid fa-shapes"></i>  Accesorios:</h2>
+                            </button>
+                        </h1>
+                        <div id="collapseAccesorios" class="accordion-collapse collapse show" aria-labelledby="headingAccesorios" data-bs-parent="#accordionAccesorios">
+                            <div class="accordion-body">
+                                <!-- Contenedor de 3 columnas -->
+                                <div class="row">
+                                    <!-- Columna 1 -->
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="copiaLlave" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.copiaLlave)" disabled>
+                                            <label class="form-check-label" for="copiaLlave">COPIA LLAVE</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="gato" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.gato)" disabled>
+                                            <label class="form-check-label" for="gato">GATO</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="llavePernos" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.llavePernos)" disabled>
+                                            <label class="form-check-label" for="llavePernos">LLAVE DE PERNOS</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="copaSeguridad" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.copaSeguridad)" disabled>
+                                            <label class="form-check-label" for="copaSeguridad">COPA DE SEGURIDAD</label>
+                                        </div>
+                                    </div>
+                
+                                    <!-- Columna 2 -->
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="tiroArrastre" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.tiroArrastre)" disabled>
+                                            <label class="form-check-label" for="tiroArrastre">TIRO DE ARRASTRE</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="historialMantenimiento" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.historialMantenimiento)" disabled>
+                                            <label class="form-check-label" for="historialMantenimiento">HISTORIAL MANTENIMIENTOS</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="manual" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.manual)" disabled>
+                                            <label class="form-check-label" for="manual">MANUAL</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="palomera" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.palomera)" disabled>
+                                            <label class="form-check-label" for="palomera">PALOMERA</label>
+                                        </div>
+                                    </div>
+                
+                                    <!-- Columna 3 -->
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="tapetes" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.tapetes)" disabled>
+                                            <label class="form-check-label" for="tapetes">TAPETES</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="llantaRepuesto" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.llantaRepuesto)" disabled>
+                                            <label class="form-check-label" for="llantaRepuesto">LLANTA DE REPUESTO</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="kitCarretera" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.kitCarretera)" disabled>
+                                            <label class="form-check-label" for="kitCarretera">KIT DE CARRETERA</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="antena" [ngModel]="accesorio(inventarioSeleccionado?.controlAccesorios?.antena)" disabled>
+                                            <label class="form-check-label" for="antena">ANTENA</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal animate__animated animate__zoomIn" id="detallePreInventarioModal" tabindex="-1"
+    aria-labelledby="modalLabel" [class.show]="mostrarModalPre" [class.animate__fadeIn]="mostrarModalPre"
+    [style.display]="mostrarModalPre ? 'block' : 'none'" aria-hidden="!mostrarModalPre">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLES DEL PRE-INVENTARIO</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="divImagenSelect">
+                    <img [src]="vehiculos[inventarioSeleccionado?.vehiculo]?.imagenVehiculo" alt=""
+                        class="imagenesSeleccionado" (error)="manejarErrorImagen($event)">
+                </div>
+                <div class="divModal">
+                    <div class="divModalOne">
+                        <h3 class="vehiculoTwo"><i class="fa-solid fa-car"></i>
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.marca }} {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.linea }}
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.version }} - {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.modelo }},
+                            {{vehiculos[inventarioSeleccionado?.vehiculo]?.combustible
+                            }},
+                            {{ vehiculos[inventarioSeleccionado?.vehiculo]?.placa }} de {{
+                            vehiculos[inventarioSeleccionado?.vehiculo]?.ciudadPlaca }}
+                        </h3>
+                        <div class="colores">
+                            <p class="tipoNegocio">{{inventarioSeleccionado?.filtroBaseDatos?.tipoNegocio}}</p>
+                            <p class="proveedor">{{inventarioSeleccionado?.filtroBaseDatos?.proveedor}}</p>
+                            <p class="estadoInventario"
+                                [ngClass]="
+                            {'asignado': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'ASIGNADO EN INICIALES', 
+                            'estadoInventario': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'VENDIDO', 
+                            'disponible': inventarioSeleccionado?.filtroBaseDatos?.estadoInventario === 'DISPONIBLE A LA VENTA'}">
+                                {{inventarioSeleccionado?.filtroBaseDatos?.estadoInventario}}
+                            </p>
+                        </div>
+                        <div class="divModalInfo">
+                            <div class="divModalInto">
+                                <h2><i class="fa-solid fa-circle-info"></i> Descripción:</h2>
+                                <div class="divDescripcion">
+                                    <p class="inventario"><strong>CILINDRAJE: </strong>
+                                        {{formatearNumeroAMiles(vehiculos[inventarioSeleccionado?.vehiculo]?.cilindraje)
+                                        }}
+                                    </p>
+                                    <p class="inventario mb-2"><strong>KILOMETRAJE: </strong>
+                                        {{formatearNumeroAMiles(inventarioSeleccionado?.generadorContratos?.kilometraje)
+                                        }}
+                                    </p>
+                                    <p class="inventario fw-bold mb-2">OBSERVACIONES:</p>
+                                    <p>{{inventarioSeleccionado?.observacionGlobal}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="divExtraTotal"
+                    *ngIf="!tieneCargo('Director de Comunicaciones') && inventarioSeleccionado?.infoExtra">
+                    <h1>Más Información</h1>
+                    <div class="divExtra" *ngFor="let extra of inventarioSeleccionado.infoExtra; let i = index">
+                        <textarea rows="1" [(ngModel)]="extra.descripcion"
+                            (input)="updateInfoExtra(); adjustHeight($event, i)" placeholder="Título"
+                            class="dotted-border fw-bold" #extraDescription disabled></textarea>
+                        <textarea rows="1" [(ngModel)]="extra.campo"
+                            (input)="updateInfoExtra(); adjustHeight($event, i)" placeholder="Descripción"
+                            class="dotted-borderTwo" #extraField disabled></textarea>
+                    </div>
+                </div>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-image-modal *ngIf="showModal"
+    [title]="vehiculos[inventarioSeleccionado?.vehiculo]?.marca + ' ' + vehiculos[inventarioSeleccionado?.vehiculo]?.linea + ' ' + vehiculos[inventarioSeleccionado?.vehiculo]?.version + ' ' + vehiculos[inventarioSeleccionado?.vehiculo]?.modelo"
+    [initialIndex]="imagenSeleccionadaIndex" [images]="imagenesModal" (close)="closeModal()"></app-image-modal>

@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  backend:
+    image: node:18-alpine
+    working_dir: /app
+    command: sh -c "npm install && node server.js"
+    networks:
+      - acstech
+      - traefik-public  # ⬅️ AÑADE ESTA LÍNEA
+    environment:
+      - PORT=4000
+      - DB_MONGO=mongodb+srv://comunicaciones:QRPz8FRC9oJsSGy6@bdautomagno.m8npupc.mongodb.net/automagno
+      - SECRET_KEY=nnwu429b5zy-7ml*dmd0a!hlwrbv6@!%zb3s^^lxk&mkdso_+m
+      - EMAIL_USER=noreply.automagno@gmail.com
+      - EMAIL_PASS=tndj uqhn vziz bjqf
+      # Cloud deshabilitado 2026-03-22 - credenciales inactivas
+      # Cloud credentials removed for security
+      
+      
+      
+      
+      
+    volumes:
+      - /opt/proyectos/acstech/backend:/app
+      - /opt/proyectos/acstech/uploads:/opt/proyectos/acstech/uploads
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  frontend:
+    image: nginx:alpine
+    networks:
+      - acstech
+      - traefik-public
+    volumes:
+      - /opt/proyectos/acstech/frontend/dist/ACS:/usr/share/nginx/html:ro
+      - /opt/proyectos/acstech/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /opt/proyectos/acstech/uploads:/usr/share/nginx/uploads:ro
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - "traefik.enable=true"
+        # HTTPS Router
+        - "traefik.http.routers.acstech-secure.rule=Host(`acstech.com.co`) || Host(`www.acstech.com.co`)"
+        - "traefik.http.routers.acstech-secure.entrypoints=websecure"
+        - "traefik.http.routers.acstech-secure.tls=true"
+        - "traefik.http.routers.acstech-secure.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.acstech-secure.service=acstech"
+        # HTTP Router (redirect to HTTPS)
+        - "traefik.http.routers.acstech.rule=Host(`acstech.com.co`) || Host(`www.acstech.com.co`)"
+        - "traefik.http.routers.acstech.entrypoints=web"
+        - "traefik.http.routers.acstech.middlewares=redirect-to-https"
+        # Service
+        - "traefik.http.services.acstech.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    depends_on:
+      - backend
+
+networks:
+  acstech:
+    driver: overlay
+    attachable: true
+  traefik-public:
+    external: true

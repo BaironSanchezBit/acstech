@@ -1,0 +1,7 @@
+/node_modules
+#config.env
+#secret.env
+#email.env
+#google.env
+#aws.env
+#monday.env

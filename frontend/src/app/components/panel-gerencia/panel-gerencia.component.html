@@ -1,0 +1,342 @@
+<app-navbar></app-navbar>
+<section class="body">
+
+  <!-- component -->
+
+  <!-- Selects para filtrar -->
+  <div class="card-body d-flex flex-wrap gap-3 p-4">
+
+    <div class="flex-grow-1">
+      <label for="filterModelo" class="form-label">Filtrar por Modelo</label>
+      <select id="filterModelo" class="form-select" [(ngModel)]="selectedModelo" (change)="onModeloFiltroChange(); filtrarVehiculos()">
+        <option value="">Todos los modelos</option>
+        <option *ngFor="let modelo of modelos" [value]="modelo">{{ modelo }}</option>
+      </select>
+    </div>
+
+    <!-- Selector de Marca - Se mantiene igual en estructura -->
+    <div class="flex-grow-1">
+      <label for="filterMarca" class="form-label">Filtrar por Marca</label>
+      <select id="filterMarca" class="form-select" [(ngModel)]="selectedMarcas" (change)="onMarcaFiltroChange(); filtrarVehiculos()">
+        <option value="">Todas las marcas</option>
+        <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+      </select>
+    </div>
+
+    <div class="flex-grow-1">
+      <label for="filterReferencia" class="form-label">Filtrar por Referencia</label>
+      <select id="filterReferencia" class="form-select" [(ngModel)]="selectedReferencia" (change)="onReferenciaFiltroChange(); filtrarVehiculos()">
+        <option value="">Todas las referencias</option>
+        <option *ngFor="let referencia of referencias" [value]="referencia">{{ referencia }}</option>
+      </select>
+    </div>
+
+    <!-- Nueva sección a la derecha con botón, select y checkbox -->
+    <div class="d-flex align-items-end gap-3 ms-auto">
+      <div class="flex-grow-1">
+        <label for="selectOpciones" class="form-label">Filtrar por Negocios</label>
+        <select id="selectOpciones" class="form-select" [(ngModel)]="selectedTipo" (change)="filtrarVehiculos()">
+          <option value="">Todos los tipos</option>
+          <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipoNegocioMap[tipo] || tipo }}</option>
+        </select>
+      </div>
+      <button (click)="openModal()" class="btn btn-success">Gestionar Ofertas</button>
+      <!---button (click)="enviarVehiculos()" class="btn btn-primary">Actualizar</button--->
+    </div>
+  </div>
+
+  <!-- Tabla de vehículos -->
+  <div class="card-body overflow-auto">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="selectAll" (change)="toggleSelectAll()" />
+      Seleccionar todos
+    </label>
+    <table class="table table-hover mt-3">
+      <thead>
+        <tr>
+          <th scope="col">Imagen</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Línea</th>
+          <th scope="col">Versión</th>
+          <th scope="col">Detalles</th>
+          <th scope="col">Valor</th>
+          <th scope="col">Tipo de negocio</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehiculo of vehiculosFiltrados">
+          <!-- Imagen -->
+          <td data-label="Imagen">
+            <img [src]="vehiculo.imagen_url || 'https://via.placeholder.com/100'" alt="Imagen del vehículo"
+              class="img-thumbnail" style="width: 64px; height: 64px;" />
+          </td>
+          <!-- Modelo -->
+          <td  data-label="Modelo">{{ vehiculo.modelo }}</td>
+          <!-- Marca -->
+          <td data-label="Marca">{{ vehiculo.marca }}</td>
+          <!-- Referencia -->
+          <td data-label="Referencia">{{ vehiculo.referencia }}</td>
+          <!-- Línea -->
+          <td data-label="Línea">{{ vehiculo.linea }}</td>
+          <!-- Versión -->
+          <td data-label="Versión">{{ vehiculo.version }}</td>
+          <!-- Ref3 -->
+          <td data-label="Detalles">{{ vehiculo.ref3 }}</td>
+          <!-- Valor -->
+          <td data-label="Valor">{{  vehiculo.valor  }}</td>
+          <!-- Tipo de negocio -->
+          <td data-label="Tipo de negocio">
+            <select class="form-select form-select-sm" [(ngModel)]="vehiculo.tipo_negocio" (change)="actualizarTipoNegocio(vehiculo)" >
+              <option *ngFor="let tipo of [1,2,3,4,5,6,7]" [value]="tipo" [selected]="tipo === vehiculo.tipo_negocio">
+                {{ tipoNegocioMap[tipo] || 'Desconocido' }}
+              </option>
+            </select>
+          </td>
+          <!-- Checkbox -->
+          <td data-label="Seleccionar">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="vehiculo.selected" (change)="actualizarEstadoVehiculo(vehiculo.id, $event)" />
+          </td>
+        </tr>
+        <!-- Mostrar mensaje si no hay vehículos -->
+        <tr *ngIf="vehiculosFiltrados.length === 0 && !isLoading">
+          <td colspan="9" class="text-center">No hay vehículos disponibles con los filtros seleccionados.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Controles de paginación -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <div>
+        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} -
+        {{ math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} registros
+      </div>
+
+      <div class="btn-group" *ngIf="totalPages > 1">
+        <button class="btn btn-outline-primary" (click)="previousPage()" [disabled]="currentPage === 1">
+          Anterior
+        </button>
+
+        <button class="btn btn-outline-primary" *ngFor="let page of getPages()" (click)="goToPage(page)"
+          [class.btn-primary]="page === currentPage" [class.active]="page === currentPage">
+          {{ page }}
+        </button>
+
+        <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Siguiente
+        </button>
+      </div>
+
+      <div class="ms-3">
+        <select class="form-select form-select-sm" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+          <option value="10">10 por página</option>
+          <option value="20">20 por página</option>
+          <option value="50">50 por página</option>
+          <option value="100">100 por página</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading"
+    class="fixed inset-0 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 z-50">
+    <div class="d-flex align-items-center gap-3 text-white">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span class="h3">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalContainer" [ngClass]="{'d-flex': isModalVisible, 'd-none': !isModalVisible}"
+    class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 align-items-center justify-content-center">
+    <!-- Fondo oscuro del modal -->
+    <div id="overlay" class="position-absolute inset-0 bg-dark opacity-50" (click)="closeModal()"></div>
+
+    <div class="bg-white p-4 rounded shadow-lg w-70 position-relative z-10 modal-scrollable">
+      <!-- Contenido del modal -->
+      <div class="bg-white p-4 rounded shadow-lg w-70 position-relative z-10">
+        <div class="h3 font-weight-bold mb-4">Actualizar oferta</div>
+
+        <!-- Tabla 8x4 -->
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="text-left">TIPO DE COMERCIO</th>
+                <th class="text-left">OFERTA RÁPIDA (%)</th>
+                <th class="text-left">OFERTA ESTÁNDAR (%)</th>
+                <th class="text-left">OFERTA FLEXIBLE (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of porcentajes; let index = index">
+                <td>{{ nombresColumna1[index] }}</td>
+                <td>
+                  <input type="text"
+                    [ngModel]="isEditing[index] ? porcentajes[index].columna2 : porcentajes[index].columna2 + '%'"
+                    (ngModelChange)="updatePorcentaje(index, $event, 2)"
+                    (focus)="isEditing[index] = true"
+                    (blur)="onBlur(index)"
+                    class="form-control w-100"
+                    pattern="[0-9.]*"
+                    (keypress)="numberOnly($event)" />
+                </td>
+                <td>
+                  <input type="text" 
+                    [ngModel]="isEditing[index] ? porcentajes[index].columna3 : porcentajes[index].columna3 + '%'" 
+                    (ngModelChange)="updatePorcentaje(index, $event, 3)"
+                    (focus)="isEditing[index] = true"
+                    (blur)="onBlur(index)"
+                    class="form-control w-100"
+                    pattern="[0-9.]*" 
+                    (keypress)="numberOnly($event)" />
+                </td>
+                <td>
+                  <input type="text" 
+                    [ngModel]="isEditing[index] ? porcentajes[index].columna4 : porcentajes[index].columna4 + '%'" 
+                    (ngModelChange)="updatePorcentaje(index, $event, 4)"
+                    (focus)="isEditing[index] = true"
+                    (blur)="onBlur(index)"
+                    class="form-control w-100"
+                    pattern="[0-9.]*" 
+                    (keypress)="numberOnly($event)" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex flex-column align-items-start mb-3 bg-light rounded p-3 border">
+          <div class="container">
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label bold-large">Modelo Minimo</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" [(ngModel)]="modelo" placeholder="Ingrese Modelo"
+                  pattern="[0-9.]*" (keypress)="numberOnly($event)">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label bold-large">Kilometraje Maximo</label>
+              <div class="col-sm-9">
+                <input type="text"
+                  class="form-control"
+                  [ngModel]="kilometraje"
+                  (ngModelChange)="formatearKilometraje($event)"
+                  placeholder="Ingrese Kilometraje"
+                  (keypress)="numberOnly($event)">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label bold-large">Valor Minimo</label>
+              <div class="col-sm-9">
+                <input type="text" 
+                  class="form-control" 
+                  [ngModel]="valorMin" 
+                  (ngModelChange)="formatearValorMin($event)"
+                  placeholder="Ingrese Valor"
+                  pattern="[0-9.]*" 
+                  (keypress)="numberOnly($event)">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label bold-large">Valor Máximo</label>
+              <div class="col-sm-9">
+                <input type="text" 
+                  class="form-control" 
+                  [ngModel]="valorMax"
+                  (ngModelChange)="formatearValorMax($event)" 
+                  placeholder="Ingrese Valor"
+                  pattern="[0-9.]*" 
+                  (keypress)="numberOnly($event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column align-items-start mb-3 bg-light rounded p-3 border">
+          <!-- Selector de marcas -->
+          <div class="d-flex align-items-center mb-3">
+            <label class="me-3 font-weight-bold">Marca:</label>
+            <select class="form-select w-auto" [(ngModel)]="selectedMarca" (change)="onMarcaChange($event)">
+              <option value="" disabled selected>Seleccione una Marca</option>
+              <option *ngFor="let marca of dataListMarcas" [value]="marca.name">{{ marca.name }}</option>
+            </select>
+          </div>
+          <!-- Título y botón de selección -->
+          <div class="d-flex align-items-center justify-content-between w-100 mb-4">
+            <div class="h4 font-weight-bold">Linea y Versión</div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="selectAllRefs" [checked]="areAllReferencesSelected()"
+                (change)="toggleSelectAllReferences($event)">
+              <label class="form-check-label" for="selectAllRefs">Seleccionar todos</label>
+            </div>
+          </div>
+          <ng-select [items]="dataListReferencias" bindLabel="displayText" placeholder="Seleccione una referencia"
+            [multiple]="true" [(ngModel)]="referenciasSeleccionadas" (change)="onSelectionChangeMarcas($event)">
+          </ng-select>
+
+        </div>
+
+        <div class="mb-3"></div> <!-- Espacio debajo del selector -->
+
+        <div class="d-flex flex-column align-items-start mb-3 bg-light rounded p-3 border">
+          <!-- Selector de ubicaciones -->
+          <div class="d-flex align-items-center mb-3">
+            <label class="me-3 font-weight-bold">Departamento Ubicacion:</label>
+            <select class="form-select w-auto" [(ngModel)]="selectedDepartamentoUbicacion"
+              (change)="onDepartamentoHubicacionChange($event)">
+              <option value="" disabled selected>Seleccione un Departamento</option>
+              <option *ngFor="let departamento of dataListDepartamentosUbicacion" [value]="departamento.name">
+                {{ departamento.name }}
+            </select>
+          </div>
+          <div class="h4 font-weight-bold mb-4">Ciudades de Carros</div>
+          <ng-select [items]="dataListCiudadesUbicacion" bindLabel="name" placeholder="Seleccione una ciudad"
+            [multiple]="true" [(ngModel)]="ciudadesUbicacionesSeleccionadas" (change)="onSelectionChangeCity($event)">
+          </ng-select>
+        </div>
+
+        <div class="mb-3"></div> <!-- Espacio debajo del selector -->
+
+        <div class="d-flex flex-column align-items-start mb-3 bg-light rounded p-3 border">
+          <!-- Selector de ubicaciones de placas -->
+          <div class="d-flex align-items-center mb-3">
+            <label class="me-3 font-weight-bold">Departamento Placa:</label>
+            <select class="form-select w-auto" [(ngModel)]="selectedDepartamentoPlaca"
+              (change)="onDepartamentoPlacaChange($event)">
+              <option value="" disabled selected>Seleccione un Departamento</option>
+              <option *ngFor="let departamento of dataListDepartamentosPlacas" [value]="departamento.name">
+                {{ departamento.name }}
+              </option>
+            </select>
+          </div>
+          <div class="h4 font-weight-bold mb-4">Ciudades de Placas</div>
+          <ng-select [items]="dataListCiudadesPlacas" bindLabel="name" placeholder="Seleccione una Ciudad"
+            [multiple]="true" [(ngModel)]="ciudadesPlacasSeleccionadas" (change)="onSelectionChangePlacas($event)">
+          </ng-select>
+        </div>
+
+        <div class="mb-3"></div> <!-- Espacio debajo del selector -->
+
+
+        <!-- Botones de acción -->
+        <div class="mt-4 d-flex justify-content-between">
+          <!-- Botón de Cerrar Modal -->
+          <button class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+
+          <!-- Botón de Actualizar -->
+          <button class="btn btn-primary" (click)="actualizar()">Guardar</button>
+        </div>
+
+        <!-- Botón superio de Cerrar Modal -->
+        <div class="position-absolute top-0 end-0 mt-2 me-2">
+          <button class="btn btn-link text-secondary" (click)="closeModal()">X</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

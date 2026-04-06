@@ -1,0 +1,167 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">PROVEEDORES</h1>
+    <div class="form-floating mx-3">
+      <input type="text" class="form-control" id="floatingInput" [(ngModel)]="busqueda" (input)="filtrarBD()"
+        name="buscar">
+      <label for="floatingInput">BUSCAR</label>
+    </div>
+    <button class="btn btn-success ms-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">TERCERO</th>
+          <th scope="col">NOMBRE COMERCIAL</th>
+          <th scope="col">SERVICIO</th>
+          <th scope="col">DIRECCIÓN</th>
+          <th scope="col">TELÉFONO</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let proveedor of proveedores" (click)="seleccionarProveedor(proveedor)">
+          <th scope="row">{{proveedor.tercero}}</th>
+          <td>{{proveedor.nombreComercial}}</td>
+          <td>{{proveedor.servicio}}</td>
+          <td>{{proveedor.direccion}}</td>
+          <td>{{proveedor.telefono}}</td>
+          <td> <button class="btn btn-warning ms-4" data-bs-toggle="modal"
+              data-bs-target="#staticeditar">Editar</button>
+            <button class="btn btn-danger ms-4" (click)="eliminarProveedor(proveedor._id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" [formGroup]="proveedoresForm">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="name" name="name" formControlName="tercero"
+                (input)="onMayuscula($event)">
+              <label for="name">TERCERO</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingMaximo" name="nombreComercial"
+                formControlName="nombreComercial">
+              <label for="floatingMaximo">NOMBRE COMERCIAL</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingMaximo" name="servicio" formControlName="servicio">
+              <label for="floatingMaximo">SERVICIO</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingMinimo" name="direccion" formControlName="direccion">
+              <label for="floatingMinimo">DIRECCIÓN</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="floatingMinimo" name="telefono" formControlName="telefono">
+              <label for="floatingMinimo">TELÉFONO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearProveedor()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="name" name="name"
+                [(ngModel)]="proveedoresSeleccionada.tercero" (input)="onMayuscula($event)">
+              <label for="name">TERCERO</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="name" name="name"
+                [(ngModel)]="proveedoresSeleccionada.nombreComercial" (input)="onMayuscula($event)">
+              <label for="name">NOMBRE COMERCIAL</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="name" name="name"
+                [(ngModel)]="proveedoresSeleccionada.servicio" (input)="onMayuscula($event)">
+              <label for="name">SERVICIO</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="name" name="name"
+                [(ngModel)]="proveedoresSeleccionada.direccion" (input)="onMayuscula($event)">
+              <label for="name">DIRECCIÓN</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="floatingMinimo" name="telefono"
+                [(ngModel)]="proveedoresSeleccionada.telefono">
+              <label for="floatingMinimo">TELÉFONO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarProveedor()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

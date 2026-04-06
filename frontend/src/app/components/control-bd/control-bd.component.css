@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
+.body {
+  background-color: #0F1922;
+  width: 100vw;
+  height: 100vh;
+  padding: 10px 0px 0px 20vw;
+  color: #ffffff;
+  background-repeat: no-repeat;
+  background-size: 85vw;
+  background-position: center;
+  background-position-x: right;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.card-user {
+  width: 90%;
+  display: grid;
+  grid-column-gap: 10%;
+  justify-content: center;
+  align-items: center;
+
+  & h2 {
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  & h1 {
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    margin-bottom: 70px;
+  }
+
+  & i {
+    font-size: 3rem;
+    color: #EA1B2D;
+  }
+
+  & .div-car-user {
+    background-color: #ffffff62;
+    width: 100%;
+    border: #ffffff solid 3px;
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    transition: transform .2s;
+    padding: 15px 30px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  & .div-car-user:hover {
+    transform: scale(0.9);
+  }
+}
+
+
+/* en tu-componente.component.css */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.car-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: moveCar 2s linear infinite;
+}
+
+@keyframes moveCar {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.loading {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.dot {
+  animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 899px) {
+  .card-user {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .body {
+    padding: 0% 5% 12% !important;
+    background-position-x: center;
+  }
+
+  h1 {
+    font-size: 30px !important;
+  }
+
+  .div-car-user {
+    padding: 10px 50px !important;
+  }
+
+  h1{
+    margin-bottom: 40px !important;
+  }
+}

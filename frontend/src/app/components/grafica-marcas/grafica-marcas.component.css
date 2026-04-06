@@ -1,0 +1,27 @@
+.body {
+    padding: 20px;
+}
+
+.h2-title {
+    color: #ffffff;
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px 0;
+    background-color: #EC442B;
+    margin: 0;
+}
+
+.divFiltros{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-control{
+    width: 200px;
+    margin: 5px;
+}
+
+.btn-success{
+    margin: 0 10px;
+}

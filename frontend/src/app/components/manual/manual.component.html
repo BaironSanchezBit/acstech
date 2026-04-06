@@ -1,0 +1,2042 @@
+<nav>
+    <div class="nav-initial">
+        <img src="../assets/img/acs.png" alt="">
+        <div class="ps-3">
+            <a [routerLink]="['/documentacion']" class="mx-3">Documentación</a>
+            <a [routerLink]="['/apirest']">API REST</a>
+            <a [routerLink]="['/manual']" class="activeTitle mx-3">Manual de Usuario</a>
+        </div>
+    </div>
+    <a class="volver" [routerLink]="['/sistema']"><i class="fa-solid fa-right-from-bracket"></i> Sistema</a>
+</nav>
+
+<section class="sectionAll">
+    <div class="divInfo">
+        <div class="divIndice">
+            <h3>ÍNDICE</h3>
+            <ul>
+                <li>
+                    <a (click)="scrollToSection('section1')" [class.active]="currentSection.startsWith('section1')">1.
+                        INVENTARIOS</a>
+                    <ul *ngIf="expandedSections.has('section1')" class="subIndice">
+                        <li class="ps-3"><a class="sub" (click)="scrollToSection('subSection1_1')"
+                                [class.subActive]="currentSection === 'subSection1_1'">PASO 1: Ir a Inventarios</a></li>
+                        <li class="ps-3"><a class="sub" (click)="scrollToSection('subSection1_2')"
+                                [class.subActive]="currentSection === 'subSection1_2'">PASO 2: Visualización</a></li>
+                        <li class="ps-3"><a class="sub" (click)="scrollToSection('subSection1_3')"
+                                [class.subActive]="currentSection === 'subSection1_3'">PASO 3: Obtener más detalles</a>
+                        </li>
+                        <li class="ps-3"><a class="sub" (click)="scrollToSection('subSection1_4')"
+                                [class.subActive]="currentSection === 'subSection1_4'">PASO 4: Detalles del
+                                Inventario</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section2')" [class.active]="currentSection.startsWith('section2')">2.
+                        REGISTROS</a>
+                    <ul *ngIf="expandedSections.has('section2')" class="subIndice">
+                        <li class="ps-3"><a (click)="scrollToSection('subSection2_1')"
+                                [class.subActive]="currentSection === 'subSection2_1'">Ir a Registro</a></li>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection2_2')"
+                                [class.subActive]="currentSection === 'subSection2_2'">CLIENTES</a></li>
+                        <ul class="subSubIndice">
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection2_1')"
+                                    [class.subActive]="currentSection === 'subSubSection2_1'">2.1 - Registrar</a></li>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection2_2')"
+                                    [class.subActive]="currentSection === 'subSubSection2_2'">2.2 - Consultar</a></li>
+                        </ul>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection2_3')"
+                                [class.subActive]="currentSection === 'subSection2_3'">VEHÍCULOS</a></li>
+                        <ul class="subSubIndice">
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection2_3_1')"
+                                    [class.subActive]="currentSection === 'subSubSection2_3_1'">2.3 - Registrar</a></li>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection2_4_1')"
+                                    [class.subActive]="currentSection === 'subSubSection2_4_1'">2.4 - Consultar</a></li>
+                        </ul>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section3')" [class.active]="currentSection.startsWith('section3')">3.
+                        ADQUISICIÓN</a>
+                    <ul *ngIf="expandedSections.has('section3')" class="subIndice">
+                        <li class="ps-3"><a (click)="scrollToSection('subSection3_0')"
+                                [class.subActive]="currentSection === 'subSection3_0'">CREAR INVENTARIO</a></li>
+                        <ul class="subSubIndice">
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_1')"
+                                    [class.subActive]="currentSection === 'subSubSection3_1'">PASO 1: Dirígete a la
+                                    barra lateral y selecciona “Adquisición”</a></li>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_2')"
+                                    [class.subActive]="currentSection === 'subSubSection3_2'">PASO 2: Haz clic en “CREAR
+                                    INVENTARIO”</a></li>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_3')"
+                                    [class.subActive]="currentSection === 'subSubSection3_3'">PASO 3: Al abrir el modal
+                                    haz clic en “CREAR INVENTARIO”:</a></li>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_4')"
+                                    [class.subActive]="currentSection === 'subSubSection3_4'">PASO 4: Acá puedes crear
+                                    un cliente o buscarlo con el número de identificación</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_4_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_4_1'">1. Crear
+                                        Cliente</a></li>
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_4_2')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_4_2'">2. Buscar
+                                        Cliente</a></li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_5')"
+                                    [class.subActive]="currentSection === 'subSubSection3_5'">PASO 5: Acá puedes crear
+                                    un vehículo o buscarlo por placa</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_5_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_5_1'">1. Crear
+                                        Vehículo</a></li>
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_5_2')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_5_2'">2. Buscar
+                                        Vehículo</a></li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_6')"
+                                    [class.subActive]="currentSection === 'subSubSection3_6'">PASO 6: FASE 1 - FILTROS
+                                    BASE DE DATOS</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_6_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_6_1'">Variables</a>
+                                </li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_7')"
+                                    [class.subActive]="currentSection === 'subSubSection3_7'">PASO 7: 1.1 - PERITAJES E
+                                    IMPRONTAS</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_7_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_7_1'">Variables</a>
+                                </li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_8')"
+                                    [class.subActive]="currentSection === 'subSubSection3_8'">PASO 8: 1.2 - DOCUMENTOS
+                                    TRASPASO</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_8_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_8_1'">Variables</a>
+                                </li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_9')"
+                                    [class.subActive]="currentSection === 'subSubSection3_9'">PASO 9: 1.3 - LINK ARCHIVO
+                                    DIGITA</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_9_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_9_1'">Variables</a>
+                                </li>
+                            </ul>
+                            <li class="ps-4"><a (click)="scrollToSection('subSubSection3_10')"
+                                    [class.subActive]="currentSection === 'subSubSection3_10'">PASO 10: FASE 2 -
+                                    DOCUMENTOS Y VALORES INICIALES</a></li>
+                            <ul class="subSubIndice">
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_10_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_10_1'">DOCUMENTOS Y
+                                        VALORES INICIALES PARA AUTONAL</a>
+                                </li>
+                                <li class="ps-5 ms-3"><a (click)="scrollToSection('subSubSubSection3_10_1_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_10_1_1'">Variables</a>
+                                </li>
+                                <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_10_2')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_10_2'">DOCUMENTOS Y
+                                        VALORES INICIALES OTRO TIPO DE PROVEEDOR</a>
+                                </li>
+                                <li class="ps-5 ms-3"><a (click)="scrollToSection('subSubSubSection3_10_2_1')"
+                                        [class.subActive]="currentSection === 'subSubSubSection3_10_2_1'">Variables</a>
+                                </li>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_11')"
+                                        [class.subActive]="currentSection === 'subSubSection3_11'">PASO 11: 2.1 -
+                                        AGREGAR DEUDA FINANCIERA</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_11_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_11_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_12')"
+                                        [class.subActive]="currentSection === 'subSubSection3_12'">PASO 12: 2.2 -
+                                        CONTROL DE ACCESORIOS</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_12_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_12_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_13')"
+                                        [class.subActive]="currentSection === 'subSubSection3_13'">PASO 13: FASE 3 - SI
+                                        ES AUTONAL</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_13_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_13_1'">3.1 -
+                                            LIQUIDACIÓN TRÁMITES DE INGRESO</a>
+                                    </li>
+                                    <li class="ps-5 ms-3"><a (click)="scrollToSection('subSubSubSection3_13_1_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_13_1_1'">Variables</a>
+                                    </li>
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_13_2')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_13_2'">3.2 -
+                                            LIQUIDACIÓN TRÁMITES DE SALIDA</a>
+                                    </li>
+                                    <li class="ps-5 ms-3"><a (click)="scrollToSection('subSubSubSection3_13_2_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_13_2_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_14')"
+                                        [class.subActive]="currentSection === 'subSubSection3_14'">PASO 14: FASE 3 -
+                                        TRÁMITES Y ACCESORIOS</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_14_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_14_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_15')"
+                                        [class.subActive]="currentSection === 'subSubSection3_15'">PASO 15: 3.2 -
+                                        LIQUIDACIONES</a></li>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_16')"
+                                        [class.subActive]="currentSection === 'subSubSection3_16'">PASO 16: 3.3 - FORMAS
+                                        DE PAGO</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_16_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_16_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_17')"
+                                        [class.subActive]="currentSection === 'subSubSection3_17'">PASO 17: 3.4 -
+                                        OBSERVACIONES DE LA LIQUIDACIÓN</a></li>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_18')"
+                                        [class.subActive]="currentSection === 'subSubSection3_18'">PASO 18: 3.5 -
+                                        INFORMACIÓN GENERADOR DE CONTRATOS Y ACTA DE RECEPCIÓN</a></li>
+                                <ul class="subSubIndice">
+                                    <li class="ps-5"><a (click)="scrollToSection('subSubSubSection3_18_1')"
+                                            [class.subActive]="currentSection === 'subSubSubSection3_18_1'">Variables</a>
+                                    </li>
+                                </ul>
+                                <li class="ps-4"><a (click)="scrollToSection('subSubSection3_19')"
+                                        [class.subActive]="currentSection === 'subSubSection3_19'">PASO 19: CREAR
+                                        INVENTARIO</a></li>
+                            </ul>
+                        </ul>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection3_1')"
+                                [class.subActive]="currentSection === 'subSection3_1'">BUSCAR INVENTARIO</a></li>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection3_2')"
+                                [class.subActive]="currentSection === 'subSection3_2'">GENERAR DOCUMENTOS</a></li>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection3_3')"
+                                [class.subActive]="currentSection === 'subSection3_3'">SUBIR ARCHIVOS Y FOTOS</a></li>
+                        <li class="ps-3"><a (click)="scrollToSection('subSection3_4')"
+                                [class.subActive]="currentSection === 'subSection3_4'">ELIMINAR ARCHIVOS Y FOTOS</a>
+                        </li>
+                        <li class="ps-4"><a (click)="scrollToSection('subSection3_4_1')"
+                                [class.subActive]="currentSection === 'subSection3_4_1'">Segundo ejemplo:</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section4')" [class.active]="currentSection.startsWith('section4')">4.
+                        INGRESANDO</a>
+                    <ul *ngIf="expandedSections.has('section4')" class="subIndice">
+                        <li class="ps-3"><a (click)="scrollToSection('subSection4_0')"
+                                [class.subActive]="currentSection === 'subSection4_0'">MIGRAR PRE-INVENTARIO A
+                                INVENTARIO REAL</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="divText" #divText>
+            <div class="divTitle">
+                <h1>MANUAL DE USUARIO</h1>
+                <h2>AUTOMAGNO CORE SYSTEM</h2>
+            </div>
+            <div id="section1">
+                <h3 class="title">1. INVENTARIOS</h3>
+                <p class="text">Desde el panel principal, puedes acceder a Inventarios, donde podrás visualizar en un
+                    formato de
+                    cartas
+                    todos los inventarios que hay registrados en el sistema. Aquí podemos ver todos los vehículos
+                    ingresados, vendidos, en garantía, etc.</p>
+                <div id="subSection1_1">
+                    <h4 class="subtitle">PASO 1: DIRIGIRSE A LA BARRA LATERAL Y SELECCIONA “Inventarios”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/1.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection1_2">
+                    <h4 class="subtitle">PASO 2: VISUALIZACIÓN DE TARJETAS:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/1.2.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSection1_3">
+                    <h4 class="subtitle">PASO 3: OBTENER MÁS DETALLES DEL INVENTARIO:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/1.3.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSection1_4">
+                    <h4 class="subtitle">PASO 4: DETALLES DEL INVENTARIO:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/1.4.png" alt="">
+                    </div>
+                    <ol class="subOl">
+                        <li>
+                            Podemos observar los detalles del inventario, donde obtendremos más información como Precio
+                            de Publicación, cilindraje, modelo, kilometraje, número de dueños, potencia, Soat, Impuesto,
+                            archivos adjuntos en el inventario, accesorios, etc.
+                        </li>
+                        <li>
+                            Los botones que se observan en la parte de “ACCIONES”, son redireccionamientos hacia el
+                            inventario (Adquisición o Ventas), control de accesorios y también para generar una
+                            cotización.
+                        </li>
+                    </ol>
+                    <p class="subtext">
+                    </p>
+                </div>
+            </div>
+            <div id="section2">
+                <h3 class="title">2. REGISTROS</h3>
+                <p class="text">
+                    En la barra lateral encontrarás la sección de registro, donde podrás registrar nuevos clientes,
+                    verificar si ya existen, o gestionar la llegada de nuevos vehículos a la empresa, así como los que
+                    ya están en el sistema.
+                </p>
+                <div id="subSection2_1">
+                    <h4 class="subtitle">DIRIGIRSE A LA BARRA LATERAL Y SELECCIONA “Registro”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection2_2">
+                    <h4 class="subtitle">CLIENTES:</h4>
+                </div>
+                <div id="subSubSection2_1">
+                    <h4 class="subtitle">2.1 - Registro de Clientes</h4>
+                    <h4 class="subtitle">PASO 1: <span class="subSpan">Haz clic en "GESTIONAR CLIENTE".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.1.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_2">
+                    <h4 class="subtitle">PASO 2: <span class="subSpan">Al abrir la ventana emergente selecciona "CREAR
+                            NUEVO CLIENTE".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.2.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_3">
+                    <h4 class="subtitle">PASO 3: <span class="subSpan">Completa los campos requeridos, como nombre,
+                            dirección, número de contacto y detalles adicionales.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.3.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_4">
+                    <h4 class="subtitle">PASO 4: <span class="subSpan">Haz clic en "Crear" para registrar el nuevo
+                            cliente en el sistema.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.4.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_2">
+                    <h4 class="subtitle">2.2 - Consultar Clientes</h4>
+                    <h4 class="subtitle">PASO 1: <span class="subSpan">Haz clic en "GESTIONAR CLIENTE".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.1.1.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_2">
+                    <h4 class="subtitle">PASO 2: <span class="subSpan">Al abrir la ventana emergente selecciona "CREAR
+                            NUEVO CLIENTE".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.2.2.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_3">
+                    <h4 class="subtitle">PASO 3: <span class="subSpan">Completa los campos requeridos, como nombre,
+                            dirección, número de contacto y detalles adicionales.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.2.3.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_4">
+                    <h4 class="subtitle">PASO 4: <span class="subSpan">Haz clic en "Crear" para registrar el nuevo
+                            cliente en el sistema.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.2.4.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_1_5">
+                    <h4 class="subtitle">PASO 5: <span class="subSpan">Los resultados de la búsqueda mostrarán los
+                            detalles del cliente, si existe.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.2.5.png" alt="">
+                    </div>
+                    <p class="subtext">
+                        Si desea actualizar el cliente que se consultó solo cambia la información y por último haz clic
+                        en "Actualizar".
+                    </p>
+                </div>
+                <div id="subSection2_3">
+                    <h4 class="subtitle">VEHÍCULOS:</h4>
+                </div>
+                <div id="subSubSection2_3_1">
+                    <h4 class="subtitle">2.3 - Registrar Nuevos Vehículos</h4>
+                    <h4 class="subtitle">PASO 1: <span class="subSpan">Haz clic en "GESTIONAR VEHÍCULO".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.3.1.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_3_2">
+                    <h4 class="subtitle">PASO 2: <span class="subSpan">Al abrir la ventana emergente selecciona "CREAR
+                            NUEVO VEHÍCULO".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.3.2.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_3_3">
+                    <h4 class="subtitle">PASO 3: <span class="subSpan">Completa los campos necesarios, como marca,
+                            modelo, año, número de serie y detalles adicionales.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.3.3.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_3_4">
+                    <h4 class="subtitle">PASO 4: <span class="subSpan">Haz clic en "Crear" para registrar el nuevo
+                            vehículo en el sistema.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.3.4.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_4_1">
+                    <h4 class="subtitle">2.4 - Consultar Vehículo</h4>
+                    <h4 class="subtitle">PASO 1: <span class="subSpan">Selecciona "GESTIONAR VEHÍCULO".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.3.1.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_4_2">
+                    <h4 class="subtitle">PASO 2: <span class="subSpan">Al abrir la ventana emergente selecciona
+                            "CONSULTAR CLIENTE VEHÍCULO".</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.4.2.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_4_3">
+                    <h4 class="subtitle">PASO 3: <span class="subSpan">Introduce la placa del vehículo.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.4.3.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_4_4">
+                    <h4 class="subtitle">PASO 4: <span class="subSpan">Haz clic en la lupa para ver si el vehículo ya
+                            está registrado.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.4.4.png" alt="">
+                    </div>
+                    <p class="subtext"></p>
+                </div>
+                <div id="subSubSection2_4_5">
+                    <h4 class="subtitle">PASO 5: <span class="subSpan">Los resultados de la búsqueda mostrarán los
+                            detalles del vehículo, si existe.</span></h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/2.4.5.png" alt="">
+                    </div>
+                    <p class="subtext">
+                        Si desea actualizar el vehículo que se consultó solo cambia la información y por último haz clic
+                        en "Actualizar".
+                    </p>
+                </div>
+            </div>
+            <div id="section3">
+                <h3 class="title">3. ADQUISICIÓN</h3>
+                <p class="text">
+                    Adquisición es el módulo primordial para la gestión de un inventario, acá se ingresa toda la
+                    información del carro y del cliente, en este podremos generar documentos como contratos, funt, actas
+                    de entrega, liquidaciones y mandato.
+                </p>
+                <div id="subSection3_0">
+                    <h4 class="subtitle">CREAR INVENTARIO:</h4>
+                </div>
+                <div id="subSubSection3_1">
+                    <h4 class="subtitle">PASO 1: Dirígete a la barra lateral y selecciona “Adquisición”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_2">
+                    <h4 class="subtitle">PASO 2: Haz clic en “CREAR INVENTARIO”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.2.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_3">
+                    <h4 class="subtitle">PASO 3: Haz clic en “CREAR INVENTARIO”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.3.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_4">
+                    <h4 class="subtitle">PASO 4: Acá puedes crear un cliente o buscarlo con el
+                        número de identificación:</h4>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_4_1">
+                    <h4 class="subtitle">1. Crear cliente</h4>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_4_1">
+                    <h4 style="margin-left: 3%;">a. Haz clic en el check.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.4.1.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_4_1">
+                    <h4 style="margin-left: 3%;">b. Al ingresar todos los datos requeridos dar clic en “Crear
+                        Propietario”.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.4.2.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_4_2">
+                    <h4 class="subtitle">2. Buscar cliente</h4>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_4_2">
+                    <h4 style="margin-left: 3%;">a. Ingresa el número de identificación.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.4.3.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_4_2">
+                    <h4 style="margin-left: 3%;">b. Haz clic en la lupa para realizar la búsqueda.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.4.4.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_4_2">
+                    <h4 style="margin-left: 3%;">c. La información cargará y podrás seguir con el siguiente paso.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.4.5.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_5">
+                    <h4 class="subtitle">PASO 5: Acá puedes crear un vehículo o buscarlo por placa:</h4>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_5_1">
+                    <h4 class="subtitle">1. Crear vehículo</h4>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_1">
+                    <h4 style="margin-left: 3%;">a. Haz clic en el check.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.1.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_1">
+                    <h4 style="margin-left: 3%;">b. Ingresa datos del vehículo.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.2.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_1">
+                    <h4 style="margin-left: 3%;">c. Al ingresar todos los datos requeridos dar clic en “Crear
+                        Vehículo".</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.3.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_5_2">
+                    <h4 class="subtitle">2. Buscar vehículo</h4>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_2">
+                    <h4 style="margin-left: 3%;">a. Ingresa la placa del vehículo.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.4.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_2">
+                    <h4 style="margin-left: 3%;">b. Haz clic en la lupa para realizar la búsqueda.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.5.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-4" id="subSubSubSection3_5_2">
+                    <h4 style="margin-left: 3%;">c. La información cargará y podrás seguir con el siguiente paso.</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.5.6.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_6">
+                    <h4 class="subtitle">PASO 6: FASE 1 - FILTROS BASE DE DATOS:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.6.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_6_1">
+                    <h4 class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tipo de negocio</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar la adquisición de un vehículo, es esencial
+                                            clasificar
+                                            correctamente el tipo de negocio involucrado. A continuación, se describen
+                                            los diferentes tipos de negocio y sus implicaciones:</p>
+                                        <h2 class="fw-bold mb-2">Tipo de Negocio:</h2>
+                                        <ol>
+                                            <li>
+                                                <strong>COMPRA:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Este tipo de negocio implica la adquisición directa
+                                                        del
+                                                        vehículo. En una compra, el vehículo se adquiere mediante el
+                                                        pago completo a un proveedor o vendedor.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>CONSIGNACIÓN:</strong>
+                                                <ul>
+                                                    <li class="mt-2">En este tipo de negocio, el vehículo es entregado
+                                                        en
+                                                        consignación. Esto significa que el vehículo se recibe para su
+                                                        venta, pero la propiedad no se transfiere hasta que se completa
+                                                        la venta.</li>
+                                                    <li class="mt-2">El consignatario (AUTOMAGNO SAS) y el comprador
+                                                        deben firmar el
+                                                        contrato después de la venta, asegurando que todas las
+                                                        condiciones del acuerdo se han cumplido.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>RETOMA:</strong>
+                                                <ul>
+                                                    <li class="mt-2">La retoma se refiere a la situación en la que un
+                                                        vehículo usado
+                                                        se recibe como parte del pago o intercambio por la compra de
+                                                        otro vehículo.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Proveedor</td>
+                                    <td>
+                                        <p class="mt-2">Al documentar el proveedor de un vehículo, es importante
+                                            clasificar
+                                            correctamente el tipo de proveedor para asegurar un registro preciso y
+                                            cumplir con los procedimientos adecuados. A continuación, se describen los
+                                            diferentes tipos de proveedores y sus implicaciones:</p>
+                                        <h2 class="fw-bold mb-2">Proveedor:</h2>
+                                        <ol>
+                                            <li>
+                                                <strong>PERSONA NATURAL:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Este tipo de proveedor se refiere a un individuo
+                                                        que vende el vehículo.</li>
+                                                    <li class="mt-2">Es importante verificar la identidad del proveedor
+                                                        mediante una copia de su cédula y asegurarse de que toda la
+                                                        documentación necesaria esté firmada por la persona natural.
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>PERSONA JURÍDICA:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Este tipo de proveedor se refiere a una entidad
+                                                        legalmente constituida, como una empresa o corporación, que
+                                                        vende el vehículo.</li>
+                                                    <li class="mt-2">Se debe verificar la representación legal de la
+                                                        persona jurídica, asegurándose de que el contrato y otros
+                                                        documentos relevantes sean firmados por un representante
+                                                        autorizado de la entidad.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>AUTONAL:</strong>
+                                                <ul>
+                                                    <li class="mt-2">AUTONAL es un proveedor específico que puede tener
+                                                        procedimientos especiales para la venta de vehículos.</li>
+                                                    <li class="mt-2">Cuando el proveedor es AUTONAL, el contrato y otros
+                                                        documentos relevantes deben ser entregados y firmados según los
+                                                        procedimientos establecidos por esta entidad. <span
+                                                            class="nota">NOTA:</span> Tener en
+                                                        cuenta que si seleccionas AUTONAL en la FASE 3 cambia la forma
+                                                        en la que se ingresan los datos.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>SANTANDER:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Santander es otro proveedor específico que puede
+                                                        tener sus propios procedimientos para la venta de vehículos.
+                                                    </li>
+                                                    <li class="mt-2">Es importante seguir los requisitos y
+                                                        procedimientos específicos establecidos por Santander para
+                                                        asegurar la correcta documentación y firma de los contratos y
+                                                        otros documentos.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Estado del inventario</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar el estado del inventario de vehículos, es
+                                            fundamental clasificar correctamente cada vehículo según su estado actual. A
+                                            continuación, se describen los diferentes estados del inventario y sus
+                                            implicaciones:</p>
+                                        <h2 class="fw-bold mb-2">Estados Iniciales del Inventario:</h2>
+                                        <ol>
+                                            <li>
+                                                <strong>ASIGNADO EN INICIALES:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo ha sido asignado
+                                                        inicialmente y está en proceso de preparación o verificación
+                                                        antes de estar disponible para la venta.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>DISPONIBLE A LA VENTA:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo está completamente listo y
+                                                        disponible para ser vendido. Toda la documentación y
+                                                        preparaciones necesarias se han completado.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+
+                                        <h2 class="fw-bold mb-2">Otros Estados del Inventario:</h2>
+                                        <ol>
+                                            <li>
+                                                <strong>EN DEVOLUCIÓN:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo está en proceso de ser
+                                                        devuelto, ya sea por el comprador o por razones internas. Este
+                                                        estado se utiliza hasta que la devolución se completa y se
+                                                        registra.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>VENDIDO:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo ha sido vendido y la
+                                                        transacción ha sido finalizada. Toda la documentación de venta
+                                                        debe estar completa y archivada.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>EN GARANTÍA:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo está actualmente bajo
+                                                        garantía y puede estar en proceso de revisión o reparación
+                                                        conforme a las condiciones de la garantía.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>REGISTRO COMPRA AUTOMAGNO:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo ha sido adquirido por
+                                                        Automagno y se encuentra en proceso de registro. Este estado se
+                                                        utiliza hasta que la compra se haya registrado completamente en
+                                                        el sistema.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>DECLINADO:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que la venta del vehículo ha sido declinada
+                                                        por alguna razón, y el vehículo no será vendido bajo las
+                                                        condiciones actuales. Puede requerir re-evaluación o ajustes
+                                                        antes de estar disponible nuevamente.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>TERMINADO:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo ha completado su ciclo en el
+                                                        inventario, ya sea por venta, devolución finalizada o cualquier
+                                                        otra razón. Este estado se utiliza para archivar el registro del
+                                                        vehículo.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha ingreso</td>
+                                    <td>
+                                        <p class="mt-2">La fecha de ingreso es un dato crucial en la gestión del
+                                            inventario de vehículos, ya que marca el momento en que un vehículo ingresa
+                                            a la vitrina para ser considerado parte del inventario disponible.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ubicación</td>
+                                    <td>
+                                        <p class="mt-2">La ubicación del vehículo es un dato esencial en la gestión del
+                                            inventario, ya que permite identificar el lugar exacto donde se encuentra
+                                            cada vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Expedición Licencia</td>
+                                    <td>
+                                        <p class="mt-2">La fecha de expedición de la licencia es un dato crucial que se
+                                            encuentra en la tarjeta de propiedad del vehículo. Esta fecha indica el día
+                                            en que la licencia fue emitida oficialmente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Observación Global</td>
+                                    <td>
+                                        <p class="mt-2">Esta observación se mantiene en todo el inventario, mientras se
+                                            va llenando información puedes ir agregando una observación durante el
+                                            proceso.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_7">
+                    <h4 class="subtitle">PASO 7: 1.1 - PERITAJES E IMPRONTAS:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.7.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_7_1">
+                    <h4 class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ubicación peritaje</td>
+                                    <td>
+                                        <p class="mt-2">Es fundamental documentar adecuadamente la ubicación del
+                                            peritaje realizado al vehículo para asegurar un registro preciso y
+                                            verificable. La información esencial sobre la empresa en la cual se realizó
+                                            el peritaje debe incluirse de la siguiente manera:</p>
+                                        <h2 class="fw-bold mb-2">Empresa en la cual se realizó el peritaje:</h2>
+                                        <p class="mt-2">Seleccione la empresa donde se llevó a cabo el peritaje del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Estado</td>
+                                    <td>
+                                        <p class="mt-2">Al documentar el peritaje de un vehículo, es crucial registrar
+                                            el estado del peritaje de manera precisa y detallada. A continuación, se
+                                            proporciona una explicación sobre cómo describir el estado del peritaje
+                                            utilizando los estados especificados:</p>
+                                        <h2 class="fw-bold mb-2">Estado del Peritaje:</h2>
+                                        <ol>
+                                            <li>
+                                                <strong>APROBABLE ASEGURADO:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo ha pasado todas las
+                                                        inspecciones y pruebas requeridas durante el peritaje y está en
+                                                        condiciones óptimas para ser asegurado. No se requieren
+                                                        reparaciones adicionales y el vehículo cumple con los estándares
+                                                        de seguridad y funcionamiento.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>POR SOLICITAR:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el peritaje aún no ha sido solicitado o
+                                                        realizado. Es necesario iniciar el proceso de peritaje para
+                                                        determinar el estado del vehículo. Esta opción se utiliza cuando
+                                                        el peritaje está pendiente.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>NO ASEGURABLE:</strong>
+                                                <ul>
+                                                    <li class="mt-2">Indica que el vehículo no ha pasado el peritaje
+                                                        debido a fallas significativas que afectan su seguridad o
+                                                        funcionamiento. El vehículo no es elegible para ser asegurado
+                                                        hasta que se realicen las reparaciones necesarias para cumplir
+                                                        con los estándares requeridos.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>N/A (No Aplica):</strong>
+                                                <ul>
+                                                    <li class="mt-2">Utilice esta opción si el peritaje no es necesario
+                                                        o no se ha realizado por razones específicas. Esto puede incluir
+                                                        situaciones en las que el peritaje no es aplicable al tipo de
+                                                        vehículo o la transacción en cuestión.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                        <p class="mt-2">Registrar el estado del peritaje de manera adecuada es esencial
+                                            para mantener un historial detallado del vehículo y asegurar la
+                                            transparencia en su condición actual.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Número de inspección</td>
+                                    <td>
+                                        <p class="mt-2">El número de inspección es un identificador único que se asigna
+                                            a cada peritaje realizado a un vehículo. Este número se encuentra en las
+                                            hojas del peritaje y es fundamental para mantener un registro preciso y
+                                            verificable del proceso.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Link de inspección</td>
+                                    <td>
+                                        <p class="mt-2">El link de inspección es una URL que lleva a un documento
+                                            almacenado en Google Drive, el cual contiene todas las hojas del peritaje
+                                            del vehículo. Documentar correctamente este link es crucial para mantener un
+                                            registro preciso y facilitar el acceso a la información detallada del
+                                            peritaje.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Impronta</td>
+                                    <td>
+                                        <p class="mt-2">La impronta es un elemento clave en el peritaje de un vehículo y
+                                            se encuentra en las hojas del peritaje. Documentar adecuadamente la impronta
+                                            es esencial para asegurar la veracidad y exactitud de la información del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_8">
+                    <h4 class="subtitle">PASO 8: 1.2 - DOCUMENTOS TRASPASO:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.8.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_8_1">
+                    <h4 class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Contrato Venta</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar contratos de venta, es fundamental seguir el
+                                            procedimiento adecuado según el tipo de negocio y el proveedor involucrado.
+                                            A continuación, se detallan las instrucciones específicas para cada caso:
+                                        </p>
+                                        <ol>
+                                            <li>
+                                                <strong>Tipo de Negocio: "COMPRA":</strong>
+                                                <ul>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Proveedor:
+                                                            "AUTONAL":</span> Si el proveedor es AUTONAL, el contrato se
+                                                        entrega firmado. Por lo tanto, el estado del contrato será
+                                                        “FIRMADO EN CARPETA”. Esto significa que no se requiere ninguna
+                                                        acción adicional para obtener la firma del contrato, ya que
+                                                        AUTONAL lo proporciona firmado desde el inicio.</li>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Otros
+                                                            Proveedores:</span> Para todos los demás proveedores, el
+                                                        contrato de venta se genera a través del “GENERADOR DE
+                                                        DOCUMENTOS”. En este caso, se utiliza el documento titulado
+                                                        “CONTRATO COMPRAVENTA”. Es responsabilidad del equipo asegurarse
+                                                        de que este contrato sea firmado según los procedimientos
+                                                        internos establecidos.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>Tipo de Negocio: "CONSIGNACIÓN":</strong>
+                                                <ul>
+                                                    <li class="mt-2">En el caso de una consignación, el contrato de
+                                                        venta sigue un proceso diferente. El contrato se firma después
+                                                        de la venta, y las partes involucradas en este proceso son el
+                                                        consignatario y el comprador. Esto asegura que todas las
+                                                        condiciones de la consignación se han cumplido y que el acuerdo
+                                                        final puede ser formalizado correctamente.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>FUNT</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar el Formato Único de Negocio y Trámite (FUNT), es
+                                            esencial seguir el procedimiento adecuado según el tipo de negocio y el
+                                            proveedor involucrado. A continuación, se detallan las instrucciones
+                                            específicas para cada caso:</p>
+                                        <ol>
+                                            <li>
+                                                <strong>Tipo de Negocio: "COMPRA":</strong>
+                                                <ul>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Proveedor:
+                                                            "AUTONAL":</span> Si el proveedor es AUTONAL, el FUNT se
+                                                        entrega firmado. Por lo tanto, el estado del FUNT será “FIRMADO
+                                                        EN CARPETA”. Esto significa que no se requiere ninguna acción
+                                                        adicional para obtener la firma del FUNT, ya que AUTONAL lo
+                                                        proporciona firmado desde el inicio.</li>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Otros
+                                                            Proveedores:</span> Para todos los demás proveedores, el
+                                                        formato FUNT se genera a través del “GENERADOR DE DOCUMENTOS”.
+                                                        En este caso, se utiliza el documento titulado “FUNT”. Es
+                                                        responsabilidad del equipo asegurarse de que este formato sea
+                                                        firmado según los procedimientos internos establecidos.</li>
+                                                </ul>
+                                            </li>
+                                            <li class="mt-2">
+                                                <strong>Tipo de Negocio: "CONSIGNACIÓN":</strong>
+                                                <ul>
+                                                    <li class="mt-2">En el caso de una consignación, el FUNT sigue un
+                                                        proceso diferente. El formato se firma después de la venta, y
+                                                        las partes involucradas en este proceso son el consignatario y
+                                                        el comprador. Esto asegura que todas las condiciones de la
+                                                        consignación se han cumplido y que el acuerdo final puede ser
+                                                        formalizado correctamente.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mandato</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar el documento de Mandato, es fundamental seguir el
+                                            procedimiento adecuado según el tipo de negocio y el proveedor involucrado.
+                                            A continuación, se detallan las instrucciones específicas para cada caso:
+                                        </p>
+                                        <ol>
+                                            <li>
+                                                <strong>Tipo de Negocio: "COMPRA":</strong>
+                                                <ul>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Proveedor:
+                                                            "AUTONAL":</span> Si el proveedor es AUTONAL, el Mandato se
+                                                        entrega firmado por AUTOMAGNO. Además, el documento debe ser
+                                                        firmado por la persona que vendió el carro a AUTONAL. En este
+                                                        caso, el estado del Mandato será “ENTREGADO FIRMADO A
+                                                        PROVEEDOR”. Esto asegura que todas las partes relevantes han
+                                                        firmado el documento antes de entregarlo al proveedor.</li>
+                                                    <li class="mt-2"> <span class="fw-bold m-0">Otros
+                                                            Proveedores:</span> Para todos los demás proveedores, el
+                                                        formato de Mandato se genera a través del “GENERADOR DE
+                                                        DOCUMENTOS”. El documento a utilizar se titula “MANDATO”. Es
+                                                        responsabilidad del equipo asegurarse de que este formato sea
+                                                        firmado según los procedimientos internos establecidos y luego
+                                                        entregado al proveedor correspondiente.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Copia Cédula Propietario</td>
+                                    <td>
+                                        <p class="mt-2">Selecciona check si se entrega la copia de cédula del
+                                            propietario y asegúrate de <span class="fw-bold m-0">anexar el
+                                                documento</span> correspondiente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Copia Tarjeta de Propiedad</td>
+                                    <td>
+                                        <p class="mt-2">Selecciona check si se entrega la copia de tarjeta de propiedad
+                                            y asegúrate de <span class="fw-bold m-0">anexar el documento</span>
+                                            correspondiente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Copia SOAT</td>
+                                    <td>
+                                        <p class="mt-2">Selecciona check si se entrega la copia SOAT y asegúrate de
+                                            <span class="fw-bold m-0">anexar el
+                                                documento</span> correspondiente.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Copia Técnico-Mecánica</td>
+                                    <td>
+                                        <p class="mt-2">Al evaluar el estado de la revisión técnico-mecánica de un
+                                            vehículo, es esencial seleccionar una de las siguientes opciones que mejor
+                                            describa su situación actual:</p>
+
+                                        <p><strong>Sí: </strong> Esta opción debe seleccionarse si el vehículo ha pasado
+                                            la revisión técnico-mecánica satisfactoriamente. Indica que el vehículo
+                                            cumple con todas las normativas y estándares de seguridad establecidos y que
+                                            ha sido verificado por un centro de diagnóstico autorizado.</p>
+                                        <p><strong>No: </strong> Seleccione esta opción si el vehículo no ha pasado la
+                                            revisión técnico-mecánica. Esto podría deberse a que el vehículo no cumple
+                                            con los estándares requeridos, no ha sido presentado para la revisión, o ha
+                                            fallado en una inspección reciente. Es crucial tomar las medidas necesarias
+                                            para que el vehículo pueda aprobar la revisión y cumplir con las normas de
+                                            seguridad.</p>
+                                        <p><strong>No aplica: </strong> Esta opción es pertinente en situaciones donde
+                                            la revisión técnico-mecánica no es relevante o no se requiere. Esto puede
+                                            incluir vehículos que están exentos de esta revisión por razones
+                                            específicas, como ciertos vehículos nuevos que aún no necesitan pasar por
+                                            esta inspección según la normativa vigente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Copia Poder General Autenticado</td>
+                                    <td>
+                                        <p class="mt-2">Al gestionar el traspaso de un vehículo, es importante tener en
+                                            cuenta que la necesidad de una copia del Poder General Autenticado depende
+                                            del departamento de origen de la placa del vehículo. A continuación, se
+                                            detallan las instrucciones para asegurar un traspaso correcto:</p>
+                                        <ol>
+                                            <li>
+                                                <strong>Verificación del Departamento de la Placa:</strong>
+                                                <ul>
+                                                    <li class="mt-2"> Determine el departamento de origen de la placa
+                                                        del vehículo. Las regulaciones y requisitos para el traspaso
+                                                        pueden variar entre departamentos.</li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <strong>Necesidad del Poder General Autenticado:</strong>
+                                                <ul>
+                                                    <li class="mt-2"> Consulte los requisitos específicos del
+                                                        departamento de origen de la placa para determinar si se
+                                                        necesita una copia del Poder General Autenticado.</li>
+                                                    <li class="mt-2"> Algunos departamentos pueden no requerir este
+                                                        documento para realizar el traspaso del vehículo. En tales
+                                                        casos, no será necesario obtener ni anexar el poder.</li>
+                                                </ul>
+                                            </li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_9">
+                    <h4 class="subtitle">PASO 9: 1.3 - LINK ARCHIVO DIGITAL:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.9.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_9_1">
+                    <h4 class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Link Archivo Digital</td>
+                                    <td>
+                                        <p class="mt-2">El link de archivo digital es una URL que lleva a una carpeta en
+                                            Google Drive donde se almacenan todos los documentos relacionados con el
+                                            inventario de vehículos. Documentar correctamente este link es esencial para
+                                            mantener un registro organizado y facilitar el acceso a la información
+                                            relevante.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_10">
+                    <h4 style="background-color: #1ce40a;color: #ffffff; padding: 0 5px; display: inline;"
+                        class="subtitle">PASO 10: FASE
+                        2 - DOCUMENTOS Y VALORES INICIALES:</h4>
+                    <p style="margin-left: 3%;" class="text"><span class="nota">NOTA IMPORTANTE:</span> Esta fase se
+                        puede ver de 2 partes. Si el proveedor es
+                        “AUTONAL” esta es la siguiente instrucción:</p>
+                </div>
+                <div id="subSubSubSection3_10_1">
+                    <h4 style="margin-left: 4%;" class="subtitle">DOCUMENTOS Y VALORES INICIALES PARA AUTONAL:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.10.1.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_10_1_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ciudad Placa</td>
+                                    <td>
+                                        <p class="mt-2">La ciudad de la placa es el lugar donde el vehículo fue
+                                            registrado oficialmente y donde se emitió su placa. Este dato es esencial
+                                            para la gestión del inventario y para cualquier trámite relacionado con el
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Certificado de Tradición</td>
+                                    <td>
+                                        <p class="mt-2">El Certificado de Tradición es un documento esencial que
+                                            proporciona un historial completo de la propiedad y los traspasos del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Estado de Cuenta Impuestos</td>
+                                    <td>
+                                        <p class="mt-2">El Estado de Cuenta de Impuestos es un documento importante que
+                                            proporciona un historial del pago de impuestos del vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SIMIT Propietario</td>
+                                    <td>
+                                        <p class="mt-2">El SIMIT (Sistema Integrado de Información sobre Multas y
+                                            Sanciones por Infracciones de Tránsito) es un documento esencial que
+                                            proporciona información sobre las multas y sanciones del propietario del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Liquidación Deuda Financiera</td>
+                                    <td>
+                                        <p class="mt-2">La liquidación de deuda financiera es un documento crucial que
+                                            demuestra que todas las deudas asociadas con la financiación del vehículo
+                                            han sido pagadas en su totalidad.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Técnico-Mecánica</td>
+                                    <td>
+                                        <p class="mt-2">La fecha de la revisión técnico-mecánica es un dato esencial que
+                                            indica cuándo se realizó la última inspección técnica del vehículo para
+                                            asegurar que cumple con los estándares de seguridad y funcionamiento.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Manifiesto y Factura</td>
+                                    <td>
+                                        <p class="mt-2">La gestión adecuada del manifiesto y la factura es crucial para
+                                            mantener un registro preciso de la transacción y asegurar el cumplimiento de
+                                            los requisitos legales y administrativos.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Total SOAT</td>
+                                    <td>
+                                        <p class="mt-2">El valor total del SOAT (Seguro Obligatorio de Accidentes de
+                                            Tránsito) es un dato esencial que indica el costo total del seguro
+                                            obligatorio del vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Fin SOAT</td>
+                                    <td>
+                                        <p class="mt-2">La fecha de fin del SOAT (Seguro Obligatorio de Accidentes de
+                                            Tránsito) es un dato esencial que indica el último día de validez del
+                                            seguro.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Imp. Año en Curso</td>
+                                    <td>
+                                        <p class="mt-2">El valor de los impuestos del año en curso es un dato esencial
+                                            que indica el monto total de impuestos pagados o a pagar por el vehículo
+                                            durante el año vigente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Fin Imp. Año en Curso</td>
+                                    <td>
+                                        <p class="mt-2">La fecha de fin de los impuestos del año en curso es un dato
+                                            esencial que indica el último día en que los impuestos del vehículo deben
+                                            ser pagados para el año vigente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Retención</td>
+                                    <td>
+                                        <p class="mt-2">El valor de retención es un monto que se retiene de los ingresos
+                                            del vehículo, generalmente relacionado con impuestos o pagos a cuentas
+                                            fiscales.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSubSection3_10_2">
+                    <h4 style="margin-left: 4%;" class="subtitle">DOCUMENTOS Y VALORES INICIALES OTRO TIPO DE PROVEEDOR:
+                    </h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.10.2.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_10_2_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor de Oferta</td>
+                                    <td>
+                                        <p class="mt-2">El valor de oferta es el monto propuesto o aceptado para la
+                                            compra de un vehículo durante una transacción.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Certificado de Tradición</td>
+                                    <td>
+                                        <p class="mt-2">El Certificado de Tradición es un documento esencial que
+                                            proporciona un historial completo de la propiedad y los traspasos del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_11">
+                    <h4 class="subtitle">PASO 11: 2.1 - AGREGAR DEUDA FINANCIERA:</h4>
+                </div>
+                <div id="subSubSection3_11">
+                    <h4 style="margin-left: 4%;" class="subtitle">1. Haz clic en el símbolo “+”:
+                    </h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.11.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_11">
+                    <h4 style="margin-left: 4%;" class="subtitle">2. Verás la siguiente información:
+                    </h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.11.2.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_11_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Entidad deuda Financiera</td>
+                                    <td>
+                                        <p class="mt-2">La entidad de deuda financiera es la institución financiera que
+                                            otorgó el préstamo para la compra del vehículo. Documentar correctamente la
+                                            entidad de deuda financiera es crucial para mantener un registro preciso y
+                                            organizado del financiamiento del vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Número de Obligación Financiera</td>
+                                    <td>
+                                        <p class="mt-2">El número de obligación financiera es un identificador único
+                                            asignado por la entidad financiera al préstamo o financiamiento del
+                                            vehículo. Documentar correctamente este número es crucial para mantener un
+                                            registro preciso y organizado del financiamiento del vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Límite de Pago Deuda Financiera</td>
+                                    <td>
+                                        <p class="mt-2">La fecha límite de pago de deuda financiera es un dato esencial
+                                            que indica el último día en que debe realizarse un pago correspondiente al
+                                            préstamo del vehículo para evitar penalidades o intereses adicionales.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_12">
+                    <h4 class="subtitle">PASO 12: 2.2 - CONTROL DE ACCESORIOS:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.12.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_12_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Copia llave</td>
+                                    <td>
+                                        <h2 class="fw-bold mb-2">Foto de la Copia de Llave:</h2>
+                                        <ul>
+                                            <li>Tome una foto de la copia de la llave</li>
+                                        </ul>
+                                        <h2 class="fw-bold mb-2">Estado de la Copia de Llave:</h2>
+                                        <ul>
+                                            <li class="mt-2">
+                                                <p><strong>NO TIENE:</strong> No hay una copia de la llave disponible.
+                                                </p>
+                                            </li>
+                                            <li class="mt-2">
+                                                <p><strong>DESCONTADO COMPRAR:</strong> Se ha descontado el costo para
+                                                    comprar una nueva copia de la llave.</p>
+                                            </li>
+                                            <li class="mt-2">
+                                                <p><strong>RECLAMA A PROVEEDOR:</strong> Se está reclamando la copia de
+                                                    la
+                                                    llave al proveedor del vehículo.</p>
+                                            </li>
+                                            <li class="mt-2">
+                                                <p><strong>PENDIENTE ENTREGA PROPIETARIO:</strong> La copia de la llave
+                                                    está
+                                                    pendiente de ser entregada por el propietario.</p>
+                                            </li>
+                                            <li class="mt-2">
+                                                <p><strong>OK EN CARPETA:</strong> La copia de la llave está disponible
+                                                    y se
+                                                    encuentra guardada en la carpeta correspondiente.</p>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kilometraje Último Mantenimiento</td>
+                                    <td>
+                                        <p class="mt-2">Consulte el registro de mantenimiento del vehículo para obtener
+                                            el nombre y la dirección del lugar donde se realizó el último mantenimiento.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lugar Último Mantenimiento</td>
+                                    <td>
+                                        <p class="mt-2">Consulte el registro de mantenimiento del vehículo para obtener
+                                            el nombre y la dirección del lugar donde se realizó el último mantenimiento.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Último Mantenimiento</td>
+                                    <td>
+                                        <p class="mt-2">Consulte el registro de mantenimiento del vehículo para obtener
+                                            la fecha del último mantenimiento.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_13">
+                    <h4 style="background-color: #1ce40a;color: #ffffff; padding: 0 5px; display: inline;"
+                        class="subtitle">PASO 13: FASE 3 - SI ES AUTONAL::</h4>
+                    <p style="margin-left: 3%;" class="text"><span class="nota">NOTA IMPORTANTE:</span> Esta fase se
+                        puede ver de 2 partes. Si el proveedor es
+                        “AUTONAL” esta es la siguiente instrucción:</p>
+                </div>
+                <div id="subSubSubSection3_13_1">
+                    <h4 style="margin-left: 4%;" class="subtitle">3.1 - LIQUIDACIÓN TRÁMITES DE INGRESO:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.13.1.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_13_1_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor Automagno</td>
+                                    <td>
+                                        <p class="mt-2">Es el monto que se oferta por el vehículo en una transacción
+                                            realizada por Automagno.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Contrato</td>
+                                    <td>
+                                        <p class="mt-2">El valor del contrato es el monto total acordado en el contrato
+                                            de compraventa del vehículo. <span
+                                                style="background-color: #1ce40a;color: #ffffff; padding: 0 5px; display: inline;">(Generalmente
+                                                estos datos se ven en la
+                                                Liquidación que entrega AUTONAL)</span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pago Financiera</td>
+                                    <td>
+                                        <p class="mt-2">Obtenga los detalles de los pagos realizados a la entidad
+                                            financiera. Estos detalles deben estar claramente indicados en los estados
+                                            de cuenta, recibos de pago, o documentos emitidos por la financiera. <span
+                                                style="background-color: #1ce40a;color: #ffffff; padding: 0 5px; display: inline;">(Generalmente
+                                                estos datos se ven en la
+                                                Liquidación que entrega AUTONAL)</span></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor</td>
+                                    <td>
+                                        <p class="mt-2">Los valores para cada descripción de la tabla son los que
+                                            aparecen en la Liquidación que entrega AUTONAL.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSubSection3_13_2">
+                    <h4 style="margin-left: 4%;" class="subtitle">3.2 - LIQUIDACIÓN TRÁMITES DE SALIDA:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.13.2.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_13_2_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor</td>
+                                    <td>
+                                        <p class="mt-2">Los valores para cada descripción de la tabla son los que
+                                            aparecen en la Liquidación que entrega AUTONAL.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Asume Proveedor</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Asume Proveedor"</strong> se refiere a que
+                                            el valor indicado
+                                            es asumido por el proveedor y se descuenta de la Comisión Neta. Si lo
+                                            seleccionas verás el descuento en la Comisión Neta.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Provisional</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Provisional"</strong> se refiere a que el
+                                            valor es
+                                            provisional porque no se sabe el valor exacto o puede ser un valor
+                                            aproximado. Si se selecciona, al crear el inventario se generará una alerta
+                                            indicando que ese valor es provisional y que debe ser ajustado
+                                            posteriormente.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Comisión Bruta</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Comisión Bruta"</strong> se refiere al monto
+                                            calculado como
+                                            la diferencia entre el <a
+                                                (click)="scrollToSection('subSubSubSection3_13_1_1')"
+                                                [class.subActive]="currentSection === 'subSubSubSection3_13_1_1'">Valor
+                                                Automagno</a> y el <a
+                                                (click)="scrollToSection('subSubSubSection3_13_1_1')"
+                                                [class.subActive]="currentSection === 'subSubSubSection3_13_1_1'">Valor
+                                                del Contrato</a>. Es decir:
+                                        </p>
+                                        <strong class="mt-2">Comisión Bruta = Valor Automagno - Valor del
+                                            Contrato - Deuda Financiera</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Comisión Neta</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Comisión Neta"</strong> se refiere al monto
+                                            resultante
+                                            después de restar los valores asumidos de la Comisión Bruta. Es decir:</p>
+                                        <strong class="mt-2">Comisión Neta = Comisión Bruta - Valores Asumidos</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Neto Vehículo</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Valor Neto del Vehículo"</strong> se refiere
+                                            a la suma de los
+                                            siguientes componentes:</p>
+                                        <strong class="mt-2">Valor Neto del Vehículo = Valor a Girar al Cliente +
+                                            Comisión Neta + Total Liquidación Trámites de Salida</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_14">
+                    <h4 style="background-color: #1ce40a;color: #ffffff; padding: 0 5px; display: inline;"
+                        class="subtitle">PASO 14: FASE 3 - TRÁMITES Y ACCESORIOS:</h4>
+                    <p style="margin-left: 3%;" class="text"><span class="nota">NOTA IMPORTANTE:</span> Esta fase se
+                        puede ver de 2 partes. Si el proveedor es
+                        “AUTONAL” esta es la siguiente instrucción:</p>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.14.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_14_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Otros Trámites y Accesorios</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Otros Trámites y Accesorios"</strong> se
+                                            refiere a valores
+                                            adicionales que pueden sumarse o restarse en la liquidación final del
+                                            vehículo. Estos pueden incluir costos adicionales de trámites, accesorios
+                                            instalados, o cualquier otro gasto relacionado que afecte el valor total a
+                                            liquidar.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Provisión Trámites y Accesorios</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Provisión Trámites y Accesorios"</strong> se
+                                            refiere a los
+                                            valores adicionales destinados a trámites y accesorios que se contabilizan
+                                            para la liquidación final. Estos valores pueden sumarse o restarse y son
+                                            registrados específicamente para efectos contables.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cobra Honorarios</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Cobra Honorarios"</strong> indica que
+                                            Automagno siempre cobra
+                                            honorarios. Esta opción siempre estará seleccionada, ya que es una práctica
+                                            estándar que Automagno cobra por sus servicios</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Promedia Impuesto</td>
+                                    <td>
+                                        <p class="mt-2">Se devuelve al cliente la parte proporcional del impuesto que no
+                                            se ha usado hasta la venta del vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Promedia SOAT</td>
+                                    <td>
+                                        <p class="mt-2">Se devuelve al cliente la parte proporcional del SOAT que no se
+                                            ha usado hasta la venta del vehículo.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_15">
+                    <h4 class="subtitle">PASO 15: 3.2 - LIQUIDACIONES:</h4>
+                    <p style="margin-left: 3%;" class="text">En esta sección observamos la liquidación final donde
+                        estarán todos los valores tantos calculados como agregados en valores iniciales, otros trámites
+                        y accesorios, etc. Allí podrás obtener el total que se debe girar al cliente.</p>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.15.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_16">
+                    <h4 class="subtitle">PASO 16: 3.3 - FORMAS DE PAGO:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.16.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_16_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Descripción</td>
+                                    <td>
+                                        <p class="mt-2">Es el tipo de pago realizado. Puede ser:</p>
+                                        <ul>
+                                            <li><strong>SEPARACIÓN:</strong> Pago para reservar el vehículo.</li>
+                                            <li><strong>PAGO A CRÉDITO:</strong> Pago realizado mediante crédito.</li>
+                                            <li><strong>ABONO:</strong> Pago parcial del monto total.</li>
+                                            <li><strong>PAGO FINAL:</strong> Pago final que completa el monto total.
+                                            </li>
+                                            <li><strong>COMISIÓN:</strong> Pago de comisiones.</li>
+                                            <li><strong>GESTRÁMITES:</strong> Pago para la gestión de trámites.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Formas de Pago</td>
+                                    <td>
+                                        <p class="mt-2">Puede ser:</p>
+                                        <ul>
+                                            <li><strong>EFECTIVO:</strong> Pago realizado en efectivo.</li>
+                                            <li><strong>DATÁFONO:</strong> Pago realizado con tarjeta a través de
+                                                datáfono.</li>
+                                            <li><strong>TRANSFERENCIA:</strong> Pago realizado mediante transferencia
+                                                bancaria.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Entidad a Depositar</td>
+                                    <td>
+                                        <p class="mt-2">Entidad financiera en la cual se realizó el pago.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td># de Cuenta U Obligación</td>
+                                    <td>
+                                        <p class="mt-2">Número de cuenta a la que se realizó el pago.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tipo de Cuenta</td>
+                                    <td>
+                                        <p class="mt-2">Puede ser:</p>
+                                        <ul>
+                                            <li><strong>AHORROS:</strong> Cuenta de ahorros.</li>
+                                            <li><strong>CORRIENTE:</strong> Cuenta corriente.</li>
+                                            <li><strong>PAGO A TERCERO:</strong> Pago realizado a una cuenta de tercero.
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Beneficiario</td>
+                                    <td>
+                                        <p class="mt-2">A quien se realizó el pago.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Id Beneficiario</td>
+                                    <td>
+                                        <p class="mt-2">ID de la persona o entidad a quien se realizó el pago.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha de Pago</td>
+                                    <td>
+                                        <p class="mt-2">Fecha en la que se realizó el pago.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Valor</td>
+                                    <td>
+                                        <p class="mt-2">Valor de pago realizado.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_17">
+                    <h4 class="subtitle">3.4 - OBSERVACIONES DE LA LIQUIDACIÓN</h4>
+                    <p style="margin-left: 3%;" class="text">Esta observación aparecerá en la impresión de LIQUIDACIÓN:
+                    </p>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.17.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection3_18">
+                    <h4 class="subtitle">PASO 18: 3.5 - INFORMACIÓN GENERADOR DE CONTRATOS Y ACTA DE RECEPCIÓN:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.18.png" alt="">
+                    </div>
+                </div>
+                <div class="ps-2" id="subSubSubSection3_18_1">
+                    <h4 style="margin-left: 5%;" class="subtitle">Variables:</h4>
+                    <div class="divTable">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="colVariables" scope="col">VARIABLE</th>
+                                    <th scope="col">DESCRIPCIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Asesor Comercial</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Asesor Comercial"</strong> se refiere a la
+                                            persona
+                                            responsable de la venta del vehículo. </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Gestor Documental</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Gestor Documental"</strong> se refiere a la
+                                            persona encargada
+                                            de manejar y organizar los documentos relacionados con la transacción del
+                                            vehículo.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kilometraje</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Kilometraje"</strong> se refiere a la
+                                            distancia total
+                                            recorrida por el vehículo y es un dato esencial para evaluar su estado y
+                                            valor.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hora de Recepción</td>
+                                    <td>
+                                        <p class="mt-2">El término <strong>"Hora de Recepción"</strong> se refiere al
+                                            momento exacto en
+                                            que el vehículo es recibido en las instalaciones.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha Próxima Tecno-Mecánica</td>
+                                    <td>
+                                        <p class="mt-2">La Fecha Próxima Tecno-Mecánica es la fecha en la que el
+                                            vehículo debe someterse a su próxima revisión técnico-mecánica obligatoria.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="subSubSection3_19">
+                    <h4 class="subtitle">PASO 19: Para crear el inventario le das clic en “Crear”:</h4>
+                    <div class="divImg">
+                        <img class="img2" src="../assets/manual/3.19.png" alt="">
+                    </div>
+                    <h4 class="subtitle">IR A INVENTARIOS Y MIRAR SI EL INVENTARIO SE CREÓ CORRECTAMENTE:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.19.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection3_1">
+                    <h4 class="title">BUSCAR INVENTARIO</h4>
+                    <h4 class="subtitle">1. Dirígete a Adquisición y da clic en “BUSCAR INVENTARIO”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.1.png" alt="">
+                    </div>
+                    <h4 class="subtitle">2. Ingresa la placa del vehículo:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.2.png" alt="">
+                    </div>
+                    <h4 class="subtitle">3. Da clic en la lupa para buscar inventarios con la placa que ingresaste:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.3.png" alt="">
+                    </div>
+                    <h4 class="subtitle">4. Selecciona el inventario que quieras consultar dando clic en “Ir al
+                        Inventario”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.4.png" alt="">
+                    </div>
+                    <h4 class="subtitle">5. La información se cargará en un índice para su mejor distribución. Ya en
+                        este momento puedes darle clic a cualquier sección y te dirigirá al correspondiente información:
+                    </h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.5.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection3_2">
+                    <h4 class="title">GENERAR DOCUMENTOS</h4>
+                    <h4 class="subtitle">1. En el índice dirígete a “Fase 4 - GENERADOR DE CONTRATOS Y ACTA DE
+                        RECEPCIÓN”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.6.png" alt="">
+                    </div>
+                    <h4 class="subtitle">2. Observarás botones correspondientes al documento que quieras generar:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.7.png" alt="">
+                    </div>
+                    <h4 class="subtitle">3. Haz clic en el documento que quieras generar:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.8.png" alt="">
+                    </div>
+                    <h4 class="subtitle">4. Se descarga el documento:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.9.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection3_3">
+                    <h4 class="title">GENERAR DOCUMENTOS</h4>
+                    <h4 class="subtitle">1. Haz clic en el botón:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.10.png" alt="">
+                    </div>
+                    <h4 class="subtitle">2. Da clic en el símbolo “+”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.11.png" alt="">
+                    </div>
+                    <h4 class="subtitle">3. En computador saldrá así, pero si está en celular saldrá opciones para
+                        seleccionar un archivo, galería o asimismo tomar la foto. Selecciona y dale “Abrir”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.12.png" alt="">
+                    </div>
+                    <h4 class="subtitle">4. Espera hasta que el archivo o la foto se suba al sistema:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.13.png" alt="">
+                    </div>
+                    <h4 class="subtitle">5. Si todo sale correcto saldrá esta alerta “Fotos Actualizadas”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.14.png" alt="">
+                    </div>
+                    <h4 class="subtitle">6. Finalmente, observamos que el archivo ya está adjuntado:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.15.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection3_4">
+                    <h4 class="title">ELIMINAR ARCHIVOS Y FOTOS</h4>
+                    <h4 class="subtitle">1. En la parte del icono del archivo o foto, aparecerá un icono de basura, haz
+                        clic y se eliminará el archivo:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.16.png" alt="">
+                    </div>
+                    <h4 class="subtitle">2. Después observamos que ya el archivo se eliminó correctamente:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.17.png" alt="">
+                    </div>
+                </div>
+                <div id="subSection3_4_1">
+                    <h4 class="title">Segundo ejemplo</h4>
+                    <h4 class="subtitle">1.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.18.png" alt="">
+                    </div>
+                    <h4 class="subtitle">2.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.19.png" alt="">
+                    </div>
+                    <h4 class="subtitle">3.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.20.png" alt="">
+                    </div>
+                    <h4 class="subtitle">4.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.21.png" alt="">
+                    </div>
+                    <h4 class="subtitle">5.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.22.png" alt="">
+                    </div>
+                    <h4 class="subtitle">6.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.23.png" alt="">
+                    </div>
+                    <h4 class="subtitle">7.</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/3.20.24.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div id="section4">
+                <h3 class="title">4. INGRESANDO</h3>
+                <p class="text">
+                    Esta sección contiene la misma información que el módulo de "ADQUISICIÓN". Simplemente que en este
+                    módulo solo es requerido el vehículo. Sigue los mismos pasos de “ADQUISICIONES”.
+                </p>
+                <div id="subSubSection4_1">
+                    <h4 class="subtitle">1. Dirígete al módulo de “ADQUISICIONES” y da clic en “CREAR INVENTARIO”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.1.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection4_2">
+                    <h4 class="subtitle">2. Haz clic en “MIGRAR PRE-INVENTARIO”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.2.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection4_3">
+                    <h4 class="subtitle">3. Busca la placa del vehículo con el cual creó el pre-inventario:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.3.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection4_4">
+                    <h4 class="subtitle">4. Haz clic en la lupa para buscar:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.4.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection4_5">
+                    <h4 class="subtitle">5. Da clic en “MIGRAR”:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.5.png" alt="">
+                    </div>
+                </div>
+                <div id="subSubSection4_6">
+                    <h4 class="subtitle">6. Al dar clic aparecerá esto, das clic “Migrar” y el pre-inventario se
+                        eliminará y pasará a ser un inventario real. Cuando quieras buscar la placa, te diriges a
+                        “BUSCAR INVENTARIO” colocalas la placa y ya podrás ver el nuevo inventario:</h4>
+                    <div class="divImg">
+                        <img class="img" src="../assets/manual/4.6.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

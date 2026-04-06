@@ -1,0 +1,64 @@
+<div class="notification-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+  aria-controls="offcanvasRight">
+  <div class="icon"></div>
+  <span class="badge">{{ notificaciones.length }}</span>
+</div>
+
+<div class="offcanvas offcanvas-end bg-dark text-bg-dark" tabindex="-1" id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">NOTIFICACIONES</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <input type="text" class="form-control mb-3" placeholder="Buscar por placa" matInput
+      [matAutocomplete]="autoVehiculo" (input)="onPlacaInput($event); onMayuscula($event)"
+      [(ngModel)]="busquedaPlaca" />
+    <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+      <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+        {{ vehicle }}
+      </mat-option>
+    </mat-autocomplete>
+    
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item" *ngFor="let vehiculoId of objectKeys(notificacionesFiltradas)">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#collapse' + crearIdValido(vehiculoId)"
+            [attr.aria-controls]="'collapse' + crearIdValido(vehiculoId)">
+            {{ vehiculoId }}
+          </button>
+        </h2>
+        <div [attr.id]="'collapse' + crearIdValido(vehiculoId)" class="accordion-collapse collapse"
+          data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div *ngFor="let notificacion of notificacionesPorVehiculo[vehiculoId]" class="toast show mb-2" role="alert"
+              aria-live="assertive" aria-atomic="true">
+              <div class="toast-header">
+                <strong class="me-auto text-danger">{{ notificacion.titulo }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body text-dark">
+                {{ notificacion.mensaje }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agregar esto dentro de tu HTML existente -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Notificación</strong>
+      <small>Ahora</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      <p id="toast-content">Mensaje de notificación</p>
+    </div>
+  </div>
+</div>

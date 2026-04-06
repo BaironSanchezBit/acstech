@@ -1,0 +1,15 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+    <div class="car-spinner">
+        <img src="../assets/img/loading.png" width="200px" alt="">
+    </div>
+    <p class="loading">Cargando
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+    </p>
+</div>

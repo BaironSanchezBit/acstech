@@ -1,0 +1,1098 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+
+  <div class="card-user">
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop20">
+      <div>
+        <h2>GESTIONAR CLIENTE</h2>
+      </div>
+      <div>
+        <img src="../assets/img/user2.png" alt="" class="w-25">
+      </div>
+    </div>
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop21">
+      <div>
+        <h2>GESTIONAR VEHÍCULO</h2>
+      </div>
+      <div>
+        <img src="../assets/img/car.png" alt="" class="w-25">
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTE -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">CREAR NUEVO CLIENTE</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="clienteForm" class="row g-3">
+            <div class="col-md-6 text-black">
+              <label for="firstName" class="form-label">PRIMER NOMBRE <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="primerNombre"
+                id="firstName"
+                [ngClass]="{'is-invalid': clienteForm.get('primerNombre')?.invalid && clienteForm.get('primerNombre')?.touched}">
+              <div *ngIf="clienteForm.get('primerNombre')?.invalid && clienteForm.get('primerNombre')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el nombre.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="secondName" class="form-label">SEGUNDO NOMBRE</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="segundoNombre"
+                id="secondName" name="segundoNombre">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="firstLastname" class="form-label">PRIMER APELLIDO</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="primerApellido"
+                id="firstLastname" name="primerApellido">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="secondLastname" class="form-label">SEGUNDO APELLIDO</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="segundoApellido"
+                id="secondLastname" name="segundoApellido">
+            </div>
+            <div class="col-md-12 mb-2">
+              <label class="text-black" for="floatingSelect">TIPO DE IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <select class="form-select" formControlName="tipoIdentificacion" id="floatingSelect"
+                (change)="siNitActivar()"
+                [ngClass]="{'is-invalid': clienteForm.get('tipoIdentificacion')?.invalid && clienteForm.get('tipoIdentificacion')?.touched}">
+                <option selected>Seleccione una opción</option>
+                <option value="C.C.">C.C.</option>
+                <option value="C.E.">C.E.</option>
+                <option value="PASAPORTE">PASAPORTE</option>
+                <option value="NIT.">NIT.</option>
+                <option value="T.I.">T.I.</option>
+              </select>
+              <div
+                *ngIf="clienteForm.get('tipoIdentificacion')?.invalid && clienteForm.get('tipoIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el tipo de identificación.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">NÚMERO IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="numeroIdentificacion" id="inputEmail4"
+                name="numeroIdentificacion" (input)="calcularCodigoVerificacion()"
+                [ngClass]="{'is-invalid': clienteForm.get('numeroIdentificacion')?.invalid && clienteForm.get('numeroIdentificacion')?.touched}"
+                required>
+              <div
+                *ngIf="clienteForm.get('numeroIdentificacion')?.invalid && clienteForm.get('numeroIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el número de identificación.
+              </div>
+            </div>
+            <span *ngIf="ocultar" class="col-md-1 text-black fs-4 d-flex justify-content-center align-items-center pt-2"
+              style="width: 1%;">_</span>
+            <div *ngIf="ocultar" class="col-md-2 text-black">
+              <label for="digitoVerificacion" class="form-label">DÍGITO DE VERIFICACION</label>
+              <input type="text" class="form-control" formControlName="digitoVerificacion" id="digitoVerificacion"
+                name="digitoVerificacion" required>
+            </div>
+            <div [ngClass]="{'col-md-3': ocultar, 'col-md-6': !ocultar}" class="text-black"
+              [ngStyle]="{'width': !ocultar ? '50%' : '31.9%'}">
+              <label for="inputState" class="form-label">CIUDAD IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <select formControlName="ciudadIdentificacion" id="inputState" class="form-select"
+                name="ciudadIdentificacion"
+                [ngClass]="{'is-invalid': clienteForm.get('ciudadIdentificacion')?.invalid && clienteForm.get('ciudadIdentificacion')?.touched}"
+                required>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div
+                *ngIf="clienteForm.get('ciudadIdentificacion')?.invalid && clienteForm.get('ciudadIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de la identificación.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">DIRECCIÓN DE RESIDENCIA</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control"
+                formControlName="direccionResidencia" id="inputEmail4" name="direccionResidencia">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputState" class="form-label">CIUDAD RESIDENCIA <span class="text-danger">*</span></label>
+              <select formControlName="ciudadResidencia" id="inputState" class="form-select" name="ciudadResidencia"
+                [ngClass]="{'is-invalid': clienteForm.get('ciudadResidencia')?.invalid && clienteForm.get('ciudadResidencia')?.touched}"
+                required>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div *ngIf="clienteForm.get('ciudadResidencia')?.invalid && clienteForm.get('ciudadResidencia')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de residencia.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="celularOne" class="form-label">CELULAR 1 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="celularOne" id="celularOne" name="celularOne"
+                [ngClass]="{'is-invalid': clienteForm.get('celularOne')?.invalid && clienteForm.get('celularOne')?.touched}"
+                required>
+              <div *ngIf="clienteForm.get('celularOne')?.invalid && clienteForm.get('celularOne')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un número de celular válido.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">CELULAR 2</label>
+              <input type="text" class="form-control" formControlName="celularTwo" id="inputEmail4" name="celularTwo">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="correoElectronico" class="form-label">CORREO ELECTRÓNICO <span
+                  class="text-danger">*</span></label>
+              <input type="email" formControlName="correoElectronico" class="form-control"
+                [ngClass]="{'is-invalid': clienteForm.get('correoElectronico')?.invalid && clienteForm.get('correoElectronico')?.touched}">
+              <div
+                *ngIf="clienteForm.get('correoElectronico')?.invalid && clienteForm.get('correoElectronico')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un correo electrónico válido.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="fechaIngreso" class="form-label">FECHA INGRESO CLIENTE <span
+                  class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="fechaIngreso" id="fechaIngreso"
+                name="fechaIngreso"
+                [ngClass]="{'is-invalid': clienteForm.get('fechaIngreso')?.invalid && clienteForm.get('fechaIngreso')?.touched}">
+              <div *ngIf="clienteForm.get('celularOne')?.invalid && clienteForm.get('celularOne')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha de ingreso.
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" (click)="limpiarCliente()">Limpiar
+            formulario</button>
+          <button type="button" class="btn btn-success" [disabled]="isCreatingCliente"
+            (click)="guardarCliente()">Crear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTE CONSULTAR -->
+  <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">CONSULTAR CLIENTE EXISTENTE</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Número" aria-label="Search"
+              (keyup.enter)="buscarCliente()" name="placa" matInput [formControl]="clienteControl"
+              [matAutocomplete]="autoCliente">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarCliente()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let cliente of opcionesFiltradas | async" [value]="cliente">
+                {{ cliente }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="clienteForm2" class="row g-3">
+            <div class="col-md-6 text-black">
+              <label for="firstName" class="form-label">PRIMER NOMBRE <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="primerNombre"
+                id="firstName"
+                [ngClass]="{'is-invalid': clienteForm2.get('primerNombre')?.invalid && clienteForm2.get('primerNombre')?.touched}">
+              <div *ngIf="clienteForm2.get('primerNombre')?.invalid && clienteForm2.get('primerNombre')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el nombre.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="secondName" class="form-label">SEGUNDO NOMBRE</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="segundoNombre"
+                id="secondName" name="segundoNombre">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="firstLastname" class="form-label">PRIMER APELLIDO</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="primerApellido"
+                id="firstLastname" name="primerApellido">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="secondLastname" class="form-label">SEGUNDO APELLIDO</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" formControlName="segundoApellido"
+                id="secondLastname" name="segundoApellido">
+            </div>
+            <div class="col-md-12 mb-2">
+              <label class="text-black" for="floatingSelect">TIPO DE IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <select class="form-select" formControlName="tipoIdentificacion" id="floatingSelect"
+                (change)="siNitActivar()"
+                [ngClass]="{'is-invalid': clienteForm2.get('tipoIdentificacion')?.invalid && clienteForm2.get('tipoIdentificacion')?.touched}">
+                <option selected>Seleccione una opción</option>
+                <option value="C.C.">C.C.</option>
+                <option value="C.E.">C.E.</option>
+                <option value="PASAPORTE">PASAPORTE</option>
+                <option value="NIT.">NIT.</option>
+                <option value="T.I.">T.I.</option>
+              </select>
+              <div
+                *ngIf="clienteForm2.get('tipoIdentificacion')?.invalid && clienteForm2.get('tipoIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el tipo de identificación.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">NÚMERO IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="numeroIdentificacion" id="inputEmail4"
+                name="numeroIdentificacion" (input)="calcularCodigoVerificacion()"
+                [ngClass]="{'is-invalid': clienteForm2.get('numeroIdentificacion')?.invalid && clienteForm2.get('numeroIdentificacion')?.touched}"
+                required>
+              <div
+                *ngIf="clienteForm2.get('numeroIdentificacion')?.invalid && clienteForm2.get('numeroIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el número de identificación.
+              </div>
+            </div>
+            <span *ngIf="ocultar" class="col-md-1 text-black fs-4 d-flex justify-content-center align-items-center pt-2"
+              style="width: 1%;">_</span>
+            <div *ngIf="ocultar" class="col-md-2 text-black">
+              <label for="digitoVerificacion" class="form-label">DÍGITO DE VERIFICACION</label>
+              <input type="text" class="form-control" formControlName="digitoVerificacion" id="digitoVerificacion"
+                name="digitoVerificacion" required>
+            </div>
+            <div [ngClass]="{'col-md-3': ocultar, 'col-md-6': !ocultar}" class="text-black"
+              [ngStyle]="{'width': !ocultar ? '50%' : '31.9%'}">
+              <label for="inputState" class="form-label">CIUDAD IDENTIFICACIÓN <span
+                  class="text-danger">*</span></label>
+              <select formControlName="ciudadIdentificacion" id="inputState" class="form-select"
+                name="ciudadIdentificacion"
+                [ngClass]="{'is-invalid': clienteForm2.get('ciudadIdentificacion')?.invalid && clienteForm2.get('ciudadIdentificacion')?.touched}"
+                required>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div
+                *ngIf="clienteForm2.get('ciudadIdentificacion')?.invalid && clienteForm2.get('ciudadIdentificacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de la identificación.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">DIRECCIÓN DE RESIDENCIA</label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control"
+                formControlName="direccionResidencia" id="inputEmail4" name="direccionResidencia">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="inputState" class="form-label">CIUDAD RESIDENCIA <span class="text-danger">*</span></label>
+              <select formControlName="ciudadResidencia" id="inputState" class="form-select" name="ciudadResidencia"
+                [ngClass]="{'is-invalid': clienteForm2.get('ciudadResidencia')?.invalid && clienteForm2.get('ciudadResidencia')?.touched}"
+                required>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div
+                *ngIf="clienteForm2.get('ciudadResidencia')?.invalid && clienteForm2.get('ciudadResidencia')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de residencia.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="celularOne" class="form-label">CELULAR 1 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="celularOne" id="celularOne" name="celularOne"
+                [ngClass]="{'is-invalid': clienteForm2.get('celularOne')?.invalid && clienteForm2.get('celularOne')?.touched}"
+                required>
+              <div *ngIf="clienteForm2.get('celularOne')?.invalid && clienteForm2.get('celularOne')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un número de celular válido.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">CELULAR 2</label>
+              <input type="text" class="form-control" formControlName="celularTwo" id="inputEmail4" name="celularTwo">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="correoElectronico" class="form-label">CORREO ELECTRÓNICO <span
+                  class="text-danger">*</span></label>
+              <input type="email" formControlName="correoElectronico" class="form-control"
+                [ngClass]="{'is-invalid': clienteForm2.get('correoElectronico')?.invalid && clienteForm2.get('correoElectronico')?.touched}">
+              <div
+                *ngIf="clienteForm2.get('correoElectronico')?.invalid && clienteForm2.get('correoElectronico')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un correo electrónico válido.
+              </div>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="fechaIngreso" class="form-label">FECHA INGRESO CLIENTE <span
+                  class="text-danger">*</span></label>
+              <input type="date" class="form-control" formControlName="fechaIngreso" id="fechaIngreso"
+                name="fechaIngreso"
+                [ngClass]="{'is-invalid': clienteForm2.get('fechaIngreso')?.invalid && clienteForm2.get('fechaIngreso')?.touched}">
+              <div *ngIf="clienteForm2.get('celularOne')?.invalid && clienteForm2.get('celularOne')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha de ingreso.
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" *ngIf="btnChange3" class="btn btn-secondary" (click)="limpiarCliente2()">Limpiar
+            formulario</button>
+          <button type="button" *ngIf="btnChange3" class="btn btn-info"
+            (click)="actualizarCliente()">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VEHICULO -->
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">CREAR NUEVO VEHICULO</h1>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop50">Buscar
+            en FASECOLDA</button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="vehiculoForm" class="row g-3">
+            <div class="form-group col-md-6 text-black">
+              <label for="inputPlaca" class="form-label">PLACA <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputPlaca" formControlName="placa" name="placa"
+                (input)="onMayuscula($event)" (input)="onPlacaInput($event)" maxlength="6"
+                [ngClass]="{'is-invalid': vehiculoForm.get('placa')?.invalid && vehiculoForm.get('placa')?.touched}">
+              <div *ngIf="vehiculoForm.get('placa')?.invalid && vehiculoForm.get('placa')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la placa.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">MARCA <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="marca" name="marca"
+                [ngClass]="{'is-invalid': vehiculoForm.get('marca')?.invalid && vehiculoForm.get('marca')?.touched}">
+              <div *ngIf="vehiculoForm.get('marca')?.invalid && vehiculoForm.get('marca')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la marca.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">LÍNEA <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="linea" name="linea"
+                [ngClass]="{'is-invalid': vehiculoForm.get('linea')?.invalid && vehiculoForm.get('linea')?.touched}">
+              <div *ngIf="vehiculoForm.get('linea')?.invalid && vehiculoForm.get('linea')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la línea.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">VERSIÓN <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="version" name="version"
+                [ngClass]="{'is-invalid': vehiculoForm.get('version')?.invalid && vehiculoForm.get('version')?.touched}">
+              <div *ngIf="vehiculoForm.get('version')?.invalid && vehiculoForm.get('version')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la versión.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">MODELO (AÑO) <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="modelo" name="modelo"
+                [ngClass]="{'is-invalid': vehiculoForm.get('modelo')?.invalid && vehiculoForm.get('modelo')?.touched}">
+              <div *ngIf="vehiculoForm.get('modelo')?.invalid && vehiculoForm.get('modelo')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el modelo.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">CILINDRAJE CC <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="cilindraje" name="cilindraje"
+                [ngClass]="{'is-invalid': vehiculoForm.get('cilindraje')?.invalid && vehiculoForm.get('cilindraje')?.touched}">
+              <div *ngIf="vehiculoForm.get('cilindraje')?.invalid && vehiculoForm.get('cilindraje')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el cilindraje.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">COLOR <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="color" name="color"
+                [ngClass]="{'is-invalid': vehiculoForm.get('color')?.invalid && vehiculoForm.get('color')?.touched}">
+              <div *ngIf="vehiculoForm.get('color')?.invalid && vehiculoForm.get('color')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el color.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">SERVICIO <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="servicio" name="servicio"
+                [ngClass]="{'is-invalid': vehiculoForm.get('servicio')?.invalid && vehiculoForm.get('servicio')?.touched}">
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="PARTICULAR">PARTICULAR</option>
+                <option value="PUBLICO">PÚBLICO</option>
+                <option value="CARGA">CARGA</option>
+                <option value="REMOLQUE">REMOLQUE</option>
+                <option value="OFICIAL">OFICIAL</option>
+                <option value="DIPLOMATICO">DIPLOMÁTICO</option>
+                <option value="CONSULTAR">CONSULTAR</option>
+                <option value="MISIONES ESPECIALES">MISIONES ESPECIALES</option>
+              </select>
+              <div *ngIf="vehiculoForm.get('servicio')?.invalid && vehiculoForm.get('servicio')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el servicio.
+              </div>
+            </div>
+
+
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CLASE <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="clase" name="clase"
+                [ngClass]="{'is-invalid': vehiculoForm.get('clase')?.invalid && vehiculoForm.get('clase')?.touched}"
+                (change)="actualizarCarrocerias(vehiculoForm.get('clase')?.value)">
+                <option value="" selected>Seleccione una opción</option>
+                <option value="AUTOMOVIL">AUTOMOVIL</option>
+                <option value="CAMION">CAMIÓN</option>
+                <option value="CAMIONETA">CAMIONETA</option>
+                <option value="CAMPERO">CAMPERO</option>
+                <option value="MOTOCARRO">MOTOCARRO</option>
+                <option value="MOTOCICLETA">MOTOCICLETA</option>
+              </select>
+              <div *ngIf="vehiculoForm.get('clase')?.invalid && vehiculoForm.get('clase')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la clase.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CARROCERÍA <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="carroceria" name="carroceria"
+                [ngClass]="{'is-invalid': vehiculoForm.get('carroceria')?.invalid && vehiculoForm.get('carroceria')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let carroceria of carroceriasFiltradas" [value]="carroceria">{{ carroceria }}</option>
+              </select>
+              <div *ngIf="vehiculoForm.get('carroceria')?.invalid && vehiculoForm.get('carroceria')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la carrocería.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">COMBUSTIBLE <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="combustible" name="combustible"
+                [ngClass]="{'is-invalid': vehiculoForm.get('combustible')?.invalid && vehiculoForm.get('combustible')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option value="GASOLINA">GASOLINA</option>
+                <option value="GNV">GNV</option>
+                <option value="DIESEL">DIESEL</option>
+                <option value="GAS GASO">GAS GASOL</option>
+                <option value="ELECTRICO">ELECTRICO</option>
+                <option value="HIDROGENO">HIDROGENO</option>
+                <option value="ETANOL">ETANOL</option>
+                <option value="BIODIESEL">BIODIESEL</option>
+                <option value="GLP">GLP</option>
+                <option value="GASO ELEC">GASO ELEC</option>
+                <option value="DIES ELEC">DIES ELEC</option>
+              </select>
+              <div *ngIf="vehiculoForm.get('combustible')?.invalid && vehiculoForm.get('combustible')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el tipo de combustible.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">PASAJEROS <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputEmail4" formControlName="pasajeros" name="pasajeros"
+                [ngClass]="{'is-invalid': vehiculoForm.get('pasajeros')?.invalid && vehiculoForm.get('pasajeros')?.touched}">
+              <div *ngIf="vehiculoForm.get('pasajeros')?.invalid && vehiculoForm.get('pasajeros')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el total de pasajeros.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">NÚMERO DE MOTOR <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="numeroMotor" name="numeroMotor"
+                [ngClass]="{'is-invalid': vehiculoForm.get('numeroMotor')?.invalid && vehiculoForm.get('numeroMotor')?.touched}">
+              <div *ngIf="vehiculoForm.get('numeroMotor')?.invalid && vehiculoForm.get('numeroMotor')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el número de motor.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputState" class="form-label">CIUDAD PLACA <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="ciudadPlaca" name="ciudadPlaca"
+                [ngClass]="{'is-invalid': vehiculoForm.get('ciudadPlaca')?.invalid && vehiculoForm.get('ciudadPlaca')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div *ngIf="vehiculoForm.get('ciudadPlaca')?.invalid && vehiculoForm.get('ciudadPlaca')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de la placa.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">VIN <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="vin" name="vin"
+                [ngClass]="{'is-invalid': vehiculoForm.get('vin')?.invalid && vehiculoForm.get('vin')?.touched}">
+              <div *ngIf="vehiculoForm.get('vin')?.invalid && vehiculoForm.get('vin')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el VIN.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">SERIE <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="serie" name="serie"
+                [ngClass]="{'is-invalid': vehiculoForm.get('serie')?.invalid && vehiculoForm.get('serie')?.touched}">
+              <div *ngIf="vehiculoForm.get('serie')?.invalid && vehiculoForm.get('serie')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la serie.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CHASIS <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="chasis" name="chasis"
+                [ngClass]="{'is-invalid': vehiculoForm.get('chasis')?.invalid && vehiculoForm.get('chasis')?.touched}">
+              <div *ngIf="vehiculoForm.get('chasis')?.invalid && vehiculoForm.get('chasis')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el chasis.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">No. DOCUMENTO IMPORTACIÓN<span
+                  class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="noDocumentoImportacion" name="noDocumentoImportacion"
+                [ngClass]="{'is-invalid': vehiculoForm.get('noDocumentoImportacion')?.invalid && vehiculoForm.get('noDocumentoImportacion')?.touched}">
+              <div
+                *ngIf="vehiculoForm.get('noDocumentoImportacion')?.invalid && vehiculoForm.get('noDocumentoImportacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el No. de Documento de Importación.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">FECHA DE IMPORTACIÓN<span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="date" class="form-control" id="inputEmail4"
+                formControlName="fechaImportacion" name="fechaImportacion"
+                [ngClass]="{'is-invalid': vehiculoForm.get('fechaImportacion')?.invalid && vehiculoForm.get('fechaImportacion')?.touched}">
+              <div
+                *ngIf="vehiculoForm.get('fechaImportacion')?.invalid && vehiculoForm.get('fechaImportacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha importacion.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="fechaMatricula" class="form-label">FECHA MATRÍCULA <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="fechaMatricula" formControlName="fechaMatricula"
+                name="fechaMatricula"
+                [ngClass]="{'is-invalid': vehiculoForm.get('fechaMatricula')?.invalid && vehiculoForm.get('fechaMatricula')?.touched}">
+              <div *ngIf="vehiculoForm.get('fechaMatricula')?.invalid && vehiculoForm.get('fechaMatricula')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha de matrícula.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="imagenVehiculo" class="form-label">IMAGEN VEHÍCULO</label>
+              <input type="file" class="form-control" formControlName="imagenVehiculo" id="imagenVehiculo"
+                name="imagenVehiculo" (change)="onPreviewImgVehicle($event)">
+              <div *ngIf="vehiculoForm.get('imagenVehiculo')?.invalid && vehiculoForm.get('imagenVehiculo')?.touched"
+                class="invalid-feedback">
+                Por favor seleccione una imagen del vehículo.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <img *ngIf="previewImgVeh" [src]="previewImgVeh" alt="Previsualización de la imagen" class="img-preview">
+            </div>
+
+            <div class="col-md-12 text-black">
+              <label for="observaciones" class="form-label">OBSERVACIONES</label>
+              <textarea class="form-control" id="observaciones" formControlName="observaciones"
+                name="observaciones"> </textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-secondary" (click)="limpiar()">Limpiar
+            formulario</button>
+          <button type="button" class="btn btn-success" [disabled]="isCreatingVehiculo"
+            (click)="guardarVehiculo()">Crear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Consultar en Fasecolda -->
+  <div class="modal fade" id="staticBackdrop50" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">CONSULTAR EN FASECOLDA</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario para seleccionar Modelo, Marca y Referencia -->
+          <form [formGroup]="fasecoldaForm" class="row g-3">
+            <!-- Modelo -->
+            <div class="col-md-4 text-black">
+              <label for="modelo" class="form-label">MODELO <span class="text-danger">*</span></label>
+              <select id="modelo" class="form-select" formControlName="modelo" (change)="onModeloChange()">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let modelo of modelos" [value]="modelo">{{ modelo }}</option>
+              </select>
+            </div>
+            <!-- Marca -->
+            <div class="col-md-4 text-black">
+              <label for="marca" class="form-label">MARCA <span class="text-danger">*</span></label>
+              <select id="marca" class="form-select" formControlName="marca" (change)="onMarcaChange()">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+              </select>
+            </div>
+            <!-- Referencia -->
+            <div class="col-md-4 text-black">
+              <label for="referencia" class="form-label">REFERENCIA <span class="text-danger">*</span></label>
+              <select id="referencia" class="form-select" formControlName="referencia">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let referencia of referencias" [value]="referencia">{{ referencia }}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="openDetallesModal()"
+            [disabled]="!fasecoldaForm.valid">Ver Detalles</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #detallesModal let-modal>
+    <div class="modal-header text-black">
+      <h1 class="modal-title fs-5 m-0 me-5" id="detallesModalLabel">SELECCIONA EL VEHÍCULO</h1>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <!-- Mostrar la lista de vehículos como tarjetas -->
+      <div class="d-flex overflow-x-scroll">
+        <div *ngFor="let vehiculo of detallesVehiculos" class="col-md-4 me-3">
+          <div class="card h-100">
+            <img [src]="vehiculo.imagen_url" class="card-img-top" alt="Imagen del vehículo">
+            <div class="card-body">
+              <h5 class="card-title">{{ vehiculo.marca }} {{ vehiculo.linea }} {{ vehiculo.version }} {{ vehiculo.ref3
+                }}</h5>
+              <p class="card-text"><strong>Modelo:</strong> {{ vehiculo.modelo }}<br></p>
+              <p class="card-text"><strong>Línea:</strong> {{ vehiculo.linea }}<br></p>
+              <p class="card-text"><strong>Versión:</strong> {{ vehiculo.version }}<br></p>
+              <p class="card-text"><strong>Cilindraje:</strong> {{ vehiculo.cilindraje }} cc<br></p>
+              <p class="card-text"><strong>Transmisión:</strong> {{ vehiculo.transmision }}<br></p>
+              <p class="card-text"><strong>Pasajeros:</strong> {{ vehiculo.pasajeros }}<br></p>
+              <p class="card-text"><strong>Peso:</strong> {{ vehiculo.peso }}<br></p>
+              <p class="card-text"><strong>Combustible:</strong> {{ vehiculo.combustible }}<br></p>
+              <p class="card-text"><strong>Potencia:</strong> {{ vehiculo.potencia }}<br></p>
+              <p class="card-text"><strong>Tracción:</strong> {{ vehiculo.traccion }}<br></p>
+              <p class="card-text"><strong>Puertas:</strong> {{ vehiculo.puertas }}<br></p>
+            </div>
+            <div class="card-footer text-center">
+              <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                data-bs-target="#staticBackdrop2"
+                (click)="seleccionarVehiculo(vehiculo); modal.close()">Seleccionar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="detallesVehiculos && detallesVehiculos.length === 0">
+        <p>No se encontraron vehículos para esta referencia.</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- VEHICULO CONSULTAR -->
+  <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">CONSULTAR VEHICULO EXISTENTE</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarVehiculo()" name="placa" (input)="onPlacaInput($event)"
+              maxlength="6" matInput [formControl]="vehiculoControl" [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarVehiculo()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="vehiculoForm2" class="row g-3">
+            <div class="form-group col-md-6 text-black">
+              <label for="inputPlaca" class="form-label">PLACA <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputPlaca" formControlName="placa" name="placa"
+                (input)="onMayuscula($event)" (input)="onPlacaInput($event)" maxlength="6"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('placa')?.invalid && vehiculoForm2.get('placa')?.touched}">
+              <div *ngIf="vehiculoForm2.get('placa')?.invalid && vehiculoForm2.get('placa')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la placa.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">MARCA <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="marca" name="marca"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('marca')?.invalid && vehiculoForm2.get('marca')?.touched}">
+              <div *ngIf="vehiculoForm2.get('marca')?.invalid && vehiculoForm2.get('marca')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la marca.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">LÍNEA <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="linea" name="linea"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('linea')?.invalid && vehiculoForm2.get('linea')?.touched}">
+              <div *ngIf="vehiculoForm2.get('linea')?.invalid && vehiculoForm2.get('linea')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la línea.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">VERSIÓN <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="version" name="version"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('version')?.invalid && vehiculoForm2.get('version')?.touched}">
+              <div *ngIf="vehiculoForm2.get('version')?.invalid && vehiculoForm2.get('version')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la versión.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">MODELO (AÑO) <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="modelo" name="modelo"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('modelo')?.invalid && vehiculoForm2.get('modelo')?.touched}">
+              <div *ngIf="vehiculoForm2.get('modelo')?.invalid && vehiculoForm2.get('modelo')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el modelo.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">CILINDRAJE CC <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="cilindraje" name="cilindraje"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('cilindraje')?.invalid && vehiculoForm2.get('cilindraje')?.touched}">
+              <div *ngIf="vehiculoForm2.get('cilindraje')?.invalid && vehiculoForm2.get('cilindraje')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el cilindraje.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">COLOR <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="color" name="color"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('color')?.invalid && vehiculoForm2.get('color')?.touched}">
+              <div *ngIf="vehiculoForm2.get('color')?.invalid && vehiculoForm2.get('color')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el color.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">SERVICIO <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="servicio" name="servicio"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('servicio')?.invalid && vehiculoForm2.get('servicio')?.touched}">
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="PARTICULAR">PARTICULAR</option>
+                <option value="PUBLICO">PÚBLICO</option>
+                <option value="CARGA">CARGA</option>
+                <option value="REMOLQUE">REMOLQUE</option>
+                <option value="OFICIAL">OFICIAL</option>
+                <option value="DIPLOMATICO">DIPLOMÁTICO</option>
+                <option value="CONSULTAR">CONSULTAR</option>
+                <option value="MISIONES ESPECIALES">MISIONES ESPECIALES</option>
+              </select>
+              <div *ngIf="vehiculoForm2.get('servicio')?.invalid && vehiculoForm2.get('servicio')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el servicio.
+              </div>
+            </div>
+
+
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CLASE <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="clase" name="clase"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('clase')?.invalid && vehiculoForm2.get('clase')?.touched}"
+                (change)="actualizarCarrocerias(vehiculoForm2.get('clase')?.value)">
+                <option value="" selected>Seleccione una opción</option>
+                <option value="AUTOMOVIL">AUTOMOVIL</option>
+                <option value="CAMION">CAMIÓN</option>
+                <option value="CAMIONETA">CAMIONETA</option>
+                <option value="CAMPERO">CAMPERO</option>
+                <option value="MOTOCARRO">MOTOCARRO</option>
+                <option value="MOTOCICLETA">MOTOCICLETA</option>
+              </select>
+              <div *ngIf="vehiculoForm2.get('clase')?.invalid && vehiculoForm2.get('clase')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la clase.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CARROCERÍA <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="carroceria" name="carroceria"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('carroceria')?.invalid && vehiculoForm2.get('carroceria')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let carroceria of carroceriasFiltradas" [value]="carroceria">{{ carroceria }}</option>
+              </select>
+              <div *ngIf="vehiculoForm2.get('carroceria')?.invalid && vehiculoForm2.get('carroceria')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la carrocería.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">COMBUSTIBLE <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="combustible" name="combustible"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('combustible')?.invalid && vehiculoForm2.get('combustible')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option value="GASOLINA">GASOLINA</option>
+                <option value="GNV">GNV</option>
+                <option value="DIESEL">DIESEL</option>
+                <option value="GAS GASO">GAS GASOL</option>
+                <option value="ELECTRICO">ELECTRICO</option>
+                <option value="HIDROGENO">HIDROGENO</option>
+                <option value="ETANOL">ETANOL</option>
+                <option value="BIODIESEL">BIODIESEL</option>
+                <option value="GLP">GLP</option>
+                <option value="GASO ELEC">GASO ELEC</option>
+                <option value="DIES ELEC">DIES ELEC</option>
+              </select>
+              <div *ngIf="vehiculoForm2.get('combustible')?.invalid && vehiculoForm2.get('combustible')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el tipo de combustible.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">PASAJEROS <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="inputEmail4" formControlName="pasajeros" name="pasajeros"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('pasajeros')?.invalid && vehiculoForm2.get('pasajeros')?.touched}">
+              <div *ngIf="vehiculoForm2.get('pasajeros')?.invalid && vehiculoForm2.get('pasajeros')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el total de pasajeros.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">NÚMERO DE MOTOR <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="numeroMotor" name="numeroMotor"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('numeroMotor')?.invalid && vehiculoForm2.get('numeroMotor')?.touched}">
+              <div *ngIf="vehiculoForm2.get('numeroMotor')?.invalid && vehiculoForm2.get('numeroMotor')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el número de motor.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputState" class="form-label">CIUDAD PLACA <span class="text-danger">*</span></label>
+              <select id="inputState" class="form-select" formControlName="ciudadPlaca" name="ciudadPlaca"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('ciudadPlaca')?.invalid && vehiculoForm2.get('ciudadPlaca')?.touched}">
+                <option value="" selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+              <div *ngIf="vehiculoForm2.get('ciudadPlaca')?.invalid && vehiculoForm2.get('ciudadPlaca')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la ciudad de la placa.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">VIN <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="vin" name="vin"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('vin')?.invalid && vehiculoForm2.get('vin')?.touched}">
+              <div *ngIf="vehiculoForm2.get('vin')?.invalid && vehiculoForm2.get('vin')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el VIN.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">SERIE <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="serie" name="serie"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('serie')?.invalid && vehiculoForm2.get('serie')?.touched}">
+              <div *ngIf="vehiculoForm2.get('serie')?.invalid && vehiculoForm2.get('serie')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la serie.
+              </div>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="inputEmail4" class="form-label">CHASIS <span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="text" class="form-control" id="inputEmail4"
+                formControlName="chasis" name="chasis"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('chasis')?.invalid && vehiculoForm2.get('chasis')?.touched}">
+              <div *ngIf="vehiculoForm2.get('chasis')?.invalid && vehiculoForm2.get('chasis')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el chasis.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">No. DOCUMENTO IMPORTACIÓN<span
+                  class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="number" class="form-control" id="inputEmail4"
+                formControlName="noDocumentoImportacion" name="noDocumentoImportacion"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('noDocumentoImportacion')?.invalid && vehiculoForm2.get('noDocumentoImportacion')?.touched}">
+              <div
+                *ngIf="vehiculoForm2.get('noDocumentoImportacion')?.invalid && vehiculoForm2.get('noDocumentoImportacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese el No. de Documento de Importación.
+              </div>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="inputEmail4" class="form-label">FECHA DE IMPORTACIÓN<span class="text-danger">*</span></label>
+              <input (input)="onMayuscula($event)" type="date" class="form-control" id="inputEmail4"
+                formControlName="fechaImportacion" name="fechaImportacion"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('fechaImportacion')?.invalid && vehiculoForm2.get('fechaImportacion')?.touched}">
+              <div
+                *ngIf="vehiculoForm2.get('fechaImportacion')?.invalid && vehiculoForm2.get('fechaImportacion')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha importacion.
+              </div>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="fechaMatricula" class="form-label">FECHA MATRÍCULA <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="fechaMatricula" formControlName="fechaMatricula"
+                name="fechaMatricula"
+                [ngClass]="{'is-invalid': vehiculoForm2.get('fechaMatricula')?.invalid && vehiculoForm2.get('fechaMatricula')?.touched}">
+              <div *ngIf="vehiculoForm2.get('fechaMatricula')?.invalid && vehiculoForm2.get('fechaMatricula')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese la fecha de matrícula.
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 70% 30%;">
+              <div class="text-black">
+                <label for="imagenVehiculo" class="form-label">IMAGEN VEHÍCULO</label>
+                <input type="file" class="form-control text-start" id="imagenVehiculo" name="imagenVehiculo"
+                  (change)="onPreviewImgVehicle($event)" accept="image/*">
+                <div
+                  *ngIf="vehiculoForm2.get('imagenVehiculo')?.invalid && vehiculoForm2.get('imagenVehiculo')?.touched"
+                  class="invalid-feedback">
+                  Por favor ingrese la imagen del vehículo.
+                </div>
+              </div>
+              <img class="previewImgVeh text-center ms-5 ps-5" [src]="previewImgVeh" alt="">
+            </div>
+
+
+            <div class="col-md-12 text-black">
+              <label for="observaciones" class="form-label">OBSERVACIONES</label>
+              <textarea class="form-control" id="observaciones" formControlName="observaciones"
+                name="observaciones"> </textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" *ngIf="btnChange4" class="btn btn-secondary" (click)="limpiar2()">Limpiar
+            formulario</button>
+          <button type="button" *ngIf="btnChange4" class="btn btn-info"
+            (click)="actualizarVehiculo()">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTIONAR CLIENTE -->
+  <div class="modal fade" id="staticBackdrop20" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">GESTIONAR CLIENTE</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button class="btn btn-success" data-bs-target="#staticBackdrop" data-bs-toggle="modal">CREAR
+            NUEVO CLIENTE</button>
+          <button class="btn btn-primary" data-bs-target="#staticBackdrop3" data-bs-toggle="modal">CONSULTAR CLIENTE
+            EXISTENTE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTIONAR CLIENTE -->
+  <div class="modal fade" id="staticBackdrop21" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">GESTIONAR VEHICULO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button class="btn btn-success" data-bs-target="#staticBackdrop2" data-bs-toggle="modal">CREAR
+            NUEVO VEHICULO</button>
+          <button class="btn btn-primary" data-bs-target="#staticBackdrop4" data-bs-toggle="modal">CONSULTAR VEHICULO
+            EXISTENTE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

@@ -1,0 +1,310 @@
+<app-navbar></app-navbar>
+<section class=body>
+  <div class="contenedorAll">
+    <div class="contenedor">
+      <div class="w-100 text-center contenedor-h1">
+        <h1 class="fw-bold m-0">ÓRDENES DE TRABAJO</h1>
+        <div class="divBuscar">
+          <form class="d-flex me-2" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)"
+              (keyup.enter)="buscarOrdenTrabajoPorInventarioOPlaca(vehiculoInvControl.value)" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoInvControl"
+              [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit"
+              (click)="buscarOrdenTrabajoPorInventarioOPlaca(vehiculoInvControl.value)">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn btn-danger" (click)="limpiarFormularios2()">Limpiar</button>
+        </div>
+        <div class="divModi">
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight2"
+            aria-controls="offcanvasRight2"><i class="fas fa-user-clock"></i></button>
+        </div>
+      </div>
+      <form class="formBody" [formGroup]="ordenesForm">
+        <div class="divInfo">
+          <div class="infoTwo mb-3">
+            <div class="tarjeta">
+              <div class="fila-1">
+                <img class="escudo" src="/assets/img/colombia.png" alt="escudo">
+                <div>
+                  <h2>REPÚBLICA DE COLOMBIA</h2>
+                  <h3>MINISTERIO DE TRANSPORTE</h3>
+                </div>
+                <img class="mintransporte" src="/assets/img/mintransporte.png" alt="mintransporte">
+              </div>
+              <div class="fila-2">
+                <div>
+                  <h4>PLACA</h4>
+                  <p>{{vehiculo.placa}}</p>
+                </div>
+                <div>
+                  <h4>MARCA</h4>
+                  <p>{{vehiculo.marca}}</p>
+                </div>
+                <div>
+                  <h4>LÍNEA</h4>
+                  <p>{{vehiculo.linea}}</p>
+                </div>
+                <div>
+                  <h4>MODELO</h4>
+                  <p>{{vehiculo.modelo}}</p>
+                </div>
+              </div>
+              <div class="fila-3">
+                <div class="div-2">
+                  <div class="div-2-1">
+                    <h4>CILIDRADA CC</h4>
+                    <p>{{vehiculo.cilindraje}}</p>
+                  </div>
+                  <div>
+                    <h4>COLOR</h4>
+                    <p>{{vehiculo.color}}</p>
+                  </div>
+                </div>
+                <div>
+                  <h4>SERVICIO</h4>
+                  <p>{{vehiculo.servicio}}</p>
+                </div>
+              </div>
+              <div class="fila-4">
+                <div>
+                  <h4>CLASE DE VEHÍCULO</h4>
+                  <p>{{vehiculo.clase}}</p>
+                </div>
+                <div>
+                  <h4>TIPO CARROCERÍA</h4>
+                  <p>{{vehiculo.carroceria}}</p>
+                </div>
+                <div>
+                  <h4>COMBUSTIBLE</h4>
+                  <p>{{vehiculo.combustible}}</p>
+                </div>
+                <div>
+                  <h4>CAPACIDAD Kg/PSJ</h4>
+                  <p>{{vehiculo.pasajeros}}</p>
+                </div>
+              </div>
+              <div class="fila-4">
+                <div>
+                  <h4>NÚMERO DE MOTOR</h4>
+                  <p>{{vehiculo.numeroMotor}}</p>
+                </div>
+                <div>
+                  <h4>REG</h4>
+                  <p>N</p>
+                </div>
+                <div>
+                  <h4>VIN</h4>
+                  <p>{{vehiculo.vin}}</p>
+                </div>
+              </div>
+              <div class="fila-4">
+                <div>
+                  <h4>NÚMERO DE SERIE</h4>
+                  <p>{{vehiculo.clase}}</p>
+                </div>
+                <div>
+                  <h4>REG</h4>
+                  <p>N</p>
+                </div>
+                <div>
+                  <h4>NÚMERO DE CHASIS</h4>
+                  <p>{{vehiculo.chasis}}</p>
+                </div>
+                <div>
+                  <h4>REG</h4>
+                  <p>N</p>
+                </div>
+              </div>
+              <div class="fila-4">
+                <div>
+                  <h4>PROPIETARIO: APELLIDOS(S) Y NOMBRE(S)</h4>
+                  <p>{{cliente.primerApellido}} {{cliente.segundoApellido}} {{cliente.primerNombre}} {{cliente.segundoNombre}}</p>
+                </div>
+                <div>
+                  <h4>IDENTIFICACIÓN</h4>
+                  <p *ngIf="cliente.tipoIdentificacion === 'NIT.'">{{cliente.tipoIdentificacion}} {{cliente.numeroIdentificacion}}-{{cliente.digitoVerificacion}}</p>
+                  <p *ngIf="cliente.tipoIdentificacion !== 'NIT.'">{{cliente.tipoIdentificacion}} {{cliente.numeroIdentificacion}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="infoFoto mb-3">
+            <img [src]="vehiculo.imagenVehiculo" [alt]="vehiculo.marca">
+          </div>
+          <div class="archivosAdjuntos">
+            <h2><i class="fa-solid fa-paperclip"></i> Adjuntos:</h2>
+            <div class="adjunto">
+              <div class="divAdjuto">
+                <div class="divFoto" *ngFor="let adjunto of adjuntosToShow; let j = index">
+                  <ng-container *ngIf="isImage(adjunto); else fileLink">
+                    <img [src]="adjunto" alt="Archivo adjunto" class="photo" (click)="openModal([adjunto], 0)">
+                    <h3 class="m-0">{{splif(adjunto)}}</h3>
+                  </ng-container>
+                  <ng-template #fileLink>
+                    <a [href]="adjunto" target="_blank">
+                      <img [src]="getDefaultIcon(adjunto)" alt="Archivo adjunto" class="photo">
+                      <h3 class="m-0">{{splif(adjunto)}}</h3>
+                    </a>
+                  </ng-template>
+                </div>
+              </div>
+              <div class="noHay" *ngIf="adjuntos.length === 0">
+                <p>No hay archivos Adjuntos</p>
+              </div>
+              <div *ngIf="adjuntos.length > 5">
+                <button class="btnMostrar" (click)="toggleAdjuntos()">
+                  {{ mostrarTodosAdjuntos ? 'Mostrar menos adjuntos' : 'Ver todos los adjuntos (' +
+                  (adjuntos.length - 5) + ' ocultos)' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3" *ngIf="btnChange || btnChange2">
+          <label for="estadoOrden" class="form-label fw-bold">ESTADO TOTAL DEL INVENTARIO</label>
+          <select class="form-select" aria-label="Default select example" formControlName="estadoOrden"
+            [ngClass]="{'bg-warning': ordenesForm.get('estadoOrden')?.value === 'En ejecución', 'bg-success text-white': ordenesForm.get('estadoOrden')?.value === 'Terminado'}">
+            <option selected disabled>Selecciona una opción</option>
+            <option value="En ejecución">En ejecución</option>
+            <option value="Terminado">Terminado</option>
+          </select>
+        </div>
+        <div class="mb-3" *ngIf="btnChange || btnChange2">
+          <label for="pruebaDeRuta" class="form-label fw-bold">PRUEBA DE RUTA</label>
+          <select class="form-select" aria-label="Default select example" formControlName="pruebaDeRuta"
+            [ngClass]="{'bg-danger text-white': ordenesForm.get('pruebaDeRuta')?.value === 'Pendiente', 'bg-success text-white': ordenesForm.get('pruebaDeRuta')?.value === 'Realizado'}">
+            <option selected disabled>Selecciona una opción</option>
+            <option value="Realizado">Realizado</option>
+            <option value="Pendiente">Pendiente</option>
+          </select>
+        </div>
+        <hr *ngIf="ordenesForm.get('pruebaDeRuta')?.value === 'Realizado'">
+      </form>
+      <form [formGroup]="camposForm">
+        <div class="accordion" id="accordionExample" formArrayName="campos">
+          <div *ngFor="let campo of campos.controls; let i = index" class="accordion-item bg-black text-white"
+            [formGroupName]="i">
+            <h2 class="accordion-header m-0" id="heading{{i}}">
+              <button class="accordion-button" [ngClass]="{'collapsed': !isAccordionOpen(i)}" type="button"
+                (click)="toggleAccordion(i)">
+                <button type="button" class="btn btn-danger btn-sm me-2" (click)="eliminarTrabajo(i)">X</button>
+                Orden de Trabajo #{{i + 1}} ({{campo.get('tipoDescripcion')?.value}})
+              </button>
+            </h2>
+            <div [id]="'collapse' + i" class="accordion-collapse collapse" [ngClass]="{'show': isAccordionOpen(i)}">
+              <div class="accordion-body row">
+                <div class="mb-3 d-none">
+                  <label for="tipo" class="form-label">Tipo</label>
+                  <input type="text" class="form-control" formControlName="tipo">
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="estado" class="form-label">Estado</label>
+                  <select class="form-select" formControlName="estado">
+                    <option value="Revisado OK">Revisado OK</option>
+                    <option value="Reporta">Reporta</option>
+                    <option value="Realizado">Realizado</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="proveedor" class="form-label">Proveedor</label>
+                  <input class="form-control me-2" type="search" formControlName="proveedor"
+                    [matAutocomplete]="autoProveedor">
+                  <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let proveedor of proveedoresFiltrados[i] | async" [value]="proveedor.tercero">
+                      {{ proveedor.tercero }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="responsable-{{i}}" class="form-label">Responsable</label>
+                  <select class="form-select" formControlName="responsable" (change)="onSelectResponsable($event, i)">
+                    <option *ngFor="let usuario of usuarios" [value]="usuario.nombre">{{usuario.nombre}}</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="tiempo" class="form-label">Tiempo de Trabajo Estimado</label>
+                  <select class="form-select" formControlName="tiempo">
+                    <option *ngFor="let tiempo of opcionesTiempo" [value]="tiempo">{{tiempo}}</option>
+                  </select>
+                </div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="telefono-{{i}}" class="form-label">Teléfono</label>
+                  <input type="text" id="telefono-{{i}}" class="form-control" formControlName="telefono"
+                    [readonly]="true">
+                </div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="atiende" class="form-label">Atiende</label>
+                  <input type="text" class="form-control" formControlName="atiende">
+                </div>
+                <div class="col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'"></div>
+                <div class="mb-3 col-md-6" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="diaRealizacion" class="form-label">Fecha de Realización</label>
+                  <input type="date" class="form-control" formControlName="diaRealizacion">
+                </div>
+                <div class="mb-3" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <label for="observacion" class="form-label">Observaciones</label>
+                  <textarea class="form-control" formControlName="observacion"></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label for="imagenes" class="form-label">Imágenes</label>
+                  <div class="drop-zone" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event, i)" (click)="triggerFileInput(fileInput)">
+                    <p>Arrastra y suelta tus imágenes aquí o haz clic para seleccionar archivos.</p>
+                    <button type="button" class="btn btn-primary">Selecciona archivos</button>
+                  </div>
+                  <input #fileInput type="file" class="d-none" (change)="onFileChange($event, i)" accept="image/*"
+                    multiple>
+
+                  <div *ngIf="campos.controls[i].get('imagenes')?.value?.length > 0" class="preview-container mt-3">
+                    <p>Imágenes guardadas: {{ campos.controls[i].get('imagenes')?.value?.length }}</p>
+                    <div class="preview" *ngFor="let img of campos.controls[i].get('imagenes')?.value; let j = index">
+                      <img [src]="img" alt="Vista previa" class="img-thumbnail"
+                        (click)="openModal(campos.controls[i].get('imagenes')?.value, j)">
+                      <button type="button" class="btn btn-danger btn-sm" (click)="removeImage(i, j)">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-100 d-flex justify-content-center" *ngIf="campo.get('estado')?.value !== 'Revisado OK'">
+                  <button class="btn btn-success" (click)="generarOrdenTrabajo(i)"><i class="fa-solid fa-print"></i>
+                    Imprimir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="d-flex justify-content-center mt-3 mb-3" *ngIf="btnChange || btnChange2">
+        <button type="button" class="btn btn-primary" (click)="agregarCampos()"><i
+            class="fa-solid fa-square-plus"></i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-image-modal *ngIf="showModal" [title]="vehiculo.marca + ' ' + vehiculo.linea + ' ' + vehiculo.version"
+  [initialIndex]="imagenSeleccionadaIndex" [images]="imagenesModal" (close)="closeModal()"></app-image-modal>
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title" id="offcanvasRightLabel">Registro de Actividad</h2>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="divModificacion" *ngFor="let modica of modificacion; let i = index; let isLast = last"
+      [ngClass]="{'last-modification': i === 0, 'first-modification': isLast}">
+      <p class="quien">{{modica.quien}}</p>
+      <p class="fecha">{{formatearFecha2(modica.fecha)}}</p>
+    </div>
+  </div>
+</div>

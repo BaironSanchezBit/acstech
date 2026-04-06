@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
+.body {
+  background-color: #dddddd;
+  width: 100vw;
+  padding: 10px 30px 0px 17vw;
+  color: #ffffff;
+  /* background-image: url("/assets/img/logo.png");
+  background-repeat: no-repeat;
+  background-size: 85vw;
+  background-position: center;
+  background-position-x: right; 
+  background: rgb(229, 229, 229);
+  background: linear-gradient(-16deg, rgba(229, 229, 229, 1) 0%, rgba(178, 178, 178, 1) 100%);
+  */
+  display: flex;
+  color: black;
+  flex-direction: column;
+}
+
+.divTitle {
+  width: 100%;
+}
+
+.divTitle h1 {
+  width: 100%;
+  font-weight: bold;
+}
+
+.divTotal {
+  width: 100%;
+}
+
+.cuadroSaldo {
+  width: 22%;
+}
+
+.cuadroMarcas {
+  width: 46%;
+  text-align: center;
+}
+
+.cuatroRenta {
+  text-align: center;
+  width: 52%;
+}
+
+.h2-title {
+  color: #ffffff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 0;
+  background-color: #EC442B;
+  margin: 0;
+}
+
+.h2-titleRenta {
+  color: #ffffff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 0;
+  background-color: #EC442B;
+  margin: 0;
+}
+
+.divOne {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.divTwo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cuatroCPP {
+  width: 52%;
+}
+
+.h2-titleCPP {
+  color: #ffffff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 0;
+  background-color: #EC442B;
+  margin: 0;
+}
+
+.pieChart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+.distribucionMarcas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+.pieChart-containerRenta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+.pieChart-containerCPP {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+.pieTwoChart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 100%;
+}
+
+#pieTwoChartdiv {
+  width: 100%;
+  height: 300px;
+}
+
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+
+#equilibriumChartDiv {
+  width: 100%;
+  height: 380px;
+}
+
+#initDistribucionMarcas {
+  width: 100%;
+  height: 350px;
+}
+
+#pieChartdiv {
+  width: 100%;
+  height: 300px;
+}
+
+/* en tu-componente.component.css */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.divImp {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.car-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: moveCar 2s linear infinite;
+}
+
+@keyframes moveCar {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.loading {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.dot {
+  animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}

@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
+.body {
+  background-color: #0F1922;
+  width: 100vw;
+  height: 100vh;
+  padding: 10px 0px 0px 20vw;
+  color: #ffffff;
+  background-image: url("/assets/img/logo.png");
+  background-repeat: no-repeat;
+  background-size: 15vw;
+  background-position: 57% 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.zoom {
+  padding: 50px;
+  transition: transform .2s;
+  /* Animation */
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+td {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.zoom:hover {
+  transform: scale(0.9);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.card-user {
+  & h2 {
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    margin-top: 10%;
+    margin-bottom: 30%;
+  }
+
+  & img {
+    width: 50%;
+    margin-top: 5%;
+  }
+
+  & .div-car-user {
+    width: 100%;
+    border: #ffffff solid 3px;
+    background-color: #ffffff1d;
+    display: grid;
+    grid-template-rows: 40% 40%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  width: 90%;
+  display: grid;
+  grid-template-columns: 40% 40%;
+  grid-column-gap: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
+#modal-body-calculator {
+  display: grid;
+  gap: 20px;
+  justify-content: center;
+  align-items: start;
+  padding: 20px;
+}
+
+.calculadora-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.calculadora-container h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button#calcularBtn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button#calcularBtn:hover {
+  background-color: #0056b3;
+}
+
+.resultado {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+}
+
+
+/* en tu-componente.component.css */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.car-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: moveCar 2s linear infinite;
+}
+
+@keyframes moveCar {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.loading {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.dot {
+  animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 30vw ;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 799px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 40vw ;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 899px) {
+  .card-user {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+  }
+
+  .div-car-user {
+    margin-bottom: 20px;
+  }
+
+  #modal-body-calculator {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .modal-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+
+  .modal-table-container thead th {
+    background-color: #f2f2f2;
+  }
+
+  button {
+    font-size: 10px !important;
+  }
+}

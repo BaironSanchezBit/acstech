@@ -1,0 +1,15 @@
+<section class="body">
+    <div class="cuadroMarcas">
+        <h2 class="h2-title">DISTRIBUCIÓN DE MARCAS ({{totalMarcasFiltradas}})</h2>
+        <div class="divFiltros">
+            <button class="btn btn-danger" (click)="resetFilters()"><i class="fas fa-sync-alt"></i></button>
+            <input type="date" class="form-control" [(ngModel)]="startDate" placeholder="Fecha inicio">
+            ->
+            <input type="date" class="form-control"[(ngModel)]="endDate" placeholder="Fecha fin">
+            <button class="btn btn-success" (click)="filterData()"><i class="fas fa-filter"></i></button>
+        </div>
+        <div class="distribucionMarcas-container">
+            <div id="initDistribucionMarcas" style="width: 100%; height: 500px;"></div>
+        </div>
+    </div>
+</section>

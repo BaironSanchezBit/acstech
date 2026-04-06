@@ -1,0 +1,734 @@
+<app-navbar></app-navbar>
+<section class="body">
+  <div class="card-user">
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop30"
+      (click)="limpiarFormularios()">
+      <div>
+        <h2>CREAR COTIZACIÓN</h2>
+      </div>
+      <div>
+        <img src="../assets/img/cotizacion.png" alt="" class="w-25">
+      </div>
+    </div>
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop15">
+      <div>
+        <h2>BUSCAR COTIZACIÓN</h2>
+      </div>
+      <div>
+        <img src="../assets/img/buscar.png" alt="" class="w-25">
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTE -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">DATOS CLIENTE</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="clienteForm" class="row g-3">
+            <div class="col-md-6 text-black">
+              <label for="nombre" class="form-label">NOMBRE <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="nombre" id="nombre" name="nombre"
+                [ngClass]="{'is-invalid': clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.invalid}">
+              <div *ngIf="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.invalid"
+                class="invalid-feedback">
+                Este campo es requerido.
+              </div>
+            </div>
+            <div class="col-md-6 mb-2 text-black">
+              <label class="form-label" for="floatingSelect">TIPO DE IDENTIFICACIÓN</label>
+              <select class="form-select" formControlName="tipoIdentificacion" id="floatingSelect"
+                (change)="siNitActivar()">
+                <option selected>Seleccione una opción</option>
+                <option value="C.C.">C.C.</option>
+                <option value="C.E.">C.E.</option>
+                <option value="PASAPORTE">PASAPORTE</option>
+                <option value="NIT.">NIT.</option>
+                <option value="T.I.">T.I.</option>
+              </select>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="numeroIdentificacion" class="form-label">NÚMERO IDENTIFICACIÓN</label>
+              <input type="number" class="form-control" formControlName="numeroIdentificacion" id="numeroIdentificacion"
+                name="numeroIdentificacion">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="telefono" class="form-label">CELULAR</label>
+              <input type="number" class="form-control" formControlName="telefono" id="telefono" name="telefono">
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="email" class="form-label">CORREO ELÉCTRONICO</label>
+              <input type="email" class="form-control" formControlName="email" id="email" name="email">
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button *ngIf="mostrarSiguienteModal2" class="btn btn-success" data-bs-target="#staticBackdrop2"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VEHICULO -->
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 m-0 me-5" id="staticBackdropLabel">DATOS VEHICULO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form #vehicleForm="ngForm" class="row g-3">
+            <div class="form-group col-md-6 text-black">
+              <label for="placa" class="form-label">PLACA</label>
+              <input type="text" class="form-control" id="placa" [(ngModel)]="vehiculo.placa" name="placa" maxlength="6"
+                required disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="marca" class="form-label">MARCA</label>
+              <input type="text" class="form-control" id="marca" [(ngModel)]="vehiculo.marca" name="marca" required
+                disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="linea" class="form-label">LÍNEA</label>
+              <input type="text" class="form-control" id="linea" [(ngModel)]="vehiculo.linea" name="linea" required
+                disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="version" class="form-label">VERSIÓN</label>
+              <input type="text" class="form-control" id="version" [(ngModel)]="vehiculo.version" name="version"
+                required disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="modelo" class="form-label">MODELO (AÑO)</label>
+              <input type="number" class="form-control" id="modelo" [(ngModel)]="vehiculo.modelo" name="modelo" required
+                disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="cilindraje" class="form-label">CILINDRAJE CC</label>
+              <input type="number" class="form-control" id="cilindraje" [(ngModel)]="vehiculo.cilindraje"
+                name="cilindraje" required disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="color" class="form-label">COLOR</label>
+              <input type="text" class="form-control" id="color" [(ngModel)]="vehiculo.color" name="color" required
+                disabled>
+            </div>
+
+            <div class="col-md-6 text-black">
+              <label for="servicio" class="form-label">SERVICIO</label>
+              <select id="servicio" class="form-select" [(ngModel)]="vehiculo.servicio" name="servicio" required
+                disabled>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="PARTICULAR">PARTICULAR</option>
+                <option value="PUBLICO">PÚBLICO</option>
+                <option value="CARGA">CARGA</option>
+                <option value="REMOLQUE">REMOLQUE</option>
+                <option value="OFICIAL">OFICIAL</option>
+                <option value="DIPLOMATICO">DIPLOMÁTICO</option>
+                <option value="CONSULTAR">CONSULAR</option>
+                <option value="MISIONES ESPECIALES">MISIONES ESPECIALES</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="clase" class="form-label">CLASE</label>
+              <select id="clase" class="form-select" [(ngModel)]="vehiculo.clase" name="clase" required disabled>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="AUTOMOVIL">AUTOMOVIL</option>
+                <option value="BUS">BUS</option>
+                <option value="BUSETA">BUSETA</option>
+                <option value="CAMION">CAMIÓN</option>
+                <option value="CAMIONETA">CAMIONETA</option>
+                <option value="CAMPERO">CAMPERO</option>
+                <option value="TRACTOCAMION">TRACTOCAMIÓN</option>
+                <option value="MICROBUS">MICROBUS</option>
+                <option value="MOTOCARRO">MOTOCARRO</option>
+                <option value="MOTOCICLETA">MOTOCICLETA</option>
+                <option value="MOTOTRICICLO">MOTOTRICICLO</option>
+                <option value="VOLQUETA">VOLQUETA</option>
+              </select>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="carroceria" class="form-label">CARROCERÍA</label>
+              <input type="text" class="form-control" id="carroceria" [(ngModel)]="vehiculo.carroceria"
+                name="carroceria" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="combustible" class="form-label">COMBUSTIBLE</label>
+              <input type="text" class="form-control" id="combustible" [(ngModel)]="vehiculo.combustible"
+                name="combustible" required disabled>
+
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="pasajeros" class="form-label">PASAJEROS</label>
+              <input type="text" class="form-control" id="pasajeros" [(ngModel)]="vehiculo.pasajeros" name="pasajeros"
+                required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="numeroMotor" class="form-label">NUMERO DE MOTOR</label>
+              <input type="text" class="form-control" id="numeroMotor" [(ngModel)]="vehiculo.numeroMotor"
+                name="numeroMotor" required disabled>
+            </div>
+
+            <div class="col-md-4 text-black">
+              <label for="ciudadPlaca" class="form-label">CIUDAD PLACA</label>
+              <select id="ciudadPlaca" class="form-select" [(ngModel)]="vehiculo.ciudadPlaca" name="ciudadPlaca"
+                required disabled>
+                <option value="" selected>Seleccione una opcion</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="vin" class="form-label">VIN</label>
+              <input type="text" class="form-control" id="vin" [(ngModel)]="vehiculo.vin" name="vin" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="serie" class="form-label">SERIE</label>
+              <input type="text" class="form-control" id="serie" [(ngModel)]="vehiculo.serie" name="serie" required
+                disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="chasis" class="form-label">CHASIS</label>
+              <input type="text" class="form-control" id="chasis" [(ngModel)]="vehiculo.chasis" name="chasis" required
+                disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="fechaMatricula" class="form-label">FECHA MATRÍCULA</label>
+              <input type="date" class="form-control" id="fechaMatricula" [(ngModel)]="vehiculo.fechaMatricula"
+                name="fechaMatricula" required disabled>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop" data-bs-toggle="modal">Volver</button>
+          <button *ngIf="mostrarSiguienteModal2" class="btn btn-success" data-bs-target="#staticBackdrop13"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONDICIONES DEL NEGOCIO -->
+  <div class="modal fade" id="staticBackdrop13" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 m-0" id="staticBackdropLabel">CONDICIONES DEL NEGOCIO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="condicionesNegocioForm">
+            <div class="col-12">
+              <div class="mb-4">
+                <label class="form-check-label" for="valorVehiculo">
+                  VALOR VEHICULO
+                </label>
+                <input class="form-control" type="text" id="valorVehiculo" formControlName="valorVehiculo"
+                  (input)="onCurrencyInput('valorVehiculo', $event)" (input)="obtenerCostoVehiculo()"
+                  [ngClass]="{'is-invalid': isInvalidValue(condicionesNegocioForm.get('valorVehiculo')?.value)}">
+                <div *ngIf="isInvalidValue(condicionesNegocioForm.get('valorVehiculo')?.value)"
+                  class="invalid-feedback">
+                  Este campo es requerido.
+                </div>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="tieneCredito"
+                  formControlName="tieneCredito" (change)="activarCredito()">
+                <label class="form-check-label" for="tieneCredito">
+                  ¿TIENE CRÉDITO?
+                </label>
+              </div>
+              <div class="mb-4">
+                <label for="valorCredito">
+                  VALOR CRÉDITO
+                </label>
+                <div class="input-group">
+                  <input class="form-control inputNot" type="text" id="valorCredito" formControlName="valorCredito"
+                    (input)="setupValueChangesListener()" (input)="onCurrencyInput2($event)">
+                  <button *ngIf="mostrarCredito" class="btn btn-success" data-bs-target="#staticBackdrop5"
+                    data-bs-toggle="modal">FINANCIAMIENTO</button>
+                </div>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cobraSoat" formControlName="cobraSoat"
+                  [checked]="condicionesNegocioForm.get('cobraSoat')?.value" (change)="activarValorSoatTotal()">
+                <label class="form-check-label" for="cobraSoat">
+                  ¿COBRA SOAT?
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cobraImpuesto"
+                  formControlName="cobraImpuesto" [checked]="condicionesNegocioForm.get('cobraImpuesto')?.value"
+                  (change)="activarImpAnoEnCurso()">
+                <label class="form-check-label" for="cobraImpuesto">
+                  ¿COBRA IMPUESTO?
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop2" data-bs-toggle="modal">Volver</button>
+          <button class="btn btn-success" data-bs-target="#staticBackdrop4" data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIAMIENTO -->
+  <div class="modal fade" id="staticBackdrop5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">FINANCIAMIENTO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <form [formGroup]="financiamientoForm" class="modal-body" id="modal-body-calculator">
+          <div class="calculadora-container">
+            <h1>Calculadora de Crédito</h1>
+            <div class="input-group">
+              <label for="montoPrestamo">Monto del Préstamo:</label>
+              <input type="text" formControlName="valorFinanciar" (input)="setupValueChangesListener2()"
+                (input)="onCurrencyInput2($event)" id="montoPrestamo" placeholder="Monto del préstamo">
+            </div>
+            <div class="input-group">
+              <label for="tasaInteres">Tasa de Interés Anual (%):</label>
+              <input type="text" [value]="tasaInteres +'%'" id="tasaInteres" placeholder="Tasa de interés" disabled>
+            </div>
+            <label for="plazoPrestamo">Plazo del Préstamo (años):</label>
+            <div class="input-group">
+              <select class="form-select" formControlName="plazoMeses" id="floatingSelect"
+                aria-label="Floating label select example">
+                <option value="0" disabled selected>Seleccione una opción</option>
+                <option value="12">12 Meses</option>
+                <option value="24">24 Meses</option>
+                <option value="36">36 Meses</option>
+                <option value="48">48 Meses</option>
+                <option value="60">60 Meses</option>
+                <option value="72">72 Meses</option>
+              </select>
+            </div>
+            <button (click)="calcularYFormatearPago()" id="calcularBtn">Calcular Pago Mensual</button>
+            <div class="resultado" id="resultado" *ngIf="pagoMensual !== null">
+              Pago Mensual: {{ pagoMensual }}
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-target="#staticBackdrop13"
+            data-bs-toggle="modal">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS COTIZACION -->
+  <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 m-0" id="staticBackdropLabel">DATOS DE COTIZACIÓN</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="datosCotizacionesForm">
+            <div class="row">
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="valorTotalSoat">
+                  VALOR TOTAL SOAT
+                </label>
+                <input class="form-control" type="text" id="valorTotalSoat" formControlName="valorTotalSoat">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="fechaFinSoat">
+                  FECHA FIN SOAT
+                </label>
+                <input class="form-control" type="date" id="fechaFinSoat" formControlName="fechaFinSoat">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="valorImpAnoEnCurso">
+                  VALOR IMP. AÑO EN CURSO
+                </label>
+                <input class="form-control" type="text" id="valorImpAnoEnCurso" formControlName="valorImpAnoEnCurso">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="honorarios">
+                  HONORARIOS
+                </label>
+                <input class="form-control" type="text" id="honorarios" formControlName="honorarios">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="traspaso50">
+                  TRASPASO 50%
+                </label>
+                <input class="form-control" type="text" id="traspaso50" formControlName="traspaso50">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="propImpAnoCurso">
+                  PROPORCIONAL IMP. AÑO EN CURSO
+                </label>
+                <input class="form-control" type="text" id="propImpAnoCurso" formControlName="propImpAnoCurso">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="kilometraje">
+                  KILOMETRAJE
+                </label>
+                <input class="form-control" type="text" id="kilometraje" formControlName="kilometraje"
+                  (input)="onNumberInput('kilometraje', $event)">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="PropSoat">
+                  PROPORCIONAL SOAT
+                </label>
+                <input class="form-control" type="text" id="PropSoat" formControlName="PropSoat">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="costoVehiculo">
+                  COSTO VEHICULO
+                </label>
+                <input class="form-control" type="text" id="costoVehiculo" formControlName="costoVehiculo">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="valorCredito">
+                  VALOR CRÉDITO
+                </label>
+                <input class="form-control" type="text" id="valorCredito" formControlName="valorCredito">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="asesorComercial">
+                  ASESOR COMERCIAL
+                </label>
+                <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                  formControlName="asesorComercial" (change)="onSelectAsesor($event)"
+                  [ngClass]="{'is-invalid': datosCotizacionesForm.get('asesorComercial')?.touched && datosCotizacionesForm.get('asesorComercial')?.invalid}">
+                  <option selected>Seleccione una opción</option>
+                  <option *ngFor="let user of usuariosAsesor" [value]="user.nombre">{{user.nombre}}</option>
+                </select>
+                <div
+                  *ngIf="datosCotizacionesForm.get('asesorComercial')?.touched && datosCotizacionesForm.get('asesorComercial')?.invalid"
+                  class="invalid-feedback">
+                  Este campo es requerido.
+                </div>
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="prenda">
+                  PRENDA
+                </label>
+                <input class="form-control" type="text" id="prenda" formControlName="prenda">
+              </div>
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="numeroAsesor">
+                  NÚMERO ASESOR
+                </label>
+                <input class="form-control" type="text" id="numeroAsesor" formControlName="numeroAsesor"
+                  [ngClass]="{'is-invalid': datosCotizacionesForm.get('numeroAsesor')?.touched && datosCotizacionesForm.get('numeroAsesor')?.invalid}">
+                <div
+                  *ngIf="datosCotizacionesForm.get('numeroAsesor')?.touched && datosCotizacionesForm.get('numeroAsesor')?.invalid"
+                  class="invalid-feedback">
+                  Este campo es requerido.
+                </div>
+              </div>
+
+              <div class="col-6 mb-4">
+                <label class="form-check-label" for="separacion5">
+                  SEPARACIÓN 5%
+                </label>
+                <input class="form-control" type="text" id="separacion5" formControlName="separacion5">
+              </div>
+              <div class="col-12 mb-2">
+                <label class="form-check-label" for="totalDocumentacion">
+                  TOTAL DOCUMENTACIÓN
+                </label>
+                <input class="form-control" type="text" id="totalDocumentacion" formControlName="totalDocumentacion">
+              </div>
+              <div class="col-12">
+                <label class="form-check-label" for="totalNegocio">
+                  TOTAL NEGOCIO
+                </label>
+                <input class="form-control fs-5 fw-bold" type="text" id="totalNegocio" formControlName="totalNegocio">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop13" data-bs-toggle="modal">Volver</button>
+          <button class="btn btn-success" data-bs-target="#staticBackdrop19" data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERADOR DE DOCUMENTOS -->
+  <div class="modal fade" id="staticBackdrop19" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">GENERADOR COTIZACIÓN</h1>
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button class="btn btn-success" *ngIf="!btnEsconderCotizacion" (click)="cotizacion()">GENERAR
+            COTIZACIÓN</button>
+          <button class="btn btn-success" *ngIf="btnEsconderCotizacion" (click)="cotizacionBuscar()">GENERAR
+            COTIZACIÓN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE COTIZACIÓN -->
+  <div class="modal fade" id="staticBackdrop17" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">INDICE COTIZACIÓN</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div *ngIf="btnEsconder" class="modal-body">
+          <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop"
+              data-bs-toggle="modal">DATOS
+              CLIENTE</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop2"
+              data-bs-toggle="modal">DATOS
+              VEHICULO</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop13"
+              data-bs-toggle="modal">CONDICIONES DEL NEGOCIO</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop4"
+              data-bs-toggle="modal">DATOS DE COTIZACIÓN</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop19"
+              data-bs-toggle="modal">GENERADOR DE COTIZACIÓN</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button *ngIf="mostrarSiguienteModal2" class="btn btn-success" data-bs-target="#staticBackdrop"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR COTIZACIÓN -->
+  <div class="modal fade" id="staticBackdrop14" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR COTIZACIÓN</h1>
+          <form class="d-flex" role="search" [formGroup]="buscarCotizacionForm">
+            <input class="form-control me-2" type="search" aria-label="Search" name="cotizacion"
+              formControlName="buscarCotizacion" (keyup.enter)="buscarCotizacion()">
+            <button class="btn btn-outline-success" type="button" (click)="buscarCotizacion()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div *ngIf="btnEsconder" class="modal-body">
+          <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop"
+              data-bs-toggle="modal">DATOS
+              CLIENTE</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop2"
+              data-bs-toggle="modal">DATOS
+              VEHICULOS</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop13"
+              data-bs-toggle="modal">CONDICIONES DEL NEGOCIO</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop4"
+              data-bs-toggle="modal">DATOS DE COTIZACIÓN</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop19"
+              data-bs-toggle="modal">GENERADOR DE COTIZACIÓN</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button *ngIf="mostrarSiguienteModal2" class="btn btn-success" data-bs-target="#staticBackdrop"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR COTIZACIÓN POR PLACA -->
+  <div class="modal fade" id="staticBackdrop15" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR COTIZACIÓN POR PLACA</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarCotizacionPlaca()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoInvControl"
+              [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarCotizacionPlaca()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">N° COTIZACIÓN</th>
+                  <th class="text-center" scope="col">NOMBRE</th>
+                  <th class="text-center" scope="col">VEHICULO</th>
+                  <th class="text-center" scope="col">TOTAL NEGOCIO</th>
+                  <th class="text-center" scope="col" style="width: 200px;">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of cotizaciones">
+                  <th class="text-center">{{i.noCotizacion}}</th>
+                  <td>{{i.nombre}}</td>
+                  <td>{{i.marcaVehiculo}} {{i.lineaVehiculo}}</td>
+                  <td>{{i.totalNegocio}}</td>
+                  <td><button class="btn btn-primary" data-bs-target="#staticBackdrop14" data-bs-toggle="modal"
+                      (click)="irAlCotizacion(i.noCotizacion)">Ir a cotización</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="noHayInventarios" *ngIf="cotizaciones.length === 0">
+            <p>No hay cotizaciones</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR INVENTARIO POR PLACA -->
+  <div class="modal fade" id="staticBackdrop30" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR INVENTARIO POR PLACA</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarInventarioPlaca()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoInvOneControl"
+              [matAutocomplete]="autoVehiculoInv">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarInventarioPlaca()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculoInv="matAutocomplete" [displayWith]="displayFnVehInv">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVehInv | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">N° INVENTARIO</th>
+                  <th class="text-center" scope="col">FECHA CREACIÓN</th>
+                  <th class="text-center" scope="col">NOMBRE PROPIETARIO</th>
+                  <th class="text-center" scope="col">ID PROPIETARIO</th>
+                  <th class="text-center" scope="col" style="width: 200px;">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of inventarios">
+                  <th class="text-center">{{i.inventoryId}}</th>
+                  <td class="text-center">{{i.createdAt}}</td>
+                  <td class="text-center">{{i.primerNombreCliente}} {{i.primerApellidoCliente}}</td>
+                  <td class="text-center">{{i.numeroIdentificacionCliente}}</td>
+                  <td class="text-center"><button class="btn btn-primary" data-bs-target="#staticBackdrop17"
+                      data-bs-toggle="modal" (click)="utilizarInventario(i.inventoryId)">Utilizar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="noHayInventarios" *ngIf="inventarios.length === 0">
+            <p>No hay inventarios</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTIONAR COTIZACIONES -->
+  <div class="modal fade" id="staticBackdrop20" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">TIPO DE COTIZACIÓN</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button class="btn btn-success" data-bs-target="#staticBackdrop30" data-bs-toggle="modal"
+            (click)="limpiarFormularios()">CREAR
+            COTIZACIÓN VENTA</button>
+          <button class="btn btn-primary" data-bs-target="#staticBackdrop9" data-bs-toggle="modal"
+            (click)="limpiarFormularios()">CREAR
+            COTIZACIÓN COMPRA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

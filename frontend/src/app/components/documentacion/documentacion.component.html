@@ -1,0 +1,661 @@
+<nav>
+    <div class="nav-initial">
+        <img src="../assets/img/acs.png" alt="" />
+        <div class="ps-3">
+            <a [routerLink]="['/documentacion']" class="activeTitle mx-3">Documentación</a>
+            <a [routerLink]="['/apirest']">API REST</a>
+            <a [routerLink]="['/manual']" class="mx-3">Manual de Usuario</a>
+        </div>
+    </div>
+    <a class="volver" [routerLink]="['/sistema']"><i class="fa-solid fa-right-from-bracket"></i> Sistema</a>
+</nav>
+
+<section class="sectionAll">
+    <div class="divInfo">
+        <div class="divIndice">
+            <h3>ÍNDICE</h3>
+            <ul>
+                <li>
+                    <a (click)="scrollToSection('section1')" [class.active]="currentSection.startsWith('section1')">1.
+                        INTRODUCCIÓN</a>
+                    <ul *ngIf="expandedSections.has('section1')" class="subIndice">
+                        <li class="ps-4">
+                            <a class="sub" (click)="scrollToSection('subSection1_1')"
+                                [class.subActive]="currentSection === 'subSection1_1'">1.1 Proposito del Documento</a>
+                        </li>
+                        <li class="ps-4">
+                            <a class="sub" (click)="scrollToSection('subSection1_2')"
+                                [class.subActive]="currentSection === 'subSection1_2'">1.2 Alcance del Sistema</a>
+                        </li>
+                        <li class="ps-4">
+                            <a class="sub" (click)="scrollToSection('subSection1_3')"
+                                [class.subActive]="currentSection === 'subSection1_3'">1.3 Audiencia del Documento</a>
+                        </li>
+                        <li class="ps-4">
+                            <a class="sub" (click)="scrollToSection('subSection1_4')"
+                                [class.subActive]="currentSection === 'subSection1_4'">1.4 Visión General del
+                                Sistema</a>
+                        </li>
+                        <ul class="subIndice">
+                            <li class="ps-5">
+                                <a class="sub" (click)="scrollToSection('subSubSection1_4_1')"
+                                    [class.subActive]="currentSection === 'subSubSection1_4_1'">1.4.1 Objetivos del
+                                    Sistema</a>
+                            </li>
+                        </ul>
+                        <li class="ps-4">
+                            <a class="sub" (click)="scrollToSection('subSection1_5')"
+                                [class.subActive]="currentSection === 'subSection1_5'">1.5 Arquitectura del Sistema</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section2')" [class.active]="currentSection.startsWith('section2')">2.
+                        REQUISITOS DEL SISTEMA</a>
+                    <ul *ngIf="expandedSections.has('section2')" class="subIndice">
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection2_1')"
+                                [class.subActive]="currentSection === 'subSection2_1'">2.1 Requisitos Funcionales</a>
+                        </li>
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection2_2')"
+                                [class.subActive]="currentSection === 'subSection2_2'">2.2 Requisitos No Funcionales</a>
+                        </li>
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection2_3')"
+                                [class.subActive]="currentSection === 'subSection2_3'">2.3 Especificaciones Técnicas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section3')" [class.active]="currentSection.startsWith('section3')">3.
+                        DISEÑO DEL SISTEMA</a>
+                    <ul *ngIf="expandedSections.has('section3')" class="subIndice">
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection3_1')"
+                                [class.subActive]="currentSection === 'subSection3_1'">3.1 Diagrama de Arquitectura</a>
+                        </li>
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection3_2')"
+                                [class.subActive]="currentSection === 'subSection3_2'">3.2 Diagramas de Módulos</a>
+                        </li>
+                        <li class="ps-4">
+                            <a (click)="scrollToSection('subSection3_3')"
+                                [class.subActive]="currentSection === 'subSection3_3'">3.3 Diagramas de Flujo de
+                                Datos</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section4')" [class.active]="currentSection.startsWith('section4')">4.
+                        CONFIGURACIÓN DEL ENTORNO</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section5')" [class.active]="currentSection.startsWith('section5')">5.
+                        DESARROLLO Y PERSONALIZACIÓN</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section6')" [class.active]="currentSection.startsWith('section6')">6.
+                        USO DEL SISTEMA</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section7')" [class.active]="currentSection.startsWith('section7')">7.
+                        MANTENIMIENTO Y SOPORTE</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section8')" [class.active]="currentSection.startsWith('section8')">8.
+                        SEGURIDAD</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section9')" [class.active]="currentSection.startsWith('section9')">9.
+                        API DOCUMENTATION</a>
+                </li>
+                <li>
+                    <a (click)="scrollToSection('section10')" [class.active]="currentSection.startsWith('section10')">10
+                        . ANEXOS</a>
+                </li>
+                <!-- Agrega más secciones y subsecciones según sea necesario -->
+            </ul>
+        </div>
+        <div class="divText" #divText>
+            <div class="divTitle">
+                <h1>DOCUMENTACIÓN</h1>
+                <h2>AUTOMAGNO CORE SYSTEM</h2>
+            </div>
+            <div id="section1">
+                <h3 class="title">1. INTRODUCCIÓN</h3>
+                <div id="subSection1_1">
+                    <h4 class="subtitle">1.1 Proposito del Documento</h4>
+                    <p class="subtext">
+                        El propósito principal del sistema es la automatización y
+                        optimización de todos los procesos de la empresa. Este sistema está
+                        diseñado para integrar y gestionar de manera eficiente las
+                        actividades empresariales, abarcando desde la gestión de inventarios
+                        y ventas hasta la contabilidad. Al centralizar y automatizar estos
+                        procesos, el ACS no solo mejora la productividad y la eficiencia,
+                        sino que también facilita la toma de decisiones informadas al
+                        proporcionar información precisa y en tiempo real.
+                        <br />
+                        La documentación del sistema ACS se ha elaborado con el objetivo de
+                        mostrar cómo funciona el sistema en detalle. Esta guía está
+                        destinada a desarrolladores, administradores del sistema y usuarios
+                        finales, y proporciona una comprensión exhaustiva de la estructura,
+                        configuración y uso del ACS. A través de esta documentación, los
+                        usuarios podrán instalar, personalizar y utilizar el sistema de
+                        manera efectiva, asegurando que todas las operaciones empresariales
+                        se realicen de forma óptima y sin contratiempos.
+                    </p>
+                </div>
+                <br>
+                <div id="subSection1_2">
+                    <h4 class="subtitle">1.2 Alcance del Sistema</h4>
+                    <p class="subtext">
+                        El sistema ERP ha sido diseñado para cubrir una amplia gama de
+                        necesidades empresariales, asegurando una gestión integral y
+                        eficiente de todas las operaciones. Su alcance abarca las siguientes
+                        áreas clave:
+                    </p>
+                    <br>
+
+                    <div class="subSubText">
+                        <p><span class="fw-bold">Gestión de
+                                Inventarios:</span> Control y seguimiento detallado de existencias, movimientos de
+                            stock, y
+                            previsión de necesidades de reabastecimiento.
+                        </p>
+                        <p><span class="fw-bold">Ventas:</span>
+                            Automatización de procesos de venta y seguimiento de clientes.
+                        </p>
+                        <p><span class="fw-bold">Gestión de
+                                Trámites:</span> Coordinación y seguimiento de trámites administrativos y legales
+                            necesarios
+                            para el funcionamiento de la empresa.
+                        </p>
+                        <p><span class="fw-bold">Área
+                                Gerencial:</span> Herramientas de análisis y reportes para la toma de decisiones
+                            estratégicas, incluyendo dashboards y KPIs.
+                        </p>
+                        <p><span class="fw-bold">Área
+                                Comercial:</span> Gestión de relaciones con clientes y análisis de oportunidades de
+                            negocio.
+                        </p>
+                        <p><span class="fw-bold">Procesos de Compra y
+                                Venta de Autos:</span> Gestión integral de todo el proceso de compra y venta de
+                            vehículos,
+                            desde la adquisición hasta la venta final, incluyendo la documentación y trámites
+                            necesarios.
+                        </p>
+                    </div>
+                </div>
+                <div id="subSection1_3">
+                    <h4 class="subtitle">1.3 Audiencia del documento</h4>
+                    <div class="subSubText">
+                        <p><span class="fw-bold">Desarrolladores:</span> Responsables de la implementación,
+                            personalización y mantenimiento del sistema ERP. Necesitan entender la estructura,
+                            los componentes técnicos y cómo extender las funcionalidades del sistema.
+                        </p>
+                        <p><span class="fw-bold">Administradores del Sistema:</span>
+                            Encargados de la configuración y gestión del entorno del ERP, asegurando su correcto
+                            funcionamiento, seguridad y rendimiento.
+                        </p>
+                        <p><span class="fw-bold">Gerentes y Directivos:</span> Usuarios que requieren
+                            herramientas de análisis y reportes para la toma de decisiones estratégicas. Incluye
+                            gerentes generales, financieros, comerciales y de recursos humanos.
+                        </p>
+                        <p><span class="fw-bold">Personal de Ventas y Comercial:</span> Usuarios que manejan la
+                            gestión de clientes y ventas. Necesitan funcionalidades para seguir y cerrar ventas,
+                            gestionar relaciones con clientes y analizar oportunidades de negocio.
+                        </p>
+                        <p><span class="fw-bold">Equipo de Logística e Inventario:</span> Encargados de la
+                            gestión de inventarios, seguimiento de existencias, movimientos de stock y previsión
+                            de necesidades de reabastecimiento.
+                        </p>
+                        <p><span class="fw-bold">Personal Administrativo y Legal:</span> Usuarios que gestionan
+                            y coordinan los trámites administrativos y legales necesarios para el funcionamiento
+                            de la empresa.
+                        </p>
+                        <p><span class="fw-bold">Usuarios Finales:</span> Empleados de la empresa que
+                            interactúan con el sistema ERP en sus funciones diarias, incluyendo la entrada y
+                            consulta de datos, la generación de informes y la realización de tareas operativas.
+                        </p>
+                    </div>
+                </div>
+                <div id="subSection1_4">
+                    <h4 class="subtitle">1.4 Visión General del Sistema</h4>
+                    <p class="subtext">El sistema ACS (Automagno Core System) desarrollado con el stack MEAN (MongoDB,
+                        Express.js,
+                        Angular, Node.js) es una solución integral diseñada para la automatización y optimización de los
+                        procesos empresariales. Su objetivo principal es centralizar y gestionar de manera eficiente
+                        todas las operaciones de la empresa, mejorando la productividad y facilitando la toma de
+                        decisiones informadas. Este sistema optimiza la coordinación entre departamentos, reduce costos
+                        operativos y aumenta la satisfacción del cliente al ofrecer un servicio más ágil y preciso.</p>
+                    <div id="subSubSection1_4_1">
+                        <h5 class="subSubTitle">1.4.1 Objetivos del Sistema</h5>
+                        <div class="subSubText">
+                            <div class="subdivtext">
+                                <p><span class="fw-bold">Automatización de Procesos:</span> Reducción de tareas manuales
+                                    y repetitivas, lo que permite a los empleados centrarse en actividades de mayor
+                                    valor.
+                                </p>
+                                <p><span class="fw-bold">Eficiencia Operativa:</span>
+                                    Mejora de la eficiencia en todas las áreas de la empresa mediante la integración y
+                                    centralización de datos y procesos.
+                                </p>
+                                <p><span class="fw-bold">Toma de Decisiones Informadas:</span> Provisión de información
+                                    precisa y en tiempo real a través de herramientas de análisis y reportes.
+                                </p>
+                                <p><span class="fw-bold">Escalabilidad y Flexibilidad:</span> Capacidad de adaptarse y
+                                    crecer con las necesidades cambiantes de la empresa.
+                                </p>
+                                <p><span class="fw-bold">Mejora en la Gestión de Recursos:</span> Optimización de la
+                                    utilización de recursos, incluyendo inventarios, personal y financieros.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="subSection1_5">
+                    <h4 class="subtitle">1.5 Arquitectura del Sistema</h4>
+                    <p class="subtext">El sistema se basa en la arquitectura MEAN, lo que proporciona una plataforma
+                        robusta, escalable y de alto rendimiento:</p>
+                    <div class="subSubText">
+                        <p><span class="fw-bold">MongoDB:</span> Base de datos NoSQL que ofrece flexibilidad y
+                            escalabilidad para manejar grandes volúmenes de datos.
+                        </p>
+                        <p><span class="fw-bold">Express.js:</span>
+                            Framework web para Node.js que facilita la creación de APIs y la gestión de solicitudes
+                            HTTP.
+                        </p>
+                        <p><span class="fw-bold">Angular:</span> Framework frontend que permite la creación de
+                            interfaces de usuario dinámicas y responsivas.
+                        </p>
+                        <p><span class="fw-bold">Node.js:</span> Entorno de ejecución de JavaScript en el servidor que
+                            proporciona un modelo de I/O no bloqueante y eficiente.
+                        </p>
+                    </div>
+                    <p class="subtext">En conclusión, este sistema es una herramienta poderosa diseñada para transformar
+                        y optimizar la forma en que la empresa gestiona sus operaciones, asegurando un flujo de trabajo
+                        más eficiente y una mayor capacidad para responder a las demandas del mercado.</p>
+                </div>
+            </div>
+
+            <div id="section2">
+                <h3 class="title">2. REQUISITOS DEL SISTEMA</h3>
+                <div id="subSection2_1">
+                    <h4 class="subtitle">2.1 Requisitos Funcionales</h4>
+                    <div class="subSubText">
+                        <p class="fw-bold">Gestión de Inventarios:</p>
+                        <p style="margin-left: 2%;">• Control y seguimiento de existencias.<br>
+                            • Vista general de stock, incluyendo vehículos vendidos y disponibles.
+                        </p>
+                        <p class="fw-bold">Descarga de Contratos:</p>
+                        <p style="margin-left: 2%;">• Generación y descarga de contratos para la compra o venta de
+                            vehículos.
+                        </p>
+                        <p class="fw-bold">Control de Accesorios del Vehículo:</p>
+                        <p style="margin-left: 2%;">• Registro y seguimiento de accesorios incluidos con los vehículos.
+                        </p>
+                        <p class="fw-bold">Gestión de Trámites:</p>
+                        <p style="margin-left: 2%;">• Coordinación de trámites para traspaso de vehículos a nombre del
+                            cliente o de la
+                            empresa.<br>
+                            • Base de datos de tramitadores, incluyendo honorarios y costos de trámites.
+                        </p>
+                        <p class="fw-bold">Seguimiento de Créditos Aprobados:</p>
+                        <p style="margin-left: 2%;">• Registro y seguimiento de créditos aprobados a clientes.
+                        </p>
+                        <p class="fw-bold">Registro de Vehículos y Clientes:</p>
+                        <p style="margin-left: 2%;">• Registro detallado de vehículos y clientes en el sistema.
+                        </p>
+                        <p class="fw-bold">Órdenes de Trabajo:</p>
+                        <p style="margin-left: 2%;">• Creación y gestión de órdenes de trabajo para necesidades de
+                            mantenimiento y servicios de los vehículos.
+                        </p>
+                        <p class="fw-bold">Cotizaciones:</p>
+                        <p style="margin-left: 2%;">• Generación rápida de cotizaciones basadas en el inventario
+                            registrado.
+                        </p>
+                        <p class="fw-bold">Gestión Comercial:</p>
+                        <p style="margin-left: 2%;">• Gestión de relaciones con proveedores, bancos y otros agentes
+                            comerciales.
+                        </p>
+                        <p class="fw-bold">Generación de Actas:</p>
+                        <p style="margin-left: 2%;">• Generación de actas de entrega y actas de recepción de vehículos.
+                        </p>
+                    </div>
+                </div>
+                <div id="subSection2_2">
+                    <h4 class="subtitle">2.2 Requisitos No Funcionales 2</h4>
+                    <div class="subSubText">
+                        <p class="fw-bold">Rendimiento:</p>
+                        <p style="margin-left: 2%;">• Respuesta rápida a las solicitudes de los usuarios.<br>
+                            • Capacidad para manejar grandes volúmenes de datos sin pérdida de rendimiento.
+                        </p>
+                        <p class="fw-bold">Seguridad:</p>
+                        <p style="margin-left: 2%;">• Autenticación y autorización robustas.<br>
+                            • Protección de datos sensibles y cumplimiento de normativas de privacidad.<br>
+                            • Encriptación de datos en tránsito y en reposo.
+                        </p>
+                        <p class="fw-bold">Escalabilidad:</p>
+                        <p style="margin-left: 2%;">• Capacidad para adaptarse al crecimiento en el número de usuarios y
+                            volumen de datos.<br>
+                            • Arquitectura modular para facilitar la adición de nuevas funcionalidades.
+                        </p>
+                        <p class="fw-bold">Disponibilidad:</p>
+                        <p style="margin-left: 2%;">• Alta disponibilidad del sistema con mínimos tiempos de
+                            inactividad.<br>
+                            • Mecanismos de recuperación ante fallos.
+                        </p>
+                        <p class="fw-bold">Usabilidad:</p>
+                        <p style="margin-left: 2%;">• Interfaces de usuario intuitivas y fáciles de usar.<br>
+                            • Documentación y soporte para usuarios finales y administradores.
+                        </p>
+                    </div>
+                </div>
+                <div id="subSection2_3">
+                    <h4 class="subtitle">2.3 Especificaciones Técnicas</h4>
+                    <div class="subSubText">
+                        <p class="fw-bold">Backend:</p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Lenguaje de Programación:</span> JavaScript
+                            (Node.js)
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Framework:</span> Express.js
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Base de Datos:</span> MongoDB
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Servidor:</span> Node.js
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Bibliotecas:</span> aws-sdk, axios,
+                            bcryptjs, body-parser, connect-mongo, cookie-parser, cors, date-fns, docx, docxtemplater,
+                            docxtemplater-image-module-free, dotenv, exceljs, express, express-session,
+                            express-validator, googleapis, helmet, jsonwebtoken, moment, monday-sdk-js, mongoose,
+                            mongoose-auto-increment, multer, node-cron, nodemailer, nodemon, officegen, passport,
+                            passport-google-oauth20, passport-local, patch-package, pizzip, qrcode, socket.io,
+                            speakeasy, twilio.
+                        </p>
+                        <p class="fw-bold">Frontend:</p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Lenguaje de Programación:</span> TypeScript
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Framework:</span> Angular
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Bibliotecas:</span> RxJS, Angular Material,
+                            fullcalendar, amcharts, animate.css, bootstrap, date-fns, googleapis, jquery, jwt-decode,
+                            ngx-cookie-service, ngx-drag-drop, numero-a-letras, socket.io-client, sweetalert2, tslib,
+                            zone.js
+                        </p>
+                        <p class="fw-bold">Herramientas de Desarrollo:</p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Control de Versiones:</span> Git
+                        </p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Entorno de Desarrollo:</span> Visual Studio
+                            Code
+                        </p>
+                        <p class="fw-bold">Infraestructura:</p>
+                        <p style="margin-left: 2%;"><span class="fw-bold">• Hosting:</span> Amazon Web Services (AWS)
+                            con instancias EC2 Ubuntu
+                        </p>
+                    </div>
+                    <p class="subtext">Esta combinación de requisitos funcionales y no funcionales, junto con
+                        especificaciones técnicas, asegura que el sistema ACS (Automagno Core System) sea robusto,
+                        escalable y eficiente, proporcionando una solución ERP integral para la gestión empresarial.</p>
+                </div>
+            </div>
+            <div id="section3">
+                <h3 class="title">3. Diseño del Sistema</h3>
+                <div id="subSection3_1">
+                    <h4 class="subtitle">3.1 Diagrama de Arquitectura</h4>
+                    <div class="image-container">
+                        <img width="90%" src="../assets/documentacion/diagramas/Diagrama de Arquitectura.png"
+                            alt="Diagrama de Arquitectura" />
+                    </div>
+                </div>
+                <div id="subSection3_2">
+                    <h4 class="subtitle">3.2 Diagrama de Módulos</h4>
+                    <h5 class="subSubTitle">3.2.1 Módulo de Resgistro:</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Clientes.png"
+                            alt="Diagrama de Clientes" />
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Vehículos.png"
+                            alt="Diagrama de Vehiuclos" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.2 Módulo de Inventario:</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Inventarios.png"
+                            alt="Diagrama de Inventarios" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.3 Módulo de Pre-Inventario:</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Pre-Inventarios.png"
+                            alt="Diagrama de Pre-Invemtarios" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.4 Módulo de Control Accesorios:</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Control Accesorios.png"
+                            alt="Diagrama de Control Accesorios" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.5 Módulo de Orden de Trabajo</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Orden de Trabajo.png"
+                            alt="Diagrama de Orden de Trabajo" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.6 Módulo de Créditos</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Créditos.png"
+                            alt="Diagrama de Créditos" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.7 Módulo de Cotizaciones</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Cotizaciones.png"
+                            alt="Diagrama de Cotizaciones" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.8 Módulo de Trámites</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama de Trámites.png"
+                            alt="Diagrama de Trámites" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.9 Módulo de BD (Costos de Trámites)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Costos de Trámites).png"
+                            alt="Diagrama de BD (Costos de Trámites)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.10 Módulo de BD (Tramitadores)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Tramitadores ).png"
+                            alt="Diagrama de BD (Tramitadores)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.11 Módulo de BD Usuarios)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Usuarios).png"
+                            alt="Diagrama de BDUsuarios)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.12 Módulo de BD (Proveedores)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Proveedores).png"
+                            alt="Diagrama de BD (Proveedores)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.13 Módulo de BD (Comisiones)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama DB (Comisiones).png"
+                            alt="Diagrama de BD (Comisiones)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.14 Módulo de BD (Bancos)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Bancos).png"
+                            alt="Diagrama de BD (Bancos)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.15 Módulo de BD (Contraseñas)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Contraseñas).png"
+                            alt="Diagrama de BD (Contraseñas)" />
+                    </div>
+                    <h5 class="subSubTitle">3.2.16 Módulo de BD (Variables)</h5>
+                    <div class="image-container">
+                        <img width="30%" src="../assets/documentacion/modulos/Diagrama BD (Variables).png"
+                            alt="Diagrama de BD (Variables)" />
+                    </div>
+                </div>
+                <div id="subSection3_3">
+                    <h4 class="subtitle">3.3 Diagrama de Flujo de Datos</h4>
+                    <div class="image-container">
+                        <img width="90%" src="../assets/documentacion/diagramas/Diagrama de Flujo.jpg"
+                            alt="Diagrama de Flujo" />
+                    </div>
+                    <h5 class="subtitle">Diagrama de Componentes</h5>
+                    <p class="subSubTitle">FrontEnd: </p>
+                    <div class="image-container">
+                        <img width="50%" src="../assets/documentacion/diagramas/Diagrama de Componentes Frontend.png"
+                            alt="Diagrama de Flujo" />
+                    </div>
+                    <p class="subSubTitle">Backend: </p>
+                    <div class="image-container">
+                        <img width="50%" src="../assets/documentacion/diagramas/Diagrama de Componentes Backend.png"
+                            alt="Diagrama de Flujo" />
+                    </div>
+                </div>
+            </div>
+            <div id="section4">
+                <h3 class="title">4. Configuración del Entorno</h3>
+                <div style="margin-left: 2%;">
+                    <p class="text"><span class="fw-bold">• Requisitos del Hardware y Software:</span> No se requiere
+                        ningún
+                        requisito específico para este sistema.
+                    </p>
+                    <p class="text"><span class="fw-bold">• Guía de Instalación:</span>
+                    </p>
+                    <p class="text" style="margin-left: 2%;"><span class="fw-bold">• Instalación Node.JS:</span> <a
+                            href="https://nodejs.org">Node</a>
+                    </p>
+                    <p class="text" style="margin-left: 2%;"><span class="fw-bold">• Instalación Angular.JS:</span> <a
+                            href="https://angular.dev/">Angular</a>
+                    </p>
+                    <p class="text" style="margin-left: 2%;"><span class="fw-bold">• Instalación Git Bash:</span> <a
+                            href="https://git-scm.com/downloads ">Git</a>
+                    </p>
+                    <p class="text" style="margin-left: 2%;"><span class="fw-bold">• Instalación MongoDB Compass:</span>
+                        <a href="https://www.mongodb.com/try/download/community">Mongo </a>
+                    </p>
+                    <p class="text" style="margin-left: 2%;"> • Dirigirse a <a
+                            href="https://github.com/DevopsAutomagno/ACS">Github ACS </a> y clonarlo.
+                    </p>
+                    <p class="text"
+                        style="padding: 0 10px ;margin-left: 4%; background-color: #0F1922; color: #ffffffff; display: inline;">
+                        git clone https://github.com/DevopsAutomagno/ACS.git
+                    </p>
+                    <p class="text" style="margin-left: 2%;"> • Abrir el Editor de Texto preferido, abrir la consola y
+                        en
+                        cada carpeta (ACS y backend) instalar dependencias (npm install –force).
+                    </p>
+                    <p class="text"
+                        style="padding: 0 10px; margin-left: 4%; background-color: #0F1922; color: #ffffffff; display: inline;">
+                        <span style="color: coral;">npm </span> install --force
+                    </p>
+                    <p class="text" style="margin-left: 2%;"> • Descargar variables de entorno alojadas en el drive,
+                        área de
+                        programación ACS/Variables de Entorno.
+                    </p>
+                    <p class="text"><span class="fw-bold">• Configuración de MongoDB COMPASS: </span>Diríjase a la
+                        carpeta
+                        backend y busque un archivo que se llame config.env, al abrir el archivo copie el value y
+                        péguelo en
+                        la conexión del mongodb compass.
+                    </p>
+                </div>
+
+            </div>
+            <div id="section5">
+                <h3 class="title">5. Desarrollo y Personalización</h3>
+                <div>
+                    <p class="subtitle"><span class="fw-bold">• Estructura del Proyecto:</span>
+                    </p>
+                    <p class="subSubTitle"><span class="fw-bold">• Frontend:</span>
+                    </p>
+                    <div class="image-container">
+                        <img width="25%" src="../assets/documentacion/estructura/estructura Frontend.png" alt="Dia" />
+                    </div>
+                    <p class="subSubTitle"><span class="fw-bold">• Backend:</span>
+                    </p>
+                    <div class="image-container">
+                        <img width="25%" src="../assets/documentacion/estructura/estructura Backend.png" alt="Dia" />
+                    </div>
+                    <p class="subtitle"><span class="fw-bold">• Guía de Desarrollo:</span>
+                    </p>
+                    <p class="subtext" style="margin-left: 4%;">-Para ingresar un nuevo componente es con el comando “ng
+                        g
+                        c
+                        components/nombre”
+                    </p>
+                    <p class="subtext" style="margin-left: 4%;">-Para ingresar un nuevo servicio es con el comando “ng g
+                        s services/nombre”
+                    </p>
+                    <p class="subtitle"><span class="fw-bold">• Pruebas y Depuración:</span>
+                    </p>
+                    <p class="subtext" style="margin-left: 4%;">-En el entorno de desarrollo lo más importante para
+                        hacer pruebas y depuración es imprimiendo en consola los datos.
+                    </p>
+                </div>
+            </div>
+            <div id="section6">
+                <h3 class="title">6. Uso del Sistema</h3>
+                <h4><span class="subtitle">• Manual del Usuario:</span><a [routerLink]="['/manual']">Manual de
+                        Usuario</a></h4>
+                <h4><span class="subtitle">• Capturas de Pantalla:</span></h4>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura1.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura2.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura3.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura4.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura5.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura6.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura7.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura8.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura9.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura10.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura11.png" alt="Dia" />
+                </div>
+                <div class="image-container">
+                    <img width="60%" src="../assets/documentacion/capturas/Captura12.png" alt="Dia" />
+                </div>
+            </div>
+            <div id="section7">
+                <h3 class="title">7. Mantenimiento y Soporte</h3>
+                <h4 class="subtitle">• Procedimientos de Mantenimiento:</h4>
+                <p class="subSubText">1. Realizar cambios o mejoras en el sistema, compilar ACS, si hay cambios en el
+                    backend, comprimirlo en .zip.</p>
+                <p class="subSubText">2. Ingresar a la consola del sistema alojado en EC2 (AWS) </p>
+                <p class="subSubText"
+                    style="padding: 0 10px; background-color: #0F1922; color: #ffffffff; display: inline;">
+                    <span style="color: rgb(245, 239, 157);">ssh </span> -i <span
+                        style="color:rgb(0, 204, 255);">"acsv3.pem"</span>
+                    ubuntu&#64;ec2-174-129-181-0.compute-1.amazonaws.com
+                </p>
+                <p class="subSubText">3. Hacer kill a pm2 server</p>
+                <p class="subSubText">4. Enviar archivos desde la ubicación de desarrollo al EC2 /home/ubuntu/, luego moverlo de /var/www/html/.</p>
+                <p class="subSubText">5. Ir a backend y iniciar el servidor pm2 start server.js</p>
+                <h4 class="subtitle">• Gestión de Incidencias:</h4>
+                <p class="subtext">La gestión de incidencias o reportes, se realiza en MONDAY donde se gestiona cada problema, incidencia o cambio.</p>
+                <h4 class="subtitle">• Contactos de Soporte:</h4>
+                <p class="subtext"><span class="fw-bold">- Bairon Sánchez: </span>programacion&#64;automagno.com</p>
+                <p class="subtext"><span class="fw-bold">- Yohan Garzón: </span>programacion1&#64;automagno.com</p>
+            </div>
+        </div>
+    </div>
+</section>

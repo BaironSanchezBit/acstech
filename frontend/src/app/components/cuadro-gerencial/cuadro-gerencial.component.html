@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+<section class="body">
+  <div class="divTitle">
+    <h1>
+      KPI's - Indicadores Clave de Desempeño
+    </h1>
+  </div>
+
+  <div class="divTotal">
+    <div class="divOne">
+      <div class="cuadroSaldo">
+        <h2 class="h2-title">DISPONIBLE</h2>
+        <div class="pieChart-container">
+          <div id="pieChartdiv"></div>
+        </div>
+      </div>
+      <div class="cuadroSaldo">
+        <h2 class="h2-title">INVENTARIOS ({{this.sumaDisponibles}} Activos)</h2>
+        <div class="pieTwoChart-container">
+          <div id="pieTwoChartdiv"></div>
+        </div>
+      </div>
+      <div class="cuatroCPP">
+        <h2 class="h2-titleCPP">CUENTAS POR PAGAR ({{currentMonth}})</h2>
+        <div class="pieChart-containerCPP">
+          <div id="chartdiv"></div>
+        </div>
+      </div>
+    </div>
+    <div class="divTwo">
+      <div class="cuadroMarcas">
+        <h2 class="h2-title">DISTRIBUCIÓN DE MARCAS ({{marcas}})</h2>
+        <div class="distribucionMarcas-container">
+          <div id="initDistribucionMarcas"></div>
+        </div>
+        <button type="button" class="btn btn-primary" routerLink="/grafica-distribucion-marcas">VER A DETALLE</button>
+      </div>
+      <div class="cuatroRenta">
+        <h2 class="h2-titleRenta">RENTABILIDAD</h2>
+        <div class="pieChart-containerRenta">
+          <div id="equilibriumChartDiv"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--
+  <div>
+    <button type="button" class="btn btn-success" routerLink="/cuentas-pagar-aprobacion">Aprobación</button>
+  </div>
+  -->
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

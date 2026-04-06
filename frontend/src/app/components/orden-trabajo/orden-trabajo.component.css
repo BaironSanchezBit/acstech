@@ -1,0 +1,594 @@
+.body {
+  background-color: #0F1922;
+  width: 100vw;
+  height: 100vh;
+  padding: 20px 20px 0px 16vw;
+  background-image: url("/assets/img/logo.png");
+  background-repeat: no-repeat;
+  background-size: 15vw;
+  background-position: 57% 10%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.archivosAdjuntos {
+  margin: 0;
+  padding: 0 18px;
+  width: 525px;
+}
+
+.archivosAdjuntos h2 {
+  margin: 0;
+}
+
+.adjunto {
+  padding: 0 18px;
+  width: auto;
+  height: 200px;
+  overflow-y: scroll;
+}
+
+.last-modification {
+  background-color: #c11616 !important;
+}
+
+.divDescripcion {
+  padding: 0 20px;
+}
+
+.divFoto {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  padding: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.divFoto a {
+  text-decoration: none;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.divFoto:hover {
+  background-color: #1f2b36;
+}
+
+.photo {
+  background-color: #ffffff;
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.contenedorAll {
+  width: 100%;
+  height: 95vh;
+  background-color: #1e3244;
+  border-radius: 10px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.contenedor {
+  width: 100%;
+  height: 95vh;
+  background-color: #1e3244;
+  padding: 0 10px;
+  overflow-y: scroll;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.accordion {
+  background-color: #1e3244 !important;
+}
+
+.accordion-item.bg-black.text-white.ng-untouched.ng-pristine.ng-valid.ng-star-inserted {
+  border: 1px solid #1e3244;
+  font-family: 'Reddit Sans', sans-serif !important;
+}
+
+.btn {
+  font-family: 'Reddit Sans', sans-serif !important;
+}
+
+.contenedor-h1 {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #1e3244 !important;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.divModi {
+  width: 20%;
+  text-align: end;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(20px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.form-select {
+  border: 1px solid #627280;
+  background-color: #1e3244;
+  font-family: 'Reddit Sans', sans-serif;
+  color: #ffffff;
+}
+
+.form-select::placeholder {
+  color: #627280;
+}
+
+.form-control {
+  border: 1px solid #627280;
+  background-color: #1e3244;
+  font-family: 'Reddit Sans', sans-serif;
+  color: #ffffff;
+}
+
+.form-control::placeholder {
+  color: #627280;
+}
+
+.offcanvas {
+  background-color: #1e3244;
+  color: #ffffff;
+  font-family: 'Reddit Sans', sans-serif;
+}
+
+.contenedor-h1 h1 {
+  font-family: 'Reddit Sans', sans-serif;
+}
+
+.divBuscar h1 {
+  font-family: 'Reddit Sans', sans-serif;
+}
+
+.divBuscar {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.divInfo {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Reddit Sans', sans-serif;
+}
+
+.info {
+  width: 40%;
+  border-radius: 10px 0 0 10px;
+}
+
+.infoTwo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoFoto {
+  border-radius: 10px;
+}
+
+.infoFoto img {
+  width: 400px;
+  height: 280px;
+  border-radius: 10px;
+}
+
+.tarjeta {
+  position: relative;
+  width: 430px;
+  height: 265px;
+  border-radius: 10px;
+  background-color: #d6e4ff;
+  color: #000;
+  padding: 5px 15px;
+  overflow: hidden;
+}
+
+.tarjeta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/img/mintransporte.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.03;
+  z-index: 0;
+}
+
+.tarjeta>* {
+  position: relative;
+  z-index: 1;
+}
+
+.fila-1 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fila-1 .escudo {
+  width: 45px;
+}
+
+.fila-1 .mintransporte {
+  width: 40px;
+  height: 40px;
+}
+
+.fila-1 h2 {
+  margin: 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.fila-1 h3 {
+  margin: 0;
+  text-align: center;
+  line-height: 1;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.fila-2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fila-2 h4 {
+  font-size: 0.6em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.fila-2 p {
+  font-size: 0.8em;
+  margin: 0;
+  line-height: 0.5;
+  font-weight: bold;
+}
+
+.fila-3 {
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fila-3 h4 {
+  font-size: 0.6em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.div-2 {
+  display: flex;
+}
+
+.div-2-1 {
+  margin-right: 55px;
+}
+
+.fila-3 p {
+  font-size: 0.8em;
+  margin: 0;
+  line-height: 0.5;
+  font-weight: bold;
+}
+
+.fila-4 {
+  padding-top: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fila-4 h4 {
+  font-size: 0.6em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.fila-4 p {
+  font-size: 0.8em;
+  margin: 0;
+  line-height: 0.5;
+  font-weight: bold;
+}
+
+.divModificacion {
+  display: flex;
+  justify-content: space-between;
+  background-color: #5559DF;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.divModificacion .quien {
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Reddit Sans', sans-serif;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.divModificacion .fecha {
+  font-weight: bold;
+  color: #acacac;
+  font-family: 'Reddit Sans', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.first-modification {
+  background-color: #159191;
+}
+
+.first-modification.quien {
+  color: #000;
+}
+
+.fa-square-plus {
+  font-size: 30px;
+}
+
+.divFotos {
+  display: flex;
+  flex-direction: column;
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.drop-zone:hover {
+  background-color: #355877;
+  border-color: #007bff;
+}
+
+.drop-zone.dragover {
+  border-color: #007bff;
+  background-color: #e6f7ff;
+}
+
+.drop-zone p {
+  margin: 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.contenedor::-webkit-scrollbar {
+  width: 12px;
+}
+
+.contenedor::-webkit-scrollbar-track {
+  background: #0F1922;
+  border-radius: 10px;
+}
+
+.contenedor::-webkit-scrollbar-thumb {
+  background-color: #1e3244;
+  border-radius: 10px;
+  border: 3px solid #0F1922;
+}
+
+.contenedor::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.contenedor {
+  scrollbar-width: thin;
+  scrollbar-color: #1e3244 #0F1922;
+}
+
+.contenedor::-ms-scrollbar {
+  width: 12px;
+}
+
+.contenedor::-ms-scrollbar-track {
+  background: #0F1922;
+  border-radius: 10px;
+}
+
+.contenedor::-ms-scrollbar-thumb {
+  background-color: #1e3244;
+  border-radius: 10px;
+  border: 3px solid #0F1922;
+}
+
+.accordion-button {
+  background-color: #395065 !important;
+  color: #ffffff;
+  font-family: 'Reddit Sans', sans-serif;
+}
+
+.accordion-button.collapsed::after {
+  color: #ffffff;
+}
+
+.accordion-collapse.collapse.show {
+  background-color: #395065 !important;
+  color: #ffffff;
+}
+
+.drop-zone button {
+  margin-top: 10px;
+}
+
+.preview-container {
+  margin-top: 10px;
+}
+
+.preview {
+  display: inline-block;
+  margin-right: 10px;
+  border: none;
+  background-color: #395065 !important;
+  position: relative;
+}
+
+.preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  background-color: #395065 !important;
+  border: none;
+}
+
+.preview .btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.divPreview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.divPreview img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.margin-left-confirm-btn {
+  margin-left: 20px !important;
+}
+
+.divImp {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+th {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+td {
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 30vw;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 799px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 40vw;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 899px) {
+  .divBuscar h1 {
+    font-size: 12px !important;
+  }
+
+  .divBuscar .form-control {
+    width: 100px;
+  }
+
+  .divBuscar .btn {
+    font-size: 12px !important;
+  }
+
+  .quien {
+    font-size: 10px;
+  }
+
+  .fecha {
+    font-size: 10px;
+  }
+
+
+  .body {
+    padding: 20px 10px 50px 10px !important;
+    width: 100%;
+    flex-direction: column;
+    height: auto !important;
+  }
+
+  .contenedor {
+    width: 100%;
+    height: 90vh;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+
+  .divInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info {
+    width: 100%;
+  }
+
+  .infoTwo {
+    width: 100%;
+  }
+
+  .infoFoto {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .infoFoto img {
+    width: 100%;
+  }
+
+  .adjunto {
+    padding: 0;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  .archivosAdjuntos {
+    padding: 0;
+    width: 100%;
+  }
+}

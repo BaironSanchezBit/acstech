@@ -1,0 +1,52 @@
+<div class="board">
+    <!-- 📌 DISPONIBLE_A_LA_VENTA -->
+    <div class="column">
+        <span>🏪<h2> AUTOMAGNO VITRINA</h2></span>
+        <div cdkDropList [cdkDropListData]="ubicaciones.AUTOMAGNO_VITRINA" class="list"
+            (cdkDropListDropped)="drop($event, 'AUTOMAGNO_VITRINA')">
+            <div *ngFor="let inventory of ubicaciones.AUTOMAGNO_VITRINA" cdkDrag class="card">
+                <span>{{ inventory.vehiculo?.marca }} {{ inventory.vehiculo?.linea }} {{ inventory.vehiculo?.version }}
+                    <p>{{ inventory.vehiculo?.modelo }}</p></span>
+                <img [src]="inventory.vehiculo.imagenVehiculo" alt="Imagen del vehículo">
+            </div>
+        </div>
+    </div>
+
+    <!-- 📌 ASIGNADO_EN_INICIALES -->
+    <div class="column">
+        <span>🏠<h2> AUTOMAGNO CASA 1</h2></span>
+        <div cdkDropList [cdkDropListData]="ubicaciones.AUTOMAGNO_CASA_1" class="list"
+            (cdkDropListDropped)="drop($event, 'AUTOMAGNO_CASA_1')">
+            <div *ngFor="let inventory of ubicaciones.AUTOMAGNO_CASA_1" cdkDrag class="card">
+                <h3>{{ inventory.vehiculo?.marca }} {{ inventory.vehiculo?.linea }} {{ inventory.vehiculo?.version }} -
+                    {{
+                    inventory.vehiculo?.modelo }}</h3>
+                <img [src]="inventory.vehiculo.imagenVehiculo" alt="Imagen del vehículo">
+            </div>
+        </div>
+    </div>
+
+    <!-- 📌 ENTREGADO -->
+    <div class="column">
+        <h2>🔧 TALLER</h2>
+        <div cdkDropList [cdkDropListData]="ubicaciones.AUTOMAGNO_CASA_2" class="list"
+            (cdkDropListDropped)="drop($event, 'AUTOMAGNO_CASA_2')">
+            <div *ngFor="let inventory of ubicaciones.AUTOMAGNO_CASA_2" cdkDrag class="card">
+                <h3>Vehículo ID: {{ inventory.vehiculo?._id }}</h3>
+                <img [src]="inventory.vehiculo.imagenVehiculo" alt="Imagen del vehículo">
+            </div>
+        </div>
+    </div>
+
+    <!-- 📌 ENTREGADO -->
+    <div class="column">
+        <h2>✅ Entregado</h2>
+        <div cdkDropList [cdkDropListData]="ubicaciones.AUTOMAGNO_CASA_3" class="list"
+            (cdkDropListDropped)="drop($event, 'AUTOMAGNO_CASA_3')">
+            <div *ngFor="let inventory of ubicaciones.AUTOMAGNO_CASA_3" cdkDrag class="card">
+                <h3>Vehículo ID: {{ inventory.vehiculo?._id }}</h3>
+                <img [src]="inventory.vehiculo.imagenVehiculo" alt="Imagen del vehículo">
+            </div>
+        </div>
+    </div>
+</div>

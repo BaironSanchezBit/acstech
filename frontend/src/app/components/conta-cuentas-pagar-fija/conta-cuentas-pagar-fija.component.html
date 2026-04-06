@@ -1,0 +1,383 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+    <div class="divIngreso">
+        <div class="divTitle">
+            <div class="divTitleTwo">
+                <i class="fa-solid fa-circle-plus"></i>
+                <h1>AGREGAR CUENTA POR PAGAR FIJA</h1>
+                <button type="button" class="btn btn-primary" routerLink="/cuentas-por-pagar">CUENTAS VARIABLES</button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-secondary">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">TIPO</th>
+                        <th scope="col">TERCERO</th>
+                        <th scope="col">CONCEPTO</th>
+                        <th scope="col">N° DE CUENTA</th>
+                        <th scope="col">VALOR</th>
+                        <th scope="col">DIA</th>
+                    </tr>
+                </thead>
+                <tbody [formGroup]="cuentaPagarFijaForm">
+                    <tr class="">
+                        <td scope="row">
+                            <select class="form-select" aria-label="Default select example" formControlName="tipo">
+                                <option selected>Selecciona</option>
+                                <option value="AUTOMAGNO SAS">AUTOMAGNO SAS</option>
+                                <option value="ERWIN GONZALEZ">ERWIN GONZALEZ</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" [formControl]="proveedoresControl"
+                                [matAutocomplete]="autoProveedor">
+                            <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+                                <mat-option *ngFor="let proveedor of proveedoresFiltrados | async"
+                                    [value]="proveedor.tercero">
+                                    {{ proveedor.tercero }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" placeholder="" aria-label="default input example"
+                                formControlName="concepto">
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" placeholder="" aria-label="default input example"
+                                formControlName="numeroCuenta">
+                        </td>
+                        <td>
+                            <input class="form-control" (input)="onCurrencyInput2($event)" type="text" placeholder=""
+                                aria-label="default input example" formControlName="valor">
+                        </td>
+                        <td>
+                            <select class="form-select" aria-label="Select day" formControlName="dia">
+                                <option *ngFor="let dia of dias" [value]="dia">{{ dia }}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="divButton">
+            <button type="button" class="btn btn-success btnAgregar" (click)="crear()">Agregar</button>
+        </div>
+    </div>
+
+    <div class="divAll">
+        <div class="divTitle">
+            <div class="divTitleTwo">
+                <i class="fa-solid fa-thumbtack"></i>
+                <h1>CUENTAS POR PAGAR FIJAS</h1>
+            </div>
+            <button type="button" class="btn btn-danger" routerLink="/historico-fijas">HISTÓRICO</button>
+        </div>
+        <div class="divVista">
+            <div class="table-responsive">
+                <table class="table table-secondary table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">TIPO</th>
+                            <th scope="col">TERCERO</th>
+                            <th scope="col" class="concepto">CONCEPTO</th>
+                            <th scope="col">SALDO</th>
+                            <th scope="col">PAGOS</th>
+                            <th scope="col">FECHA VENCIMIENTO</th>
+                            <th scope="col">DIAS VENCIDOS</th>
+                            <th scope="col">PRIORIDAD</th>
+                            <th scope="col">APRUEBA GERENCIA</th>
+                            <th scope="col">PAGADO</th>
+                            <th scope="col">ESTADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" *ngFor="let cuentaPagarFija of cuentasPagarFija">
+                            <td scope="row" (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{cuentaPagarFija.tipo}}
+                            </td>
+                            <td scope="row" (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{cuentaPagarFija.tercero}}
+                            </td>
+                            <td class="concepto" (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{cuentaPagarFija.concepto}}
+                            </td>
+                            <td class="fw-bold" [ngClass]="{'text-danger' : cuentaPagarFija.saldo2 !== 0, 'text-success' : cuentaPagarFija.saldo2 === 0}" 
+                            (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{formatSalary(cuentaPagarFija.saldo2)}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ formatSalary(cuentaPagarFija.sumaPagos) }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{cuentaPagarFija.fechaPago}}
+                            </td>
+                            <td class="fw-bold" [ngClass]="{'text-primary': cuentaPagarFija.diasVencidos2 == 0, 'text-danger': cuentaPagarFija.diasVencidos2 > 0, 'text-success': cuentaPagarFija.diasVencidos2 < 0}"
+                                *ngIf="cuentaPagarFija.pagado2"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ cuentaPagarFija.diasVencidos2 }}
+                            </td>
+                            <td class="fw-bold" [ngClass]="{'text-primary': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                            cuentaPagarFija.pagado2) == 0, 'text-danger': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) > 0, 'text-success': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) < 0}" *ngIf="!cuentaPagarFija.pagado2"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{ calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagarFija.aprueba2">
+                                    APROBADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagarFija.aprueba2">
+                                    SIN
+                                    APROBACIÓN</p>
+                            </td>
+                            <td>
+                                <select [(ngModel)]="cuentaPagarFija.prioridad2" (change)="actualizarPrioridadFija(cuentaPagarFija, cuentaPagarFija.fechaPago2)"
+                                    class="custom-select"
+                                    [ngStyle]="{'background-color': getSelectedColor(cuentaPagarFija.prioridad2), 'color': getTextColor(cuentaPagarFija.prioridad2)}">
+                                    <option [value]="'CRÍTICO'" class="critical-option"
+                                        [ngStyle]="{'background-color': '#505157', 'color': '#ffffff'}">
+                                        &#9888; CRÍTICO
+                                    </option>
+                                    <option [value]="'ALTO'" class="high-option"
+                                        [ngStyle]="{'background-color': '#6645A9', 'color': '#ffffff'}">
+                                        ALTO
+                                    </option>
+                                    <option [value]="'MEDIO'" class="medium-option"
+                                        [ngStyle]="{'background-color': '#6365B7', 'color': '#ffffff'}">
+                                        MEDIO
+                                    </option>
+                                    <option [value]="'BAJO'" class="low-option"
+                                        [ngStyle]="{'background-color': '#79AFFD', 'color': '#ffffff'}">
+                                        BAJO
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="pagado" id="pagado{{cuentaPagarFija._id}}"
+                                    [(ngModel)]="cuentaPagarFija.pagado2" [disabled]="!cuentaPagarFija.aprueba2"
+                                    (change)="actualizarEstadoPagoFija(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-success': cuentaPagarFija.estado === 'PAGADO', 'text-danger': cuentaPagarFija.estado === 'PARA PAGO' || 'CANCELADO', 'text-primary': cuentaPagarFija.estado === 'FINALIZADO' }"
+                                (click)="abrirModal(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                {{cuentaPagarFija.estado}}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <div class="divSaldo">
+                            <h1 class="m-0">TOTAL CPP</h1>
+                            <div class="divNumero">
+                                {{formatSalary(saldoTotal)}}
+                            </div>
+                        </div>
+                        <div class="divCuentas">
+                            <div class="davi" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img class="imgDavi" src="./assets/img/davi.png" alt="davivienda">
+                                <p>{{formatSalary(daviDisponible)}}</p>
+                            </div>
+                            <div class="banco" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                <img class="imgBanco" src="./assets/img/banco.png" alt="bancolombia">
+                                <p>{{formatSalary(bancolDisponible)}}</p>
+                            </div>
+                            <div class="banco" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                                <img class="imgBanco" src="./assets/img/efectivo.png" alt="efectivo">
+                                <p>{{formatSalary(efectivoDisponible)}}</p>
+                            </div>
+                            <div class="total">
+                                <img class="imgTotal" src="./assets/img/igual.png" alt="efectivo">
+                                <p>{{formatSalary(sumaDisponible)}}</p>
+                            </div>
+                        </div>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+
+<div [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" class="modal-backdrop fade"></div>
+
+
+<div class="modal fade" id="detalleInventarioModal" tabindex="-1" aria-labelledby="modalLabel"
+    [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" aria-hidden="!mostrarModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header my-2">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLE DE CUENTA POR PAGAR</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="cuentaPagarFijaEditForm">
+                    <div class="col-md-6">
+                        <label for="tipoEdit" class="form-label">TIPO</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="tipoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="AUTOMAGNO SAS">AUTOMAGNO SAS</option>
+                            <option value="ERWIN GONZALEZ">ERWIN GONZALEZ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="terceroEdit" class="form-label">TERCERO</label>
+                        <input type="text" class="form-control" id="terceroEdit" formControlName="terceroEdit">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="numeroCuentaEdit" class="form-label">N° DE CUENTA</label>
+                        <textarea class="form-control" name="numeroCuentaEdit" id="numeroCuentaEdit" cols="30" rows="1"
+                            formControlName="numeroCuentaEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="conceptoEdit" class="form-label">CONCEPTO</label>
+                        <textarea class="form-control" name="conceptoEdit" id="conceptoEdit" cols="30" rows="1"
+                            formControlName="conceptoEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="diaEdit" class="form-label">DIA</label>
+                        <select class="form-select" aria-label="Select day" formControlName="diaEdit">
+                            <option *ngFor="let dia of dias" [value]="dia">{{ dia }}</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="estadoEdit" class="form-label">ESTADO</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="estadoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="PAGADO">PAGADO</option>
+                            <option value="PARA PAGO">PARA PAGO</option>
+                            <option value="CANCELADO">CANCELADO</option>
+                            <option value="FINALIZADO">FINALIZADO</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="valorEdit" class="form-label">VALOR</label>
+                        <input type="text" class="form-control" id="valorEdit" formControlName="valorEdit"
+                            (input)="onCurrencyInput2($event)">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="saldoEdit" class="form-label">SALDO</label>
+                        <input type="text" class="form-control" id="saldoEdit" formControlName="saldoEdit"
+                            (input)="onCurrencyInput2($event)">
+                    </div>
+                    <h2 for="saldoEdit" class="form-label mt-2 mb-0">Pago del
+                        {{ cuentaSeleccionada?.fechaPago }}
+                    </h2>
+                    <div class="col-md-1 text-start mt-0">
+                        <button type="submit" class="btn btn-success" (click)="agregarPago()"
+                            [disabled]="!(cuentaSeleccionada?.aprueba2 && cuentaSeleccionada?.saldo2 !== 0)">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </form>
+                <form [formGroup]="pagosEditForm">
+                    <h3 class="mt-3 mb-0 fw-bold" *ngIf="pagosEdit.length > 0">PAGOS REALIZADOS</h3>
+                    <div formArrayName="pagosEdit">
+                        <div *ngFor="let pago of pagosEdit.controls; let i = index" [formGroupName]="i">
+                            <div class="row my-2">
+                                <div class="col-md-3">
+                                    <label>Fecha de Pago</label>
+                                    <input type="date" class="form-control" id="fecha" formControlName="fecha">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Valor de Pago</label>
+                                    <input type="text" class="form-control" id="valor" formControlName="valor"
+                                        (input)="onCurrencyInput($event)">
+                                </div>
+                                <div class="col-md-1 text-start">
+                                    <label>Acción</label>
+                                    <button type="submit" class="btn btn-danger" (click)="eliminarPago(i)"
+                                        [disabled]="(cuentaSeleccionada?.aprueba2 && cuentaSeleccionada?.saldo2 === 0)"><i
+                                            class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary"
+                    (click)="actualizar(cuentaSeleccionada._id)">Actualizar</button>
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel">DISPONIBLE EN DAVIVIENDA</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="daviviendaForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">ENTIDAD FINANCIERA:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput2($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarDavi()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel2">DISPONIBLE EN BANCOLOMBIA</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="bancolombiaForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">ENTIDAD FINANCIERA:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput2($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarBancol()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 m-0" id="exampleModalLabel3">DISPONIBLE EN EFECTIVO</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="efectivoForm">
+                    <div class="mb-3">
+                        <label for="banco" class="col-form-label">TIPO:</label>
+                        <input type="text" class="form-control" id="banco" formControlName="banco">
+                    </div>
+                    <div class="mb-3">
+                        <label for="disponible" class="col-form-label">DISPONIBLE:</label>
+                        <input type="text" class="form-control" id="disponible" (input)="onCurrencyInput2($event)"
+                            formControlName="disponible">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-primary w-100" (click)="actualizarEfectivo()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>

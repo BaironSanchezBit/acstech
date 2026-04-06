@@ -1,0 +1,75 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">COMISIONES</h1>
+  </div>
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">MÍNIMO</th>
+          <th scope="col">MÁXIMO</th>
+          <th scope="col">VALOR</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let comision of comisiones" (click)="seleccionarComision(comision)">
+          <th scope="row">{{formatSalary(comision.min)}}</th>
+          <td>{{formatSalary(comision.max)}}</td>
+          <td>{{formatSalary(comision.valor)}}</td>
+          <td> <button class="btn btn-warning ms-4" data-bs-toggle="modal"
+              data-bs-target="#staticeditar">Editar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo" [value]="minFormatted"
+            (input)="onCurrencyInput2($event)">
+          <label for="floatingMinimo">Minimo</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingMaximo" placeholder="Maximo" [value]="maxFormatted"
+            (input)="onCurrencyInput3($event)">
+          <label for="floatingMaximo">Máximo</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingValor" placeholder="Valor" [value]="valorFormatted"
+            (input)="onCurrencyInput4($event)">
+          <label for="floatingValor">Valor</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarComision()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

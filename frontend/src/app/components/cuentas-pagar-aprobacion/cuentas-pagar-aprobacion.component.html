@@ -1,0 +1,259 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+
+    <div class="divCuentas">
+        <i class="fa-solid fa-circle-chevron-left" routerLink="/cuadro-gerencial"></i>
+        <h1 class="aprobacion">APROBACIONES - CPP</h1>
+        <div class="davi">
+            <img class="imgDavi" src="./assets/img/davi.png" alt="davivienda">
+            <p>{{formatSalary(daviDisponible)}}</p>
+        </div>
+        <div class="banco">
+            <img class="imgBanco" src="./assets/img/banco.png" alt="bancolombia">
+            <p>{{formatSalary(bancolDisponible)}}</p>
+        </div>
+        <div class="banco">
+            <img class="imgBanco" src="./assets/img/efectivo.png" alt="efectivo">
+            <p>{{formatSalary(efectivoDisponible)}}</p>
+        </div>
+        <div class="total">
+            <img class="imgTotal" src="./assets/img/igual.png" alt="efectivo">
+            <p>{{formatSalary(sumaDisponible)}}</p>
+        </div>
+    </div>
+    <div class="divAll">
+        <div class="divTitleBtn">
+            <div class="divTitle">
+                <i class="fa-brands fa-stack-overflow"></i>
+                <h1>VARIABLES</h1>
+                <div class="ordenar-container">
+                    <select [(ngModel)]="filtroClasificacion" (change)="filtrarCuentas()">
+                        <option value="">Filtrar</option>
+                        <optgroup label="Clasificación">
+                            <option value="Veh">Veh</option>
+                            <option value="Prov">Prov</option>
+                        </optgroup>
+                    </select>
+                    <i class="fa-solid fa-filter ordenar-icon"></i>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger" routerLink="/historico-variables">HISTÓRICO</button>
+        </div>
+        <div class="divVista">
+            <div class="table-responsive">
+                <table class="table table-secondary ">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">CLASIF</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col" *ngIf="filtroClasificacion === 'Veh'">PLACA</th>
+                            <th scope="col">TERCERO</th>
+                            <th scope="col">CONCEPTO</th>
+                            <th scope="col">VALOR</th>
+                            <th scope="col">FECHA VENCI.</th>
+                            <th scope="col">DIAS VENCIDOS</th>
+                            <th scope="col">PRIORIDAD</th>
+                            <th scope="col">APROBAR</th>
+                            <th scope="col">SOLICITUD APROBACIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" *ngFor="let cuentaPagar of cuentasFiltrados">
+                            <td scope="row">
+                                {{cuentaPagar.clasificacion}}
+                            </td>
+                            <td>
+                                {{cuentaPagar.tipo}}
+                            </td>
+                            <td *ngIf="filtroClasificacion === 'Veh'">
+                                {{cuentaPagar.placa}}
+                            </td>
+                            <td>
+                                {{cuentaPagar.tercero}}
+                            </td>
+                            <td class="text">
+                                {{cuentaPagar.concepto}}
+                            </td>
+                            <td>
+                                {{formatSalary(cuentaPagar.saldo)}}
+                            </td>
+                            <td>
+                                {{formatearFecha(cuentaPagar.fechaVencimiento)}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-success': cuentaPagar.diasVencidos === 0, 'text-danger': cuentaPagar.diasVencidos !== 0}"
+                                *ngIf="cuentaPagar.pagado">
+                                {{cuentaPagar.diasVencidos}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-success': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) === 0, 'text-danger': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) !== 0}"
+                                *ngIf="!cuentaPagar.pagado">
+                                {{ calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) }}
+                            </td>
+                            <td>
+                                <select [(ngModel)]="cuentaPagar.prioridad" (change)="actualizarPrioridad(cuentaPagar)"
+                                    class="custom-select"
+                                    [ngStyle]="{'background-color': getSelectedColor(cuentaPagar.prioridad), 'color': getTextColor(cuentaPagar.prioridad)}">
+                                    <option [value]="'CRÍTICO'" class="critical-option"
+                                        [ngStyle]="{'background-color': '#505157', 'color': '#ffffff'}">
+                                        &#9888; CRÍTICO
+                                    </option>
+                                    <option [value]="'ALTO'" class="high-option"
+                                        [ngStyle]="{'background-color': '#6645A9', 'color': '#ffffff'}">
+                                        ALTO
+                                    </option>
+                                    <option [value]="'MEDIO'" class="medium-option"
+                                        [ngStyle]="{'background-color': '#6365B7', 'color': '#ffffff'}">
+                                        MEDIO
+                                    </option>
+                                    <option [value]="'BAJO'" class="low-option"
+                                        [ngStyle]="{'background-color': '#79AFFD', 'color': '#ffffff'}">
+                                        BAJO
+                                    </option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="pagado" id="pagado{{cuentaPagar._id}}"
+                                    [(ngModel)]="cuentaPagar.aprueba2" (change)="actualizarEstadoPago(cuentaPagar)">
+                            </td>
+                            <td>
+                                <i *ngIf="cuentaPagar.solicita" class="fa-solid fa-bell text-danger"></i>
+                                <i *ngIf="!cuentaPagar.solicita" class="fa-regular fa-bell"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <div class="divSaldo">
+                            <div class="divValor">
+                                <h1 class="m-0">VALOR APROBADO</h1>
+                                <div class="divNumero">
+                                    {{formatSalary(saldoTotalAprobadosNoPagados)}}
+                                </div>
+                            </div>
+                            <div class="divValor">
+                                <h1 class="m-0">TOTAL CPP</h1>
+                                <div class="divNumero">
+                                    {{formatSalary(saldoTotal)}}
+                                </div>
+                            </div>
+                        </div>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="divAll">
+        <div class="divTitleBtn">
+            <div class="divTitle">
+                <i class="fa-solid fa-thumbtack"></i>
+                <h1>FIJAS</h1>
+            </div>
+            <button type="button" class="btn btn-danger" routerLink="/historico-fijas">HISTÓRICO</button>
+        </div>
+        <div class="divVista">
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-secondary ">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">TIPO</th>
+                                <th scope="col">TERCERO</th>
+                                <th scope="col" class="concepto">CONCEPTO</th>
+                                <th scope="col">VALOR</th>
+                                <th scope="col">FECHA VENCI.</th>
+                                <th scope="col">DIAS VENCIDOS</th>
+                                <th scope="col">ESTADO</th>
+                                <th scope="col">PRIORIDAD</th>
+                                <th scope="col">APROBAR</th>
+                                <th scope="col">SOLICITUD APROBACIÓN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="" *ngFor="let cuentaPagarFija of cuentasPagarFija">
+                                <td scope="row">
+                                    {{cuentaPagarFija.tipo}}
+                                </td>
+                                <td scope="row">
+                                    {{cuentaPagarFija.tercero}}
+                                </td>
+                                <td class="concepto">
+                                    {{cuentaPagarFija.concepto}}
+                                </td>
+                                <td>
+                                    {{formatSalary(cuentaPagarFija.valor2)}}
+                                </td>
+                                <td>
+                                    {{cuentaPagarFija.fechaPago}}
+                                </td>
+                                <td *ngIf="cuentaPagarFija.pagado2">
+                                    {{ cuentaPagarFija.diasVencidos2 }}
+                                </td>
+                                <td class="fw-bold" [ngClass]="{'text-success': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                            cuentaPagarFija.pagado2) === 0, 'text-danger': calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                cuentaPagarFija.pagado2) !== 0}" *ngIf="!cuentaPagarFija.pagado2">
+                                    {{ calcularDiasVencidosAdmon(cuentaPagarFija.fechaPago2,
+                                    cuentaPagarFija.pagado2) }}
+                                </td>
+                                <td [ngClass]="{'text-success': cuentaPagarFija.estado === 'ACTIVA', 'text-danger': cuentaPagarFija.estado === 'CANCELADA'}"
+                                    scope="row">
+                                    {{cuentaPagarFija.estado}}
+                                </td>
+                                <td>
+                                    <select [(ngModel)]="cuentaPagarFija.prioridad2" (change)="actualizarPrioridadFija(cuentaPagarFija, cuentaPagarFija.fechaPago2)"
+                                        class="custom-select"
+                                        [ngStyle]="{'background-color': getSelectedColor(cuentaPagarFija.prioridad2), 'color': getTextColor(cuentaPagarFija.prioridad2)}">
+                                        <option [value]="'CRÍTICO'" class="critical-option"
+                                            [ngStyle]="{'background-color': '#505157', 'color': '#ffffff'}">
+                                            &#9888; CRÍTICO
+                                        </option>
+                                        <option [value]="'ALTO'" class="high-option"
+                                            [ngStyle]="{'background-color': '#6645A9', 'color': '#ffffff'}">
+                                            ALTO
+                                        </option>
+                                        <option [value]="'MEDIO'" class="medium-option"
+                                            [ngStyle]="{'background-color': '#6365B7', 'color': '#ffffff'}">
+                                            MEDIO
+                                        </option>
+                                        <option [value]="'BAJO'" class="low-option"
+                                            [ngStyle]="{'background-color': '#79AFFD', 'color': '#ffffff'}">
+                                            BAJO
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="pagado" id="pagado{{cuentaPagarFija._id}}"
+                                        [(ngModel)]="cuentaPagarFija.aprueba2"
+                                        (change)="actualizarEstadoPagoFija(cuentaPagarFija, cuentaPagarFija.fechaPago2)">
+                                </td>
+                                <td>
+                                    <i *ngIf="cuentaPagarFija.solicita2" class="fa-solid fa-bell text-danger"></i>
+                                    <i *ngIf="!cuentaPagarFija.solicita2" class="fa-regular fa-bell"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <div class="divSaldo">
+                                <div class="divValor">
+                                    <h1 class="m-0">VALOR APROBADO</h1>
+                                    <div class="divNumero">
+                                        {{formatSalary(saldoTotalAprobadosNoPagadosFijas)}}
+                                    </div>
+                                </div>
+                                <div class="divValor">
+                                    <h1 class="m-0">TOTAL CPP</h1>
+                                    <div class="divNumero">
+                                        {{formatSalary(saldoTotalFijas)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

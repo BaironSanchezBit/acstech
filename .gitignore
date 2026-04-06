@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.angular/
+out-tsc/
+tmp/
+
+# Environment & credentials
+*.env
+credentials.json
+token.json
+
+# Uploads (2.6GB de fotos/documentos)
+uploads/
+
+# Backups
+backup-*/
+backup-*.json
+*.bak*
+
+# Docker compose con credenciales (se sube una version ejemplo)
+# docker-compose.yml  -- lo subimos sin secrets
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Temp/scripts de mantenimiento
+temp/
+*.log
+cred.json
+backend/generador/cred.json

@@ -1,0 +1,1272 @@
+<app-navbar></app-navbar>
+<section class="body">
+  <div class="card-user">
+    <div class="div-car-user zoom" (click)="limpiarFormularios()" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop21">
+      <div>
+        <h2>IMAGENES DE INGRESO</h2>
+      </div>
+      <div>
+        <img src="../assets/img/alistamiento.png" alt="" class="w-25">
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGENES DE INGRESO -->
+  <div class="modal fade text-dark" id="staticBackdrop12" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 m-0" id="exampleModalToggleLabel6">FASE 2 - IMAGENES DE INGRESO</h1>
+          <button class="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRightRe" aria-controls="offcanvasRightRe"><i
+              class="fas fa-user-clock"></i></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <form class="modal-body" [formGroup]="ImagenesIngresoForm">
+          <label for="floatingSelect">3/4 FRENTE ( 
+            <span *ngIf="fotosTresCuartosFrente && fotosTresCuartosFrente.length > 0" class="text-danger">{{fotosTresCuartosFrente.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('tresCuartosFrenteObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="tresCuartosFrenteObs">
+            <!-- <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="tresCuartosFrente" (change)="onSelectChange('tresCuartosFrente', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select> -->
+            <button *ngIf="!button2" class="btn btn-success" (click)="funcionButton2()">+</button>
+            <button *ngIf="button2" class="btn btn-danger" (click)="funcionButton2()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button2">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosTresCuartosFrente && fotosTresCuartosFrente.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Frente+3.4.png
+                            " alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosTresCuartosFrente && fotosTresCuartosFrente.length > 0" class="carousel-container">
+                    <div id="tresCuartosCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosTresCuartosFrente; let i = index" 
+                                type="button" 
+                                data-bs-target="#tresCuartosCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosTresCuartosFrente; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#tresCuartosCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#tresCuartosCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosTresCuartosFrente; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('tresCuartosCarousel', j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete"
+                              (click)=" eliminarFoto('fotosTresCuartosFrente','tresCuartosCarousel' , j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('fotosTresCuartosFrente')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="fotosTresCuartosFrente" multiple accept="image/*" (change)="onTresCuartosFrenteSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">FRENTE (
+            <span *ngIf="fotosFrente && fotosFrente.length > 0"
+              class="text-danger">{{fotosFrente.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('frenteObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="frenteObs">
+            <!--<input type="text" *ngIf="button3" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('frenteObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="frenteObs">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="frente" (change)="onSelectChange('frente', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>-->
+            <button *ngIf="!button3" class="btn btn-success" (click)="funcionButton3()">+</button>
+            <button *ngIf="button3" class="btn btn-danger" (click)="funcionButton3()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button3">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosFrente && fotosFrente.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Frente.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosFrente && fotosFrente.length > 0" class="carousel-container">
+                    <div id="frenteCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosFrente; let i = index" 
+                                type="button" 
+                                data-bs-target="#frenteCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosFrente; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#frenteCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#frenteCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosFrente; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('frenteCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosFrente','frenteCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('fotosFrente')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="fotosFrente" multiple accept="image/*" (change)="onFrenteSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">FRENTE CAPÓ ABIERTO (
+            <span *ngIf="fotosFrenteCapoAbierto && fotosFrenteCapoAbierto.length > 0"
+              class="text-danger">{{fotosFrenteCapoAbierto.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('frenteCapoAbiertoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="frenteCapoAbiertoObs">
+            <button *ngIf="!button4" class="btn btn-success" (click)="funcionButton4()">+</button>
+            <button *ngIf="button4" class="btn btn-danger" (click)="funcionButton4()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button4">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosFrenteCapoAbierto && fotosFrenteCapoAbierto.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Frente+abierto.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosFrenteCapoAbierto && fotosFrenteCapoAbierto.length > 0" class="carousel-container">
+                    <div id="frenteCapoAbiertoCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosFrenteCapoAbierto; let i = index" 
+                                type="button" 
+                                data-bs-target="#frenteCapoAbiertoCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosFrenteCapoAbierto; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#frenteCapoAbiertoCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#frenteCapoAbiertoCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosFrenteCapoAbierto; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('frenteCapoAbiertoCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosFrenteCapoAbierto','frenteCapoAbiertoCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('frenteCapoAbierto')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="frenteCapoAbierto" multiple accept="image/*" (change)="onFrenteCapoAbiertoSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">MOTOR (<span *ngIf="fotosMotor && fotosMotor.length > 0"
+              class="text-danger">{{fotosMotor.length}} Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('motorObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="motorObs">
+            <button *ngIf="!button5" class="btn btn-success" (click)="funcionButton5()">+</button>
+            <button *ngIf="button5" class="btn btn-danger" (click)="funcionButton5()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button5">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosMotor && fotosMotor.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Detalle+motor.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosMotor && fotosMotor.length > 0" class="carousel-container">
+                    <div id="motorCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosMotor; let i = index" 
+                                type="button" 
+                                data-bs-target="#motorCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosMotor; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#motorCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#motorCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosMotor; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('motorCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosMotor','motorCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('motor')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="motor" multiple accept="image/*" (change)="onMotorSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">LATERAL DERECHO (
+            <span *ngIf="fotosLateralDerecho && fotosLateralDerecho.length > 0"
+              class="text-danger">{{fotosLateralDerecho.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            aria-describedby="emailHelp" placeholder="Escriba aqui la observacion"
+            (change)="onInputChange('lateralDerechoObs', $event)" formControlName="lateralDerechoObs">
+            <button *ngIf="!button6" class="btn btn-success" (click)="funcionButton6()">+</button>
+            <button *ngIf="button6" class="btn btn-danger" (click)="funcionButton6()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button6">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosLateralDerecho && fotosLateralDerecho.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Frente.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosLateralDerecho && fotosLateralDerecho.length > 0" class="carousel-container">
+                    <div id="lateralDerechoCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosLateralDerecho; let i = index" 
+                                type="button" 
+                                data-bs-target="#lateralDerechoCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosLateralDerecho; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#lateralDerechoCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#lateralDerechoCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosLateralDerecho; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('lateralDerechoCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosLateralDerecho' ,'lateralDerechoCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('lateralDerecho')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="lateralDerecho"  multiple accept="image/*" (change)="onLateralDerechoSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <label for="floatingSelect">TRASERA (
+            <span *ngIf="fotosTrasera && fotosTrasera.length > 0" class="text-danger">{{fotosTrasera.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('traseraObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="traseraObs">
+            <button *ngIf="!button7" class="btn btn-success" (click)="funcionButton7()">+</button>
+            <button *ngIf="button7" class="btn btn-danger" (click)="funcionButton7()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button7">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosTrasera && fotosTrasera.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Atr%C3%A1s.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosTrasera && fotosTrasera.length > 0" class="carousel-container">
+                    <div id="traseraCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosTrasera; let i = index" 
+                                type="button" 
+                                data-bs-target="#traseraCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosTrasera; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#traseraCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#traseraCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosTrasera; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('traseraCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosTrasera','traseraCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('trasera')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="trasera" multiple accept="image/*" (change)="onTraseraSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">TRASERA BAÚL ABIERTO (
+            <span *ngIf="fotosTraseraBaulAbierto && fotosTraseraBaulAbierto.length > 0" class="text-danger">{{fotosTraseraBaulAbierto.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('traseraBaulAbiertoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="traseraBaulAbiertoObs">
+            <button *ngIf="!button8" class="btn btn-success" (click)="funcionButton8()">+</button>
+            <button *ngIf="button8" class="btn btn-danger" (click)="funcionButton8()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button8">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosTraseraBaulAbierto && fotosTraseraBaulAbierto.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Atr%C3%A1s+abierto+(1).png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosTraseraBaulAbierto && fotosTraseraBaulAbierto.length > 0" class="carousel-container">
+                    <div id="traseraBaulAbietoCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosTraseraBaulAbierto; let i = index" 
+                                type="button" 
+                                data-bs-target="#traseraBaulAbietoCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosTraseraBaulAbierto; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#traseraBaulAbietoCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#traseraBaulAbietoCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosTraseraBaulAbierto; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('traseraBaulAbietoCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosTraseraBaulAbierto','traseraBaulAbietoCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('traseraBaulAbierto')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="traseraBaulAbierto" multiple accept="image/*" (change)="onTraseraBaulAbiertoSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">BAÚL (
+            <span *ngIf="fotosBaul && fotosBaul.length > 0" class="text-danger">{{fotosBaul.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('baulObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="baulObs">
+            <button *ngIf="!button9" class="btn btn-success" (click)="funcionButton9()">+</button>
+            <button *ngIf="button9" class="btn btn-danger" (click)="funcionButton9()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button9">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosBaul && fotosBaul.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Detalle+ba%C3%BAl.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosBaul && fotosBaul.length > 0" class="carousel-container">
+                    <div id="baulCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosBaul; let i = index" 
+                                type="button" 
+                                data-bs-target="#baulCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosBaul; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#baulCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#baulCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosBaul; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('baulCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosBaul','baulCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('baul')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="baul" multiple accept="image/*" (change)="onBaulSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">3/4 TRASERA (
+            <span *ngIf="fotosTresCuartosTrasera && fotosTresCuartosTrasera.length > 0"
+              class="text-danger">{{fotosTresCuartosTrasera.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('tresCuartosTraseraObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="tresCuartosTraseraObs">
+            <button *ngIf="!button10" class="btn btn-success" (click)="funcionButton10()">+</button>
+            <button *ngIf="button10" class="btn btn-danger" (click)="funcionButton10()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button10">
+            <div class="container my-3">
+              <div class="row">
+                <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-8 col-12 mb-4 mb-md-0">
+                  <div *ngIf="fotosTresCuartosTrasera && fotosTresCuartosTrasera.length == 0" class=" carousel-container">
+                    <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Atr%C3%A1s+3.4.png" 
+                            alt="Imagen de ejemplo" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;">
+                  </div>
+                  <div *ngIf="fotosTresCuartosTrasera && fotosTresCuartosTrasera.length > 0" class="carousel-container">
+                    <div id="tresCuartosTraseraCarousel" class="carousel slide" data-bs-ride="carousel">
+                      <!-- Indicadores -->
+                      <div class="carousel-indicators">
+                        <button *ngFor="let foto of fotosTresCuartosTrasera; let i = index" 
+                                type="button" 
+                                data-bs-target="#tresCuartosTraseraCarousel" 
+                                [attr.data-bs-slide-to]="i" 
+                                [class.active]="i === 0"
+                                aria-current="true" 
+                                [attr.aria-label]="'Slide ' + (i + 1)">
+                        </button>
+                      </div>
+                      
+                      <!-- Carrusel con tus fotos -->
+                      <div class="carousel-inner ratio ratio-16x9">
+                        <div *ngFor="let foto of fotosTresCuartosTrasera; let i = index" 
+                            class="carousel-item" 
+                            [class.active]="i === 0">
+                            <img [src]="foto" 
+                            class="d-block img-fluid mh-100" 
+                            style="height: 100%; width: 100%; object-fit: contain;" 
+                            [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                        </div>
+                      </div>
+                      <!-- Controles -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#tresCuartosTraseraCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#tresCuartosTraseraCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Miniaturas con botones de eliminar (opcional) -->
+                  <div class="preview-thumbnails mt-2">
+                    <div *ngFor="let foto of fotosTresCuartosTrasera; let j = index" class="preview thumbnail-wrapper">
+                      <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('tresCuartosTraseraCarousel',j)">
+                      <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                              (click)="eliminarFoto('fotosTresCuartosTrasera','tresCuartosTraseraCarousel', j)">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+                <div class="col-md-4 col-12">
+                  <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                    <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('tresCuartosTrasera')">
+                      <i class="fa-solid fa-plus"></i> Añadir fotos
+                    </button>
+                    <input type="file" id="tresCuartosTrasera" multiple accept="image/*" (change)="onTresCuartosTraseraSelected($event)"
+                    style="display: none;">
+                    <!-- Botón adicional para subir más fotos si lo necesitas 
+                    <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                      <i class="fa-solid fa-plus"></i> Añadir más fotos
+                    </button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">lATERAL IZQUIERDO (
+            <span *ngIf="fotosLateralIzquierdo && fotosLateralIzquierdo.length > 0"
+              class="text-danger">{{fotosLateralIzquierdo.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('lateralIzquierdoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="lateralIzquierdoObs">
+            <button *ngIf="!button11" class="btn btn-success" (click)="funcionButton11()">+</button>
+            <button *ngIf="button11" class="btn btn-danger" (click)="funcionButton11()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button11">
+            <div class="row">
+              <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-8 col-12 mb-4 mb-md-0">
+                <div *ngIf="fotosLateralIzquierdo && fotosLateralIzquierdo.length == 0" class=" carousel-container">
+                  <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Lado.png" 
+                          alt="Imagen de ejemplo" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;">
+                </div>
+                <div *ngIf="fotosLateralIzquierdo && fotosLateralIzquierdo.length > 0" class="carousel-container">
+                  <div id="lateralIzquierdoCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Indicadores -->
+                    <div class="carousel-indicators">
+                      <button *ngFor="let foto of fotosLateralIzquierdo; let i = index" 
+                              type="button" 
+                              data-bs-target="#lateralIzquierdoCarousel" 
+                              [attr.data-bs-slide-to]="i" 
+                              [class.active]="i === 0"
+                              aria-current="true" 
+                              [attr.aria-label]="'Slide ' + (i + 1)">
+                      </button>
+                    </div>
+                    
+                    <!-- Carrusel con tus fotos -->
+                    <div class="carousel-inner ratio ratio-16x9">
+                      <div *ngFor="let foto of fotosLateralIzquierdo; let i = index" 
+                          class="carousel-item" 
+                          [class.active]="i === 0">
+                          <img [src]="foto" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;" 
+                          [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                      </div>
+                    </div>
+                    <!-- Controles -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#lateralIzquierdoCarousel" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#lateralIzquierdoCarousel" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Siguiente</span>
+                    </button>
+                  </div>
+                </div>
+                <!-- Miniaturas con botones de eliminar (opcional) -->
+                <div class="preview-thumbnails mt-2">
+                  <div *ngFor="let foto of fotosLateralIzquierdo; let j = index" class="preview thumbnail-wrapper">
+                    <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('lateralIzquierdoCarousel',j)">
+                    <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                            (click)="eliminarFoto('fotosLateralIzquierdo','lateralIzquierdoCarousel', j)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-4 col-12">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                  <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('lateralIzquierdo')">
+                    <i class="fa-solid fa-plus"></i> Añadir fotos
+                  </button>
+                  <input type="file" id="lateralIzquierdo" multiple accept="image/*" (change)="onLateralIzquierdoSelected($event)"
+                  style="display: none;">
+                  <!-- Botón adicional para subir más fotos si lo necesitas 
+                  <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                    <i class="fa-solid fa-plus"></i> Añadir más fotos
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <label for="floatingSelect">ASIENTOS TRASEROS (
+            <span *ngIf="fotosAsientosTraseros && fotosAsientosTraseros.length > 0" class="text-danger">{{fotosAsientosTraseros.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text"  class="form-control" id="exampleInputEmail1"
+          (change)="onInputChange('asientosTraserosObs', $event)" aria-describedby="emailHelp"
+          placeholder="Escriba aqui la observacion" formControlName="asientosTraserosObs">
+            <button *ngIf="!button12" class="btn btn-success" (click)="funcionButton12()">+</button>
+            <button *ngIf="button12" class="btn btn-danger" (click)="funcionButton12()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button12">
+            <div class="row">
+              <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-8 col-12 mb-4 mb-md-0">
+                <div *ngIf="fotosAsientosTraseros && fotosAsientosTraseros.length == 0" class=" carousel-container">
+                  <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Automagno_Crooping_V1_2025-04-09-10.png" 
+                          alt="Imagen de ejemplo" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;">
+                </div>
+                <div *ngIf="fotosAsientosTraseros && fotosAsientosTraseros.length > 0" class="carousel-container">
+                  <div id="asientosTraserosCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Indicadores -->
+                    <div class="carousel-indicators">
+                      <button *ngFor="let foto of fotosAsientosTraseros; let i = index" 
+                              type="button" 
+                              data-bs-target="#asientosTraserosCarousel" 
+                              [attr.data-bs-slide-to]="i" 
+                              [class.active]="i === 0"
+                              aria-current="true" 
+                              [attr.aria-label]="'Slide ' + (i + 1)">
+                      </button>
+                    </div>
+                    
+                    <!-- Carrusel con tus fotos -->
+                    <div class="carousel-inner ratio ratio-16x9">
+                      <div *ngFor="let foto of fotosAsientosTraseros; let i = index" 
+                          class="carousel-item" 
+                          [class.active]="i === 0">
+                          <img [src]="foto" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;" 
+                          [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                      </div>
+                    </div>
+                    <!-- Controles -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#asientosTraserosCarousel" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#asientosTraserosCarousel" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Siguiente</span>
+                    </button>
+                  </div>
+                </div>
+                <!-- Miniaturas con botones de eliminar (opcional) -->
+                <div class="preview-thumbnails mt-2">
+                  <div *ngFor="let foto of fotosAsientosTraseros; let j = index" class="preview thumbnail-wrapper">
+                    <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('asientosTraserosCarousel',j)">
+                    <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                            (click)="eliminarFoto('fotosAsientosTraseros','asientosTraserosCarousel', j)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-4 col-12">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                  <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('asientosTraseros')">
+                    <i class="fa-solid fa-plus"></i> Añadir fotos
+                  </button>
+                  <input type="file" id="asientosTraseros" multiple accept="image/*" (change)="onAsientosTraserosSelected($event)"
+                  style="display: none;">
+                  <!-- Botón adicional para subir más fotos si lo necesitas 
+                  <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                    <i class="fa-solid fa-plus"></i> Añadir más fotos
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <label for="floatingSelect">ASIENTOS DELANTEROS (
+          <span *ngIf="fotosAsientosDelanteros && fotosAsientosDelanteros.length > 0"
+            class="text-danger">{{fotosAsientosDelanteros.length}}
+            Foto(s)</span>)</label>
+        <div class="input-group mb-2">
+          <input type="text" class="form-control" id="exampleInputEmail1"
+          (change)="onInputChange('asientosDelanterosObs', $event)" aria-describedby="emailHelp"
+          placeholder="Escriba aqui la observacion" formControlName="asientosDelanterosObs">
+          <button *ngIf="!button13" class="btn btn-success" (click)="funcionButton13()">+</button>
+          <button *ngIf="button13" class="btn btn-danger" (click)="funcionButton13()">-</button>
+        </div>
+        <div class="col-12 mb-2" *ngIf="button13">
+          <div class="row">
+            <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+            <div class="col-md-8 col-12 mb-4 mb-md-0">
+              <div *ngIf="fotosAsientosDelanteros && fotosAsientosDelanteros.length == 0" class=" carousel-container">
+                <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Automagno_Crooping_V1_2025-04-09-11.png" 
+                        alt="Imagen de ejemplo" 
+                        class="d-block img-fluid mh-100" 
+                        style="height: 100%; width: 100%; object-fit: contain;">
+              </div>
+              <div *ngIf="fotosAsientosDelanteros && fotosAsientosDelanteros.length > 0" class="carousel-container">
+                <div id="asientosDelanterosCarousel" class="carousel slide" data-bs-ride="carousel">
+                  <!-- Indicadores -->
+                  <div class="carousel-indicators">
+                    <button *ngFor="let foto of fotosAsientosDelanteros; let i = index" 
+                            type="button" 
+                            data-bs-target="#asientosDelanterosCarousel" 
+                            [attr.data-bs-slide-to]="i" 
+                            [class.active]="i === 0"
+                            aria-current="true" 
+                            [attr.aria-label]="'Slide ' + (i + 1)">
+                    </button>
+                  </div>
+                  
+                  <!-- Carrusel con tus fotos -->
+                  <div class="carousel-inner ratio ratio-16x9">
+                    <div *ngFor="let foto of fotosAsientosDelanteros; let i = index" 
+                        class="carousel-item" 
+                        [class.active]="i === 0">
+                        <img [src]="foto" 
+                        class="d-block img-fluid mh-100" 
+                        style="height: 100%; width: 100%; object-fit: contain;" 
+                        [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                    </div>
+                  </div>
+                  <!-- Controles -->
+                  <button class="carousel-control-prev" type="button" data-bs-target="#asientosDelanterosCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#asientosDelanterosCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                  </button>
+                </div>
+              </div>
+              <!-- Miniaturas con botones de eliminar (opcional) -->
+              <div class="preview-thumbnails mt-2">
+                <div *ngFor="let foto of fotosAsientosDelanteros; let j = index" class="preview thumbnail-wrapper">
+                  <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('asientosDelanterosCarousel',j)">
+                  <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                          (click)="eliminarFoto('fotosAsientosDelanteros', 'asientosDelanterosCarousel', j)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+            <div class="col-md-4 col-12">
+              <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('asientosDelanteros')">
+                  <i class="fa-solid fa-plus"></i> Añadir fotos
+                </button>
+                <input type="file" id="asientosDelanteros" multiple accept="image/*" (change)="onAsientosDelanterosSelected($event)"
+                style="display: none;">
+                <!-- Botón adicional para subir más fotos si lo necesitas 
+                <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                  <i class="fa-solid fa-plus"></i> Añadir más fotos
+                </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <input type="text" *ngIf="button11" class="form-control mb-2" id="exampleInputEmail1"
+          (change)="onInputChange('lateralIzquierdoObs', $event)" aria-describedby="emailHelp"
+          placeholder="Escriba aqui la observacion" formControlName="lateralIzquierdoObs">
+
+
+        
+          <label for="floatingSelect">PANEL COMPLETO (
+            <span *ngIf="fotosPanelCompleto && fotosPanelCompleto.length > 0" class="text-danger">{{fotosPanelCompleto.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <input type="text" class="form-control" id="exampleInputEmail1"
+            (change)="onInputChange('panelCompletoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="panelCompletoObs">
+            <button *ngIf="!button14" class="btn btn-success" (click)="funcionButton14()">+</button>
+            <button *ngIf="button14" class="btn btn-danger" (click)="funcionButton14()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button14">
+            <div class="row">
+              <!-- Caja del carrusel (8 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-8 col-12 mb-4 mb-md-0">
+                <div *ngIf="fotosPanelCompleto && fotosPanelCompleto.length == 0" class=" carousel-container">
+                  <img src="https://frontend-acs.s3.us-east-1.amazonaws.com/assets/img/Panel-12.png" 
+                          alt="Imagen de ejemplo" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;">
+                </div>
+                <div *ngIf="fotosPanelCompleto && fotosPanelCompleto.length > 0" class="carousel-container">
+                  <div id="panelCompletoCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Indicadores -->
+                    <div class="carousel-indicators">
+                      <button *ngFor="let foto of fotosPanelCompleto; let i = index" 
+                              type="button" 
+                              data-bs-target="#panelCompletoCarousel" 
+                              [attr.data-bs-slide-to]="i" 
+                              [class.active]="i === 0"
+                              aria-current="true" 
+                              [attr.aria-label]="'Slide ' + (i + 1)">
+                      </button>
+                    </div>
+                    
+                    <!-- Carrusel con tus fotos -->
+                    <div class="carousel-inner ratio ratio-16x9">
+                      <div *ngFor="let foto of fotosPanelCompleto; let i = index" 
+                          class="carousel-item" 
+                          [class.active]="i === 0">
+                          <img [src]="foto" 
+                          class="d-block img-fluid mh-100" 
+                          style="height: 100%; width: 100%; object-fit: contain;" 
+                          [alt]="'Foto ' + (i + 1) + ' tres cuartos frente'">
+                      </div>
+                    </div>
+                    <!-- Controles -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#panelCompletoCarousel" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#panelCompletoCarousel" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Siguiente</span>
+                    </button>
+                  </div>
+                </div>
+                <!-- Miniaturas con botones de eliminar (opcional) -->
+                <div class="preview-thumbnails mt-2">
+                  <div *ngFor="let foto of fotosPanelCompleto; let j = index" class="preview thumbnail-wrapper">
+                    <img [src]="foto" alt="Miniatura" class="img-thumbnail" (click)="goToSlide('panelCompletoCarousel',j)">
+                    <button type="button" class="btn btn-danger btn-sm thumbnail-delete" 
+                            (click)="eliminarFoto('fotosPanelCompleto', 'panelCompletoCarousel', j)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Caja del botón (4 columnas en desktop, 12 en móvil) -->
+              <div class="col-md-4 col-12">
+                <div class="d-flex flex-column justify-content-center align-items-center h-100 p-3">
+                  <button class="btn btn-primary btn-lg central-button mb-3" (click)="triggerFileInput('panelCompleto')">
+                    <i class="fa-solid fa-plus"></i> Añadir fotos
+                  </button>
+                  <input type="file" id="panelCompleto" multiple accept="image/*" (change)="onPanelCompletoSelected($event)"
+                  style="display: none;">
+                  <!-- Botón adicional para subir más fotos si lo necesitas 
+                  <button class="btn btn-outline-secondary" (click)="openFileInput()">
+                    <i class="fa-solid fa-plus"></i> Añadir más fotos
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>          
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR INVENTARIO POR PLACA -->
+  <div class="modal fade" id="staticBackdrop21" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR INVENTARIO POR PLACA</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarInventarioPlaca()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoControl"
+              [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarInventarioPlaca()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">N° INVENTARIO</th>
+                  <th class="text-center" scope="col">FECHA CREACIÓN</th>
+                  <th class="text-center" scope="col">NOMBRE PROPIETARIO</th>
+                  <th class="text-center" scope="col">ID PROPIETARIO</th>
+                  <th class="text-center" scope="col" style="width: 200px;">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of inventarios">
+                  <th class="text-center">{{i.inventoryId}}</th>
+                  <td>{{i.createdAt}}</td>
+                  <td>{{i.primerNombreCliente}} {{i.primerApellidoCliente}}</td>
+                  <td>{{i.numeroIdentificacionCliente}}</td>
+                  <td><button class="btn btn-primary" data-bs-target="#staticBackdrop12" data-bs-toggle="modal"
+                      (click)="irAlInventario(i.inventoryId)">Utilizar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="noHayInventarios" *ngIf="inventarios.length === 0">
+            <p>No hay inventarios</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>
+
+<app-image-modal *ngIf="showModal" [initialIndex]="imagenSeleccionadaIndex" [images]="imagenesModal"
+  (close)="closeModal2()"></app-image-modal>
+
+<div class="offcanvas offcanvas-end bg-dark text-bg-dark" tabindex="-1" id="offcanvasRightRe"
+  aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasRightLabel">REGISTRO DE ACTIVIDAD</h3>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="registro" *ngFor="let registro of registroActividad">
+      <img class="registroImage" [src]="registro?.image" alt="">
+      <div class="registroDesc">
+        <p class="fw-bold">{{registro?.descripcion}}</p>
+        <p class="registroFecha"><i class="fa-regular fa-clock"></i> {{ formatFecha(registro?.fecha) }}</p>
+      </div>
+    </div>
+  </div>
+</div>

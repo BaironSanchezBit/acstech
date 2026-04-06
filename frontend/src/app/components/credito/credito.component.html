@@ -1,0 +1,775 @@
+<app-navbar></app-navbar>
+<section class="body">
+  <div class="card-user">
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop20">
+      <div>
+        <h2>GESTIONAR SOLICITUD</h2>
+      </div>
+      <div>
+        <img src="../assets/img/credito.png" alt="" class="w-25">
+      </div>
+    </div>
+    <div class="div-car-user zoom" data-bs-toggle="modal" data-bs-target="#staticBackdrop5">
+      <div>
+        <h2>CALCULADORA DE CREDITO</h2>
+      </div>
+      <div>
+        <img src="../assets/img/calculadora.png" alt="" class="w-25">
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS SOLICITANTE -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 *ngIf="!btnChange" class="modal-title fs-5 me-5" id="staticBackdropLabel">BUSCAR DATOS SOLICITANTE</h1>
+          <h1 *ngIf="btnChange" class="modal-title fs-5 me-5" id="staticBackdropLabel">DATOS SOLICITANTE</h1>
+          <form *ngIf="!btnChange" class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Número" aria-label="Search"
+              (keyup.enter)="buscarCliente()" name="placa" matInput [formControl]="clienteControl"
+              [matAutocomplete]="autoCliente">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarCliente()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let cliente of opcionesFiltradas | async" [value]="cliente">
+                {{ cliente }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+        <div class="modal-body">
+          <form #clientForm="ngForm" class="row g-3">
+            <div class="col-md-6 text-black">
+              <label for="primerNombre" class="form-label">PRIMER NOMBRE</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.primerNombre" id="primerNombre"
+                name="primerNombre" disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="segundoNombre" class="form-label">SEGUNDO NOMBRE</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.segundoNombre" id="segundoNombre"
+                name="segundoNombre" disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="primerApellido" class="form-label">PRIMER APELLIDO</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.primerApellido" id="primerApellido"
+                name="primerApellido" disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="segundoApellido" class="form-label">SEGUNDO APELLIDO</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.segundoApellido" id="segundoApellido"
+                name="segundoApellido" disabled>
+            </div>
+            <div class="form-floating mb-2">
+              <select class="form-select" [(ngModel)]="clients.tipoIdentificacion" id="tipoIdentificacion"
+                aria-label="Floating label select example" name="tipoIdentificacion" disabled>
+                <option selected>Seleccione una opción</option>
+                <option value="C.C.">C.C</option>
+                <option value="C.E.">C.E</option>
+                <option value="PASAPORTE">PASAPORTE</option>
+                <option value="NIT.">NIT</option>
+              </select>
+              <label for="tipoIdentificacion">TIPO DE IDENTIFICACIÓN</label>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="numeroIdentificacion" class="form-label">NUMERO IDENTIFICACION</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.numeroIdentificacion"
+                id="numeroIdentificacion" name="numeroIdentificacion" disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="ciudadIdentificacion" class="form-label">CIUDAD IDENTIFICACION</label>
+              <select [(ngModel)]="clients.ciudadIdentificacion" id="ciudadIdentificacion" class="form-select"
+                name="ciudadIdentificacion" disabled>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="direccionResidencia" class="form-label">DIRECCION DE RESIDENCIA</label>
+              <input type="text" class="form-control" [(ngModel)]="clients.direccionResidencia" id="direccionResidencia"
+                name="direccionResidencia" disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="ciudadResidencia" class="form-label">CIUDAD RESIDENCIA</label>
+              <select [(ngModel)]="clients.ciudadResidencia" id="ciudadResidencia" class="form-select"
+                name="ciudadResidencia" disabled>
+                <option selected>Seleccione una opción</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="celular1" class="form-label">CELULAR 1</label>
+              <input type="number" class="form-control" [(ngModel)]="clients.celularOne" id="celular1" name="celular1"
+                disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="celular2" class="form-label">CELULAR 2</label>
+              <input type="number" class="form-control" [(ngModel)]="clients.celularTwo" id="celular2" name="celular2"
+                disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="correoElectronico" class="form-label">CORREO ELECTRONICO</label>
+              <input type="email" class="form-control" [(ngModel)]="clients.correoElectronico" id="correoElectronico"
+                name="correoElectronico" disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="fechaIngreso" class="form-label">FECHA INGRESO CLIENTE</label>
+              <input type="date" class="form-control" [(ngModel)]="clients.fechaIngreso" id="fechaIngreso"
+                name="fechaIngreso" disabled>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-danger" (click)="limpiarFormularios()">Limpiar formulario</button>
+          <button class="btn btn-success" *ngIf="btnChange || btnChange2" data-bs-target="#staticBackdrop2"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS VEHICULO -->
+  <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header text-black">
+          <h1 class="modal-title fs-5 me-5" id="staticBackdropLabel">DATOS VEHICULO</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarVehiculo()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoInvControl"
+              [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarVehiculo()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #vehicleForm="ngForm" class="row g-3">
+            <div class="form-group col-md-6 text-black">
+              <label for="placa" class="form-label">PLACA</label>
+              <input type="text" class="form-control" id="placa" [(ngModel)]="vehiculo.placa" name="placa"
+                (input)="onPlacaInput($event)" maxlength="6" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="marca" class="form-label">MARCA</label>
+              <input type="text" class="form-control" id="marca" [(ngModel)]="vehiculo.marca" name="marca"
+                (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="linea" class="form-label">LÍNEA</label>
+              <input type="text" class="form-control" id="linea" [(ngModel)]="vehiculo.linea" name="linea"
+                (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="version" class="form-label">VERSIÓN</label>
+              <input type="text" class="form-control" id="version" [(ngModel)]="vehiculo.version" name="version"
+                (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="modelo" class="form-label">MODELO (AÑO)</label>
+              <input type="number" class="form-control" id="modelo" [(ngModel)]="vehiculo.modelo" name="modelo" required
+                disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="cilindraje" class="form-label">CILINDRAJE CC</label>
+              <input type="number" class="form-control" id="cilindraje" [(ngModel)]="vehiculo.cilindraje"
+                name="cilindraje" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="color" class="form-label">COLOR</label>
+              <input type="text" class="form-control" id="color" [(ngModel)]="vehiculo.color" name="color"
+                (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-6 text-black">
+              <label for="servicio" class="form-label">SERVICIO</label>
+              <select id="servicio" class="form-select" [(ngModel)]="vehiculo.servicio" name="servicio" required
+                disabled>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="PARTICULAR">PARTICULAR</option>
+                <option value="PUBLICO">PÚBLICO</option>
+                <option value="CARGA">CARGA</option>
+                <option value="REMOLQUE">REMOLQUE</option>
+                <option value="OFICIAL">OFICIAL</option>
+                <option value="DIPLOMATICO">DIPLOMÁTICO</option>
+                <option value="CONSULTAR">CONSULAR</option>
+                <option value="MISIONES ESPECIALES">MISIONES ESPECIALES</option>
+              </select>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="clase" class="form-label">CLASE</label>
+              <select id="clase" class="form-select" [(ngModel)]="vehiculo.clase" name="clase" required disabled>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="AUTOMOVIL">AUTOMOVIL</option>
+                <option value="BUS">BUS</option>
+                <option value="BUSETA">BUSETA</option>
+                <option value="CAMION">CAMIÓN</option>
+                <option value="CAMIONETA">CAMIONETA</option>
+                <option value="CAMPERO">CAMPERO</option>
+                <option value="TRACTOCAMION">TRACTOCAMIÓN</option>
+                <option value="MICROBUS">MICROBUS</option>
+                <option value="MOTOCARRO">MOTOCARRO</option>
+                <option value="MOTOCICLETA">MOTOCICLETA</option>
+                <option value="MOTOTRICICLO">MOTOTRICICLO</option>
+                <option value="VOLQUETA">VOLQUETA</option>
+              </select>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="carroceria" class="form-label">CARROCERÍA</label>
+              <input type="text" class="form-control" id="carroceria" [(ngModel)]="vehiculo.carroceria"
+                name="carroceria" (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="combustible" class="form-label">COMBUSTIBLE</label>
+              <input type="text" class="form-control" id="combustible" [(ngModel)]="vehiculo.combustible"
+                name="combustible" (input)="onMayuscula($event)" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="pasajeros" class="form-label">PASAJEROS</label>
+              <input type="text" class="form-control" id="pasajeros" [(ngModel)]="vehiculo.pasajeros" name="pasajeros"
+                required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="numeroMotor" class="form-label">NUMERO DE MOTOR</label>
+              <input type="text" class="form-control" id="numeroMotor" [(ngModel)]="vehiculo.numeroMotor"
+                name="numeroMotor" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="ciudadPlaca" class="form-label">CIUDAD PLACA</label>
+              <select id="ciudadPlaca" class="form-select" [(ngModel)]="vehiculo.ciudadPlaca" name="ciudadPlaca"
+                required disabled>
+                <option selected>Seleccione una opcion</option>
+                <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+              </select>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="vin" class="form-label">VIN</label>
+              <input type="text" class="form-control" id="vin" [(ngModel)]="vehiculo.vin" name="vin" required disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="serie" class="form-label">SERIE</label>
+              <input type="text" class="form-control" id="serie" [(ngModel)]="vehiculo.serie" name="serie" required
+                disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="chasis" class="form-label">CHASIS</label>
+              <input type="text" class="form-control" id="chasis" [(ngModel)]="vehiculo.chasis" name="chasis" required
+                disabled>
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="fechaMatricula" class="form-label">FECHA MATRÍCULA</label>
+              <input type="date" class="form-control" id="fechaMatricula" [(ngModel)]="vehiculo.fechaMatricula"
+                name="fechaMatricula" required disabled>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop" data-bs-toggle="modal">Volver</button>
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-danger" (click)="limpiarFormularios()">Limpiar formulario</button>
+          <button class="btn btn-success" *ngIf="btnChange || btnChange3" data-bs-target="#staticBackdrop3"
+            data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMATO SOLICITUD ESTUDIO DE CRÉDITO -->
+  <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">FORMATO SOLICITUD ESTUDIO DE CRÉDITO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="creditoForm">
+            <div class="text-black mb-2">
+              <label for="clase" class="form-label">TIPO DE CLIENTE</label>
+              <select id="clase" class="form-select" name="tipoCliente" formControlName="tipoCliente"
+                [ngClass]="{'is-invalid': creditoForm.get('tipoCliente')?.invalid && creditoForm.get('tipoCliente')?.touched}"
+                required>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="EMPLEADO">EMPLEADO</option>
+                <option value="INDEPENDIENTE">INDEPENDIENTE</option>
+                <option value="PENSIONADO">PENSIONADO</option>
+              </select>
+              <div *ngIf="creditoForm.get('tipoCliente')?.invalid &&
+              creditoForm.get('tipoCliente')?.touched" class="invalid-feedback">
+                Por favor ingrese un tipo de cliente válido.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="valorVehiculo" class="form-label">VALOR VEHIÍCULO</label>
+              <input type="text" class="form-control" id="valorVehiculo" name="valorVehiculo"
+                formControlName="valorVehiculo" (input)="onCurrencyInput('valorVehiculo', $event)"
+                [ngClass]="{'is-invalid': creditoForm.get('valorVehiculo')?.invalid && creditoForm.get('valorVehiculo')?.touched}"
+                required>
+              <div *ngIf="creditoForm.get('valorVehiculo')?.invalid &&
+                creditoForm.get('valorVehiculo')?.touched" class="invalid-feedback">
+                Por favor ingrese un valor válido.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="valorSolicitado" class="form-label">VALOR SOLICITADO</label>
+              <input type="text" class="form-control" id="valorSolicitado" name="valorSolicitado"
+                formControlName="valorSolicitado" (input)="onCurrencyInput('valorSolicitado', $event)"
+                [ngClass]="{'is-invalid': creditoForm.get('valorSolicitado')?.invalid && creditoForm.get('valorSolicitado')?.touched}"
+                required>
+              <div *ngIf="creditoForm.get('valorSolicitado')?.invalid &&
+                creditoForm.get('valorSolicitado')?.touched" class="invalid-feedback">
+                Por favor ingrese un valor válido.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="valorAprobado" class="form-label">VALOR APROBADO</label>
+              <input type="text" class="form-control" id="valorAprobado" formControlName="valorAprobado"
+                name="valorAprobado" (input)="onCurrencyInput('valorAprobado', $event)"
+                [ngClass]="{'is-invalid': creditoForm.get('valorAprobado')?.invalid && creditoForm.get('valorAprobado')?.touched}"
+                required>
+              <div *ngIf="creditoForm.get('valorAprobado')?.invalid &&
+                creditoForm.get('valorAprobado')?.touched" class="invalid-feedback">
+                Por favor ingrese un valor válido.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="nombreBanco" class="form-label">BANCO</label>
+              <select id="nombreBanco" class="form-select" formControlName="nombreBanco" name="nombreBanco"
+                (change)="onBancoSeleccionado($event)"
+                [ngClass]="{'is-invalid': creditoForm.get('nombreBanco')?.invalid && creditoForm.get('nombreBanco')?.touched}"
+                required>
+                <option selected>Seleccione una opcion</option>
+                <option *ngFor="let banco of bancos" [value]="banco.nombreBanco">{{banco.nombreBanco}}</option>
+              </select>
+              <div *ngIf="creditoForm.get('nombreBanco')?.invalid &&
+              creditoForm.get('nombreBanco')?.touched" class="invalid-feedback">
+                Por favor ingrese un banco válido.
+              </div>
+            </div>
+            <div class="form-floating mb-2">
+              <textarea class="form-control" placeholder="Leave a comment here" id="observaciones"
+                formControlName="observaciones" name="observaciones"
+                [ngClass]="{'is-invalid': creditoForm.get('observaciones')?.invalid && creditoForm.get('observaciones')?.touched}"
+                required></textarea>
+              <label for="observaciones">Observaciones</label>
+              <div *ngIf="creditoForm.get('observaciones')?.invalid &&
+              creditoForm.get('observaciones')?.touched" class="invalid-feedback">
+                Por favor ingrese alguna observación.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="tasaAprobacion" class="form-label">TASA DE APROBACIÓN</label>
+              <input type="number" class="form-control" id="tasaAprobacion" formControlName="tasaAprobacion"
+                name="tasaAprobacion"
+                [ngClass]="{'is-invalid': creditoForm.get('tasaAprobacion')?.invalid && creditoForm.get('tasaAprobacion')?.touched}"
+                required>
+              <div *ngIf="creditoForm.get('tasaAprobacion')?.invalid &&
+                creditoForm.get('tasaAprobacion')?.touched" class="invalid-feedback">
+                Por favor ingrese una tasa de aprobación válido.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="condicionesAprobacion" class="form-label">CONDICIONES APROBACION</label>
+              <input type="text" class="form-control" id="condicionesAprobacion" formControlName="condicionesAprobacion"
+                name="condicionesAprobacion"
+                [ngClass]="{'is-invalid': creditoForm.get('condicionesAprobacion')?.invalid && creditoForm.get('condicionesAprobacion')?.touched}"
+                required>
+              <div *ngIf="creditoForm.get('condicionesAprobacion')?.invalid &&
+                creditoForm.get('condicionesAprobacion')?.touched" class="invalid-feedback">
+                Por favor ingrese las condiciones de aprobación
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="estadoSolicitud" class="form-label">ESTADO SOLICITUD</label>
+              <select id="estadoSolicitud" class="form-select" formControlName="estadoSolicitud" name="estadoSolicitud"
+                [ngClass]="{'is-invalid': creditoForm.get('estadoSolicitud')?.invalid && creditoForm.get('estadoSolicitud')?.touched}"
+                required>
+                <option selected>Seleccione una opcion</option>
+                <option value="APROBADO">APROBADO</option>
+                <option value="RECHAZADO">RECHAZADO</option>
+                <option value="EN ESTUDIO">EN ESTUDIO</option>
+                <option value="DESEMBOLSADO">DESEMBOLSADO</option>
+                <option value="DESISTIDO">DESISTIDO</option>
+              </select>
+              <div *ngIf="creditoForm.get('estadoSolicitud')?.invalid &&
+              creditoForm.get('estadoSolicitud')?.touched" class="invalid-feedback">
+                Por favor ingrese un estado de solicitud.
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop2" data-bs-toggle="modal">Volver</button>
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-danger" (click)="limpiarFormularios()">Limpiar formulario</button>
+          <button class="btn btn-success" data-bs-target="#staticBackdrop4" data-bs-toggle="modal">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFORMACIÓN POLIZA -->
+  <div class="modal fade" id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">INFORMACIÓN POLIZA</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="creditoForm2">
+            <div class="text-black">
+              <label for="fechaRegistro" class="form-label">FECHA REGISTRO</label>
+              <input type="date" class="form-control" id="fechaRegistro" formControlName="fechaRegistro"
+                formControlName="fechaRegistro" name="fechaRegistro"
+                [ngClass]="{'is-invalid': creditoForm2.get('fechaRegistro')?.invalid && creditoForm2.get('fechaRegistro')?.touched}"
+                required>
+              <div *ngIf="creditoForm2.get('fechaRegistro')?.invalid &&
+                creditoForm2.get('fechaRegistro')?.touched" class="invalid-feedback">
+                Por favor ingrese una fecha válida.
+              </div>
+            </div>
+            <div class="text-black mb-2">
+              <label for="estadoSolicitudPoliza" class="form-label">ESTADO SOLICITUD POLIZA</label>
+              <select id="estadoSolicitudPoliza" class="form-select" name="estadoSolicitudPoliza"
+                formControlName="estadoSolicitudPoliza"
+                [ngClass]="{'is-invalid': creditoForm2.get('estadoSolicitudPoliza')?.invalid && creditoForm2.get('estadoSolicitudPoliza')?.touched}"
+                required>
+                <option value="" selected>Seleccione una opcion</option>
+                <option value="POR SELECCIONAR">POR SELECCIONAR</option>
+                <option value="PAGO REALIZADO">PAGO REALIZADO</option>
+                <option value="PAGO PENDIENTE">PAGO PENDIENTE</option>
+              </select>
+              <div *ngIf="creditoForm2.get('estadoSolicitudPoliza')?.invalid &&
+              creditoForm2.get('estadoSolicitudPoliza')?.touched" class="invalid-feedback">
+                Por favor ingrese un estado de poliza válido.
+              </div>
+              <div class="text-black mb-2">
+                <label for="aseguradora" class="form-label">ASEGURADORA</label>
+                <select id="aseguradora" class="form-select" name="aseguradora" formControlName="aseguradora"
+                  [ngClass]="{'is-invalid': creditoForm2.get('aseguradora')?.invalid && creditoForm2.get('aseguradora')?.touched}"
+                  required>
+                  <option selected>Seleccione una opcion</option>
+                  <option value="SEGUROS BOLIVAR">SEGUROS BOLIVAR</option>
+                </select>
+                <div *ngIf="creditoForm2.get('aseguradora')?.invalid &&
+              creditoForm2.get('aseguradora')?.touched" class="invalid-feedback">
+                  Por favor ingrese una aseguradora válida.
+                </div>
+              </div>
+              <div class="text-black mb-2">
+                <label for="asesorComercialAutomagno" class="form-label">ASESOR COMCERCIAL AUTOMAGNO</label>
+                <select id="asesorComercialAutomagno" class="form-select" name="asesorComercialAutomagno"
+                  formControlName="asesorComercialAutomagno"
+                  [ngClass]="{'is-invalid': creditoForm2.get('asesorComercialAutomagno')?.invalid && creditoForm2.get('asesorComercialAutomagno')?.touched}"
+                  required>
+                  <option selected>Seleccione una opcion</option>
+                  <option value="SEGUROS BOLIVAR">SEGUROS BOLIVAR</option>
+                </select>
+                <div *ngIf="creditoForm2.get('asesorComercialAutomagno')?.invalid &&
+              creditoForm2.get('asesorComercialAutomagno')?.touched" class="invalid-feedback">
+                  Por favor ingrese un asesor comercial válido.
+                </div>
+              </div>
+              <div class="text-black mb-2">
+                <label for="asesorEntidadFinanciera" class="form-label">ASESOR ENTIDAD FINANCIERA</label>
+                <input type="text" class="form-control" id="asesorEntidadFinanciera" name="asesorEntidadFinanciera"
+                  formControlName="asesorEntidadFinanciera"
+                  [ngClass]="{'is-invalid': creditoForm2.get('asesorEntidadFinanciera')?.invalid && creditoForm2.get('asesorEntidadFinanciera')?.touched}"
+                  required>
+                <div *ngIf="creditoForm2.get('asesorEntidadFinanciera')?.invalid &&
+                creditoForm2.get('asesorEntidadFinanciera')?.touched" class="invalid-feedback">
+                  Por favor ingrese asesor de la entidad financiera válido.
+                </div>
+                <div class="text-black mb-2">
+                  <label for="celularAsesorFinanciera" class="form-label">CELULAR ASESOR ENTIDAD FINANCIERA</label>
+                  <input type="number" class="form-control" id="celularAsesorEntidadFinanciera"
+                    name="celularAsesorFinanciera" formControlName="celularAsesorFinanciera"
+                    [ngClass]="{'is-invalid': creditoForm2.get('celularAsesorFinanciera')?.invalid && creditoForm2.get('celularAsesorFinanciera')?.touched}"
+                    required>
+                  <div *ngIf="creditoForm2.get('celularAsesorFinanciera')?.invalid &&
+                creditoForm2.get('celularAsesorFinanciera')?.touched" class="invalid-feedback">
+                    Por favor ingrese un celular del asesor financiero válido.
+                  </div>
+                </div>
+                <div class="text-black mb-2">
+                  <label for="correoAsesorEntidadFinanciera" class="form-label">CORREO ASESOR ENTIDAD FINANCIERA</label>
+                  <input type="text" class="form-control" id="correoAsesorEntidadFinanciera"
+                    name="correoAsesorEntidadFinanciera" formControlName="correoAsesorEntidadFinanciera"
+                    [ngClass]="{'is-invalid': creditoForm2.get('correoAsesorEntidadFinanciera')?.invalid && creditoForm2.get('correoAsesorEntidadFinanciera')?.touched}"
+                    required>
+                  <div *ngIf="creditoForm2.get('correoAsesorEntidadFinanciera')?.invalid &&
+                creditoForm2.get('correoAsesorEntidadFinanciera')?.touched" class="invalid-feedback">
+                    Por favor ingrese un correo del asesor financiero válido.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#staticBackdrop3" data-bs-toggle="modal">Volver</button>
+          <button *ngIf="btnEsconder" class="btn btn-primary" data-bs-target="#staticBackdrop17"
+            data-bs-toggle="modal">Volver al indice</button>
+          <button class="btn btn-danger" (click)="limpiarFormularios()">Limpiar formulario</button>
+          <button type="button" class="btn btn-success" *ngIf="!btnChange" (click)="crearSolicitud()">Crear</button>
+          <button type="button" class="btn btn-info" *ngIf="btnChange"
+            (click)="actualizarSolicitudCredito()">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULADORA DE CRÉDITO -->
+  <div class="modal fade" id="staticBackdrop5" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">CALCULADORA DE CRÉDITO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="financiamientoForm" class="modal-body" id="modal-body-calculator">
+          <div class="calculadora-container">
+            <h1>Calculadora de Crédito</h1>
+            <div class="input-group">
+              <label for="montoPrestamo">Monto del Préstamo:</label>
+              <input type="text" formControlName="valorFinanciar" (input)="onCurrencyInput2($event)" id="montoPrestamo"
+                placeholder="Monto del préstamo">
+            </div>
+            <div class="input-group">
+              <label for="tasaInteres">Tasa de Interés Anual (%):</label>
+              <input type="text" [value]="tasaInteres +'%'" id="tasaInteres" placeholder="Tasa de interés">
+            </div>
+            <label for="plazoPrestamo">Plazo del Préstamo (años):</label>
+            <div class="input-group">
+              <select class="form-select" formControlName="plazoMeses" id="floatingSelect"
+                aria-label="Floating label select example">
+                <option value="0" disabled selected>Seleccione una opción</option>
+                <option value="12">12 Meses</option>
+                <option value="24">24 Meses</option>
+                <option value="36">36 Meses</option>
+                <option value="48">48 Meses</option>
+                <option value="60">60 Meses</option>
+                <option value="72">72 Meses</option>
+              </select>
+            </div>
+            <button (click)="calcularYFormatearPago()" id="calcularBtn">Calcular Pago Mensual</button>
+            <div class="resultado" id="resultado" *ngIf="pagoMensual !== null">
+              Pago Mensual: {{ pagoMensual }}
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-target="#staticBackdrop13"
+            data-bs-toggle="modal">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GESTIONAR CRÉDITOS -->
+  <div class="modal fade" id="staticBackdrop20" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">GESTIONAR CRÉDITO</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-around">
+          <button class="btn btn-success" data-bs-target="#staticBackdrop" data-bs-toggle="modal">CREAR
+            CRÉDITO</button>
+          <button class="btn btn-warning" data-bs-target="#staticBackdrop31" data-bs-toggle="modal">ESTADOS DE
+            CRÉDITO</button>
+          <button class="btn btn-primary" data-bs-target="#staticBackdrop15" data-bs-toggle="modal">BUSCAR CRÉDITOS
+            POR PLACA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR CRÉDITOS POR PLACA -->
+  <div class="modal fade" id="staticBackdrop15" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR CRÉDITOS POR PLACA</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarCreditosPlaca()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoInvOneControl"
+              [matAutocomplete]="autoVehiculoInv">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarCreditosPlaca()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculoInv="matAutocomplete" [displayWith]="displayFnVehInv">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVehInv | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">N° CRÉDITO</th>
+                  <th class="text-center" scope="col">FECHA CREACIÓN</th>
+                  <th class="text-center" scope="col">NOMBRE</th>
+                  <th class="text-center" scope="col">BANCO</th>
+                  <th class="text-center" scope="col">VALOR SOLICITADO</th>
+                  <th class="text-center" scope="col" style="width: 200px;">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of creditos">
+                  <th class="text-center">{{i.numeroSolicitud}}</th>
+                  <td class="text-center">{{i.createdAt}}</td>
+                  <td class="text-center">{{i.primerNombreCliente}} {{i.primerApellidoCliente}}</td>
+                  <td class="text-center">{{i.nombreBanco}}</td>
+                  <td class="text-center">{{i.valorSolicitado}}</td>
+                  <td class="text-center"><button class="btn btn-primary" data-bs-target="#staticBackdrop17"
+                      data-bs-toggle="modal" (click)="cargarInformacionCredito(i.numeroSolicitud)">Ir al
+                      Crédito</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR CRÉDITO -->
+  <div class="modal fade" id="staticBackdrop17" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header" *ngIf="!btnChange2">
+          <h1 class="modal-title fs-5 me-5" id="staticBackdropLabel">BUSCAR SOLICITUD DE CREDITO</h1>
+          <form class="d-flex" role="search" (ngSubmit)="cargarInformacionCredito(numeroSolicitudBusqueda)">
+            <input class="form-control me-2" type="search" placeholder="0000000000" aria-label="Search"
+              [(ngModel)]="numeroSolicitudBusqueda" name="cliente">
+            <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div *ngIf="btnEsconder" class="modal-body">
+          <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop"
+              data-bs-toggle="modal">DATOS SOLICITANTE</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop2"
+              data-bs-toggle="modal">DATOS VEHICULO</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop3"
+              data-bs-toggle="modal">FORMATO SOLICITUD ESTUDIO DE CRÉDITO</button>
+            <button type="button" class="list-group-item list-group-item-action" data-bs-target="#staticBackdrop4"
+              data-bs-toggle="modal">INFORMACIÓN POLIZA</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADO CRÉDITOS -->
+  <div class="modal fade" id="staticBackdrop31" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">ESTADOS DE CRÉDITOS</h1>
+          <form class="d-flex" role="search">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                [(ngModel)]="estadoSeleccionado" (change)="filtrarTramites()" name="estadoSelect">
+                <option value="TODOS">TODOS</option>
+                <option value="APROBADO">APROBADO</option>
+                <option value="RECHAZADO">RECHAZADO</option>
+                <option value="EN ESTUDIO">EN ESTUDIO</option>
+                <option value="DESEMBOLSADO">DESEMBOLSADO</option>
+                <option value="DESISTIDO">DESISTIDO</option>
+              </select>
+              <label for="floatingSelect">FILTRAR ESTADO</label>
+            </div>
+          </form>
+          <button class="btn btn-success ms-2" data-bs-target="#staticBackdrop" data-bs-toggle="modal"
+            (click)="limpiarFormularios()">CREAR</button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-container">
+            <table class="table table-hover">
+              <thead class="table-secondary">
+                <tr>
+                  <th scope="col"># SOLICITUD</th>
+                  <th scope="col">PLACA</th>
+                  <th scope="col">MARCA</th>
+                  <th scope="col">LÍNEA</th>
+                  <th scope="col">VERSIÓN</th>
+                  <th scope="col">MODELO</th>
+                  <th scope="col">NOMBRE COMPRADOR</th>
+                  <th scope="col"># DOCUMENTO COMPRADOR</th>
+                  <th scope="col">ESTADO</th>
+                  <th class="text-center" scope="col">ACCIÓN</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr *ngFor="let credito of creditosFiltrados">
+                  <th scope="row">{{credito.numeroSolicitud}}</th>
+                  <td>{{credito.placa}}</td>
+                  <td>{{credito.marca}}</td>
+                  <td>{{credito.linea}}</td>
+                  <td>{{credito.version}}</td>
+                  <td>{{credito.modelo}}</td>
+                  <td>{{credito.primerNombreCliente}} {{credito.apellidoCliente}}</td>
+                  <td>{{credito.identificacionCliente}}</td>
+                  <td [ngClass]="{
+    'text-danger': credito.estadoSolicitud === 'RECHAZADO' || credito.estadoSolicitud === 'DESISTIDO',
+    'text-warning': credito.estadoSolicitud === 'EN ESTUDIO',
+    'text-primary': credito.estadoSolicitud === 'DESEMBOLSADO',
+    'text-success': credito.estadoSolicitud === 'APROBADO'
+  }" class="fw-bold">{{credito.estadoSolicitud}}</td>
+                  <td>
+                    <button class="btn btn-success" data-bs-target="#staticBackdrop17" data-bs-toggle="modal"
+                      (click)="cargarInformacionCredito(credito.numeroSolicitud)">Gestionar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

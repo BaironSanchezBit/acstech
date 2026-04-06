@@ -1,0 +1,188 @@
+<div id="nav-bar"><input id="nav-toggle" type="checkbox">
+  <div id="nav-header">
+    <a id="nav-title" routerLink="/sistema">
+      <img class="imgUser" [src]="datosUser?.image" alt="">
+      <h4>{{datosUser?.nombre}}</h4>
+      <h5>{{datosUser?.cargo}}</h5>
+      <h5>V3.1.6</h5>
+    </a>
+    <a class="manual" [routerLink]="['/manual']">Manual de Usuario</a>
+    <hr />
+  </div>
+  <div id="nav-content">
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Adquisiciones'])" [routerLink]="['/pre-inventario']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-truck-ramp-box"></i><span>Pre-Inventarios</span></div>
+    <div [routerLink]="['/inventarios']" routerLinkActive="router-link-active" class="nav-button">
+      <i class="fa-solid fa-cart-shopping"></i><span>Inventarios</span>
+    </div>
+    <div [routerLink]="['/panel-gerencia']" routerLinkActive="router-link-active" class="nav-button">
+      <i class="fa-solid fa-book"></i><span>Panel Gerencia</span>
+    </div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente'])" [routerLink]="['/cuadro-gerencial']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-chart-simple"></i><span>Cuadro
+        Gerencial</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Registro'])" [routerLink]="['/registro']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-address-card"></i><span>Registro</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Adquisiciones'])" [routerLink]="['/adquisicion']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-cart-shopping"></i><span>Adquisición</span></div>
+    
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Ventas'])" [routerLink]="['/venta']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-sack-dollar"></i><span>Ventas</span></div>
+
+    <div *ngIf="tieneRol(['Control Accesorios', 'Programador', 'Gerente'])" [routerLink]="['/alistamiento']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-list-check"></i><span>Control
+        Accesorios</span></div>
+
+    <div *ngIf="tieneRol(['Control Accesorios', 'Programador', 'Gerente'])" [routerLink]="['/imagenes-ingreso']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-sharp fa-solid fa-folder-image"></i><span>Imagenes de ingreso
+      </span></div> 
+
+    <div *ngIf="tieneRol(['Orden de Trabajo', 'Programador', 'Gerente'])" [routerLink]="['/orden-trabajo']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-screwdriver-wrench"></i><span>Orden
+        de Trabajo</span></div>
+
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Créditos'])" [routerLink]="['/modulo-credito']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-credit-card"></i><span>Crédito</span></div>
+
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Cotizaciones'])" [routerLink]="['/cotizaciones']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-scroll"></i><span>Cotizaciones</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Trámites'])" [routerLink]="['/tramites']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-file-circle-plus"></i><span>Trámites</span></div>
+    <!-- <div *ngIf="tieneRol(['Programador', 'Gerente', 'Contabilidad'])" [routerLink]="['/contabilidad']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-calculator"></i><span>Contabilidad</span></div>
+        -->
+    <div
+      *ngIf="tieneRol(['Programador', 'Gerente', 'BD COSTOS DE TRÁMITES', 'BD TRAMITADORES', 'BD USUARIOS', 'BD PROVEEDORES', 'BD COMISIONES', 'BD BANCOS', 'BD CONTRASEÑAS', 'BD VARIABLES'])"
+      [routerLink]="['/control-bd']" routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-database"></i><span>Bases de
+        datos</span></div>
+
+    <div id="nav-content-highlight"></div>
+  </div><input id="nav-footer-toggle" type="checkbox" />
+  <div id="nav-footer">
+    <div id="nav-footer-heading">
+      <div id="nav-footer-titlebox" (click)="onLogout()" class="nav-button"><i
+          class="fa-solid fa-right-from-bracket"></i><span>Cerrar
+          sesión</span></div>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <button class="navbar-toggler" (click)="toggleNavbar()">☰</button>
+  <div class="navbar-menu" [class.active]="navbarOpen">
+    <button class="close-menu" (click)="toggleNavbar()">x</button>
+    <!-- Tus enlaces aquí -->
+    <div id="nav-header">
+      <div id="nav-title">
+        <img class="imgUser" [src]="datosUser?.image" alt="">
+        <h4>{{datosUser?.nombre}}</h4>
+        <h5>{{datosUser?.cargo}}</h5>
+        <h5>V3.1.6</h5>
+        <a class="manual" [routerLink]="['/manual']">Manual de Usuario</a>
+      </div>
+      <hr />
+    </div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Adquisiciones'])" [routerLink]="['/pre-inventario']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-truck-ramp-box"></i><span>Pre-Inventario</span></div>
+    <div [routerLink]="['/inventarios']" routerLinkActive="router-link-active" class="nav-button">
+      <i class="fa-solid fa-cart-shopping"></i><span>Inventarios</span>
+    </div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente'])" [routerLink]="['/cuadro-gerencial']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-chart-simple"></i><span>Cuadro
+        Gerencial</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Registro'])" [routerLink]="['/registro']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-address-card"></i><span>Registro</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Adquisiciones'])" [routerLink]="['/adquisicion']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-cart-shopping"></i><span>Adquisición</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Ventas'])" [routerLink]="['/venta']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-sack-dollar"></i><span>Ventas</span></div>
+    <div *ngIf="tieneRol(['Control Accesorios', 'Programador', 'Gerente'])" [routerLink]="['/alistamiento']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-list-check"></i><span>Control
+        Accesorios</span></div>
+    <div *ngIf="tieneRol(['Control Accesorios', 'Programador', 'Gerente'])" [routerLink]="['/imagenes-ingreso']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-sharp fa-solid fa-folder-image"></i><span>Imagenes de ingreso
+      </span></div>
+    <div *ngIf="tieneRol(['Orden de Trabajo', 'Programador', 'Gerente'])" [routerLink]="['/orden-trabajo']"
+      routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-screwdriver-wrench"></i><span>Orden
+        de Trabajo</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Créditos'])" [routerLink]="['/modulo-credito']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-credit-card"></i><span>Crédito</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Cotizaciones'])" [routerLink]="['/cotizaciones']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-scroll"></i><span>Cotizaciones</span></div>
+    <div *ngIf="tieneRol(['Programador', 'Gerente', 'Trámites'])" [routerLink]="['/tramites']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-file-circle-plus"></i><span>Trámites</span></div>
+
+    <!--
+        <div *ngIf="tieneRol(['Programador', 'Gerente', 'Contabilidad'])" [routerLink]="['/contabilidad']"
+      routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-calculator"></i><span>Contabilidad</span></div>
+    -->
+
+    <div
+      *ngIf="tieneRol(['Programador', 'Gerente', 'BD COSTOS DE TRÁMITES', 'BD TRAMITADORES', 'BD USUARIOS', 'BD PROVEEDORES', 'BD COMISIONES', 'BD BANCOS', 'BD CONTRASEÑAS', 'BD VARIABLES'])"
+      [routerLink]="['/control-bd']" routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-database"></i><span>Bases de
+        datos</span></div>
+
+    <div (click)="onLogout()" routerLinkActive="router-link-active" class="nav-button"><i
+        class="fa-solid fa-right-from-bracket"></i><span>Cerrar
+        sesión</span>
+    </div>
+
+    <br>
+  </div>
+</nav>
+
+
+
+<!-- <div class="bottom-navbar">
+  <div
+    *ngIf="cargo === 'Asesor Comercial' || cargo === 'Comercial 2' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Director de Comunicaciones' || cargo === 'Coordinador de Operaciones'"
+    [routerLink]="['/registro']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-address-card"></i></div>
+  <div
+    *ngIf="cargo === 'Asesor Comercial' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Director de Comunicaciones' || cargo === 'Coordinador de Operaciones' || cargo === 'Contabilidad' "
+    [routerLink]="['/adquisicion']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-cart-shopping"></i></div>
+  <div
+    *ngIf="cargo === 'Asesor Comercial' || cargo === 'Comercial 2' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Director de Comunicaciones' || cargo === 'Coordinador de Operaciones' || cargo === 'Contabilidad' "
+    [routerLink]="['/venta']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-sack-dollar"></i></div>
+  <div
+    *ngIf="cargo === 'Asesor Comercial' || cargo === 'Comercial 2' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Director de Comunicaciones' || cargo === 'Coordinador de Operaciones'"
+    [routerLink]="['/modulo-credito']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-credit-card"></i></div>
+
+  <div
+    *ngIf="cargo === 'Asesor Comercial' || cargo === 'Comercial 2' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Director de Comunicaciones' || cargo === 'Coordinador de Operaciones'"
+    [routerLink]="['/cotizaciones']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-scroll"></i></div>
+  <div
+    *ngIf="cargo === 'Coordinador de Operaciones' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Coordinador de Operaciones'"
+    [routerLink]="['/tramites']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-file-circle-plus"></i></div>
+  <div
+    *ngIf="cargo === 'Contabilidad' || cargo === 'Programador' || cargo === 'Gerente' || cargo === 'Coordinador de Operaciones'"
+    [routerLink]="['/contabilidad']" routerLinkActive="router-link-active" class="nav-button"><i
+      class="fa-solid fa-calculator"></i></div>
+  <div *ngIf="cargo === 'Programador' || cargo === 'Gerente'" [routerLink]="['/control-bd']"
+    routerLinkActive="router-link-active" class="nav-button"><i class="fa-solid fa-database"></i></div>
+  <div (click)="onLogout()" class="nav-button"><i class="fas fa-sign-out-alt"></i></div>
+</div> -->
+<app-notificaciones></app-notificaciones>

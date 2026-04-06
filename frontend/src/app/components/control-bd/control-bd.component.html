@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="card-user">
+    <h1 class="text-center"><i class="fas fa-database"></i> BASES DE DATOS <i class="fas fa-database"></i> </h1>
+
+    <div *ngIf="tieneRol(['BD COSTOS DE TRÁMITES', 'Programador', 'Gerente'])" routerLink="/bd-costosTramites" class="div-car-user">
+      <h2>COSTOS DE TRÁMITES</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD TRAMITADORES', 'Programador', 'Gerente'])" routerLink="/bd-tramitadores" class="div-car-user">
+      <h2>TRAMITADORES</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD USUARIOS', 'Programador', 'Gerente'])" routerLink="/bd-usuarios" class="div-car-user">
+      <h2>USUARIOS</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD PROVEEDORES', 'Programador', 'Gerente'])" routerLink="/bd-proveedores" class="div-car-user">
+      <h2>PROVEEDORES</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD COMISIONES', 'Programador', 'Gerente'])" routerLink="/bd-comisiones" class="div-car-user">
+      <h2>COMISIONES</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD BANCOS', 'Programador', 'Gerente'])" routerLink="/bd-bancos" class="div-car-user">
+      <h2>BANCOS</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD CONTRASEÑAS', 'Programador', 'Gerente'])" routerLink="/bd-contrasenas" class="div-car-user">
+      <h2>CONTRASEÑAS</h2>
+    </div>
+    <div *ngIf="tieneRol(['BD VARIABLES', 'Programador', 'Gerente'])" routerLink="/bd-variables" class="div-car-user">
+      <h2>VARIABLES</h2>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

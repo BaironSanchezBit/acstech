@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
+.body {
+  background-color: #0F1922;
+  width: 100vw;
+  height: 100vh;
+  padding: 10px 0px 0px 20vw;
+  color: #ffffff;
+  background-image: url("/assets/img/logo.png");
+  background-repeat: no-repeat;
+  background-size: 15vw;
+  background-position: 57% 10%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.zoom {
+  padding: 50px;
+  transition: transform .2s;
+  /* Animation */
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.table-container {
+  position: relative;
+  height: 85vh;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.table-hover thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.custom-selectForm {
+  font-size: 14px;
+  border: none;
+  padding: 4px 2px;
+  border-radius: 5px;
+}
+
+.custom-selectForm option {
+  padding: 8px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.si-option {
+  background-color: #289b05;
+  color: #ffffff;
+}
+
+.si-option:hover,
+.si-option:focus {
+  background-color: #289b05;
+  color: #ffffff;
+}
+
+.no-option {
+  background-color: #be0202;
+  color: #ffffff;
+}
+
+.no-option:hover,
+.no-option:focus {
+  background-color: #be0202;
+  color: #ffffff;
+}
+.verificar-option {
+  background-color: #e7eb28;
+  color: #ffffff;
+}
+
+.verificar-option:hover,
+.verificar-option:focus {
+  background-color: #e7eb28;
+  color: #ffffff;
+}
+.pjuridico-option {
+  background-color: #edb4f5;
+  color: #ffffff;
+}
+
+.pjuridico-option:hover,
+.pjuridico-option:focus {
+  background-color: #edb4f5;
+  color: #ffffff;
+}
+
+.table-hover .idInventario, .vehiculo, .placa {
+  position: sticky;
+  border: 1px solid #7c8185;
+  left: -1px;
+  z-index: 4;
+}
+
+.idInventariotd, .placatd, .vehiculotd {
+  position: sticky;
+  border: 1px solid #7c8185;
+  left: -1px;
+  z-index: 1;
+}
+
+.placa, .placatd{
+  left: 86px;
+  width: 100px;
+  border: 1px solid #7c8185;
+}
+
+.vehiculo, .vehiculotd{
+  left: 160px;
+  white-space: nowrap;
+}
+
+.idInventario {
+  background-color: #0070d1;
+  color: #ffffff;
+  font-size: 12px;
+  width: 100px;
+}
+
+.idInventariotd{
+  background-color: #afcbe4;
+  color: #000000;
+  font-size: 12px;
+}
+
+.idInventariotd2{
+  background-color: #aee9a6;
+  color: #000000;
+  font-size: 12px;
+}
+
+.impuesto {
+  background-color: #484949;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.impuestoth {
+  background-color: #cacaca;
+  color: #000000;
+  font-size: 12px;
+}
+
+.impuestotd{
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+.multasth {
+  background-color: #ebc497;
+  color: #000000;
+  font-size: 12px;
+}
+
+.multastd {
+  background-color: #ffedd9;
+  color: #000000;
+  font-size: 12px;
+}
+
+.prendatd {
+  background-color: #e8fdeb;
+  color: #000000;
+  font-size: 12px;
+}
+
+.prendath {
+  background-color: #94c99a;
+  color: #000000;
+  font-size: 12px;
+}
+
+.multas {
+  background-color: #d87e17;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.prenda {
+  background-color: #01a116;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.traspaso {
+  background-color: #d10606;
+  color: #ffffff;
+  font-size: 12px;
+  
+}
+
+.traspasotd{
+  background-color: #ffdede;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.traspasoth{
+  background-color: #f5b0b0;
+  color: #000000;
+  font-size: 12px;
+}
+
+.zoom:hover {
+  transform: scale(0.9);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.card-user {
+  & h2 {
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    margin-top: 10%;
+    margin-bottom: 30%;
+  }
+
+  & img {
+    width: 50%;
+    margin-top: 5%;
+  }
+
+  & .div-car-user {
+    width: 100%;
+    border: #ffffff solid 3px;
+    background-color: #ffffff1d;
+    display: grid;
+    grid-template-rows: 40% 40%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  width: 90%;
+  display: grid;
+  grid-template-columns: 40% 40%;
+  grid-column-gap: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
+/* en tu-componente.component.css */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.car-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: moveCar 2s linear infinite;
+}
+
+@keyframes moveCar {
+  0% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(50px);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+.loading {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.dot {
+  animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: .2;
+  }
+}
+
+.table-hover th {
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+.table-hover td {
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #7c8185;
+}
+
+
+.noHayInventarios{
+  text-align: center;
+  background-color: #f2f2f2;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+.noHayInventarios p{
+  margin: 0;
+  color: #868686;
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 30vw;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 799px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 40vw;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 899px) {
+  .card-user {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+  }
+
+  .div-car-user {
+    margin-bottom: 20px;
+  }
+
+  .modal-table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    margin-top: 20px;
+  }
+
+  .modal-table-container thead th {
+    background-color: #f2f2f2;
+  }
+
+  button {
+    font-size: 10px !important;
+  }
+
+  .modal-title {
+    font-size: 12px !important;
+  }
+}

@@ -1,0 +1,221 @@
+<app-navbar></app-navbar>
+
+<section class="body">
+    <div class="divAll">
+        <div class="divTitle">
+            <div class="divTitleTwo">
+                <i class="fa-solid fa-circle-chevron-left" routerLink="/cuentas-por-pagar"
+                    *ngIf="cargo === 'Contabilidad' || 'Programador'"></i>
+                <i class="fa-solid fa-chart-simple" routerLink="/cuadro-gerencial"
+                    *ngIf="cargo === 'Gerencia' || 'Programador'"></i>
+                <h1>HISTÓRICO - CPP VARIABLES</h1>
+                <div class="ordenar-container">
+                    <select [(ngModel)]="filtroClasificacion" (change)="filtrarCuentas()">
+                        <option value="">Filtrar</option>
+                        <optgroup label="Clasificación">
+                            <option value="Veh">Veh</option>
+                            <option value="Prov">Prov</option>
+                        </optgroup>
+                    </select>
+                    <i class="fa-solid fa-filter ordenar-icon"></i>
+                </div>
+                <button type="button" class="btn btn-danger" routerLink="/historico-fijas">HISTÓRICO - FIJAS</button>
+                <div class="filter-section">
+                    <input *ngIf="filtroClasificacion === 'Veh'" class="form-control me-2" type="search"
+                        placeholder="Placa" aria-label="Search" (input)="onMayuscula($event)" name="placa"
+                        (input)="onPlacaInput($event)" (input)="applyFilters()" maxlength="6" matInput
+                        [formControl]="vehiculoControl" [matAutocomplete]="autoVehiculo">
+                    <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+                        <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                            {{ vehicle }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <input (input)="applyFilters()" [(ngModel)]="terceroFilter" placeholder="Tercero"
+                        class="form-control">
+                    <p class="my-0 ms-2">Fecha: </p>
+                    <input type="date" (input)="applyFilters()" [(ngModel)]="fechaInicioFilter" class="form-control">
+                    <p class="my-0 ms-2">-></p>
+                    <input type="date" (input)="applyFilters()" [(ngModel)]="fechaFinFilter" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="divVista">
+            <div class="table-responsive">
+                <table class="table table-secondary table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">CLASIF</th>
+                            <th scope="col">TIPO</th>
+                            <th scope="col" *ngIf="filtroClasificacion === 'Veh'">PLACA</th>
+                            <th scope="col">TERCERO</th>
+                            <th scope="col">CONCEPTO</th>
+                            <th scope="col">SALDO</th>
+                            <th scope="col">PAGOS</th>
+                            <th scope="col">FECHA DE PAGO</th>
+                            <th scope="col">DIAS VENCIDOS</th>
+                            <th scope="col">APRUEBA GER.</th>
+                            <th scope="col">PAGADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="" *ngFor="let cuentaPagar of cuentasFiltrados">
+                            <td scope="row" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.clasificacion}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.tipo}}
+                            </td>
+                            <td *ngIf="cuentaPagar.clasificacion === 'Veh'" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.placa}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.tercero}}
+                            </td>
+                            <td class="text" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.concepto}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{formatSalary(cuentaPagar.saldo)}}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                {{ formatSalary(sumarPagos(cuentaPagar.pagos)) }}
+                            </td>
+                            <td [ngClass]="{'text-danger': formatearFechaAdmon2(cuentaPagar.pagos) === 'Sin pagos'}"
+                                (click)="abrirModal(cuentaPagar)">
+                                {{formatearFechaAdmon2(cuentaPagar.pagos)}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-primary': cuentaPagar.diasVencidos == 0, 'text-danger': cuentaPagar.diasVencidos > 0, 'text-success': cuentaPagar.diasVencidos < 0}"
+                                *ngIf="cuentaPagar.pagado" (click)="abrirModal(cuentaPagar)">
+                                {{cuentaPagar.diasVencidos}}
+                            </td>
+                            <td class="fw-bold"
+                                [ngClass]="{'text-primary': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) == 0, 'text-danger': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) > 0, 'text-success': calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) < 0}"
+                                *ngIf="!cuentaPagar.pagado" (click)="abrirModal(cuentaPagar)">
+                                {{ calcularDiasVencidos(cuentaPagar.fechaVencimiento, cuentaPagar.pagado) }}
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagar.aprueba">APROBADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagar.aprueba">SIN APROBACIÓN</p>
+                            </td>
+                            <td (click)="abrirModal(cuentaPagar)">
+                                <p class="m-0 text-success fw-bold" *ngIf="cuentaPagar.pagado">PAGADO</p>
+                                <p class="m-0 text-danger fw-bold" *ngIf="!cuentaPagar.pagado">SIN PAGO</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <div class="divCuentas">
+                            <div class="davi">
+                                <img class="imgDavi" src="./assets/img/davi.png" alt="davivienda">
+                                <p>{{formatSalary(daviDisponible)}}</p>
+                            </div>
+                            <div class="banco">
+                                <img class="imgBanco" src="./assets/img/banco.png" alt="bancolombia">
+                                <p>{{formatSalary(bancolDisponible)}}</p>
+                            </div>
+                            <div class="banco">
+                                <img class="imgBanco" src="./assets/img/efectivo.png" alt="efectivo">
+                                <p>{{formatSalary(efectivoDisponible)}}</p>
+                            </div>
+                            <div class="total">
+                                <img class="imgTotal" src="./assets/img/igual.png" alt="efectivo">
+                                <p>{{formatSalary(sumaDisponible)}}</p>
+                            </div>
+                        </div>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" class="modal-backdrop fade"></div>
+
+<div class="modal fade" id="detalleInventarioModal" tabindex="-1" aria-labelledby="modalLabel"
+    [class.show]="mostrarModal" [style.display]="mostrarModal ? 'block' : 'none'" aria-hidden="!mostrarModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header my-2">
+                <h1 class="modal-title fs-5 m-0 me-5" id="detalleInventarioModal">DETALLE DE CUENTA POR PAGAR</h1>
+                <button type="button" class="btn-close" (click)="cerrarModal()" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3" [formGroup]="cuentaPagarEditForm">
+                    <div
+                        [ngClass]="{'col-md-4': filtroClasificacion === 'Veh', 'col-md-6': filtroClasificacion !== 'Veh'}">
+                        <label for="clasifEdit" class="form-label">CLASIFICACIÓN</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="clasifEdit">
+                            <option selected>Selecciona</option>
+                            <option value="Prov">Prov</option>
+                            <option value="Veh">Veh</option>
+                        </select>
+                    </div>
+                    <div
+                        [ngClass]="{'col-md-4': filtroClasificacion === 'Veh', 'col-md-6': filtroClasificacion !== 'Veh'}">
+                        <label for="tipoEdit" class="form-label">TIPO</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="tipoEdit">
+                            <option selected>Selecciona</option>
+                            <option value="Costo">Costo</option>
+                            <option value="Gasto">Gasto</option>
+                        </select>
+                    </div>
+                    <div [ngClass]="{'col-md-4': filtroClasificacion === 'Veh'}" *ngIf="filtroClasificacion === 'Veh'">
+                        <label for="placaEdit" class="form-label">PLACA</label>
+                        <input type="text" class="form-control" id="inputAddress" formControlName="placaEdit">
+                    </div>
+                    <div class="col-6">
+                        <label for="terceroEdit" class="form-label">TERCERO</label>
+                        <input type="text" class="form-control" id="inputAddress" formControlName="terceroEdit">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fechaVencimientoEdit" class="form-label">FECHA VENCIMIENTO</label>
+                        <input type="date" class="form-control" id="fechaVencimientoEdit"
+                            formControlName="fechaVencimientoEdit">
+                    </div>
+                    <div class="col-12">
+                        <label for="conceptoEdit" class="form-label">CONCEPTO</label>
+                        <textarea class="form-control" name="conceptoEdit" id="conceptoEdit" cols="30" rows="3"
+                            formControlName="conceptoEdit"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="valorEdit" class="form-label">VALOR</label>
+                        <input type="text" class="form-control" id="valorEdit" formControlName="valorEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="saldoEdit" class="form-label">SALDO</label>
+                        <input type="text" class="form-control" id="saldoEdit" formControlName="saldoEdit"
+                            (input)="onCurrencyInput($event)">
+                    </div>
+                    <div class="col-md-1 text-start">
+                        <label for="pagosEdit" class="form-label">PAGOS</label>
+                    </div>
+                </form>
+                <form [formGroup]="pagosEditForm">
+                    <h3 class="mt-3 mb-0 fw-bold" *ngIf="pagosEdit.length > 0">PAGOS REALIZADOS</h3>
+                    <div formArrayName="pagosEdit">
+                        <div *ngFor="let pago of pagosEdit.controls; let i = index" [formGroupName]="i">
+                            <div class="row my-2">
+                                <div class="col-md-3">
+                                    <label>Fecha de Pago</label>
+                                    <input type="date" class="form-control" id="fechaPago" formControlName="fechaPago">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Valor de Pago</label>
+                                    <input type="text" class="form-control" id="valor" formControlName="valor"
+                                        (input)="onCurrencyInput($event)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

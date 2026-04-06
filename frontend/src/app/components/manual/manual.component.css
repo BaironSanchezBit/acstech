@@ -1,0 +1,220 @@
+/* manual.component.css */
+
+nav {
+    background-color: #0F1922;
+    padding: 10px 5%;
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    justify-content: space-between;
+}
+
+.nav-initial {
+    display: flex;
+    align-items: center;
+    color: #ffffffff;
+}
+
+.nav-initial a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.nav-initial a:hover {
+    color: #b3b3b3;
+}
+
+.volver {
+    font-size: 18px;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 10px;
+    background-color: #125188;
+    border-radius: 5px;
+}
+
+nav img {
+    width: 150px;
+}
+
+.sectionAll {
+    height: 80vh;
+    padding: 0 5%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+
+}
+
+.subtitle {
+    font-size: 20px;
+    margin-left: 3%;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.subSpan {
+    font-size: 20px;
+    font-weight: normal !important;
+}
+
+.text {
+    line-height: normal;
+    font-size: 20px;
+}
+
+* {
+    line-height: normal;
+}
+
+.subtext {
+    font-size: 20px;
+    margin-left: 3%;
+    line-height: normal;
+}
+
+.divTitle {
+    padding: 2% 3%;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.divTitle h1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.divInfo {
+    display: flex;
+}
+
+.divIndice {
+    width: 20%;
+    padding: 20px 10px;
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+.divIndice h3 {
+    font-size: 25px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    color: #0f5b9e;
+    margin-bottom: 10px;
+}
+
+.divIndice ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.divIndice ul li {
+    margin: 10px 0;
+}
+
+.divIndice ul li a {
+    font-size: 16px;
+    text-decoration: none;
+    color: #888888;
+    cursor: pointer;
+}
+
+.divIndice ul li a.active {
+    font-weight: bold;
+    background-color: #083053;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.divIndice ul li a.subActive {
+    color: #636363;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.divIndice ul li a:hover {
+    text-decoration: underline;
+}
+
+.subIndice {
+    padding-left: 20px;
+    margin-top: 5px;
+}
+
+.subSubIndice {
+    padding-left: 30px;
+    margin-top: 5px;
+}
+
+.activeTitle {
+    color: #979797 !important;
+    font-weight: bold;
+}
+
+.divImg {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.subOl {
+    font-size: 20px;
+    margin-left: 3%;
+    line-height: normal;
+}
+
+.subOl li {
+    margin-bottom: 10px;
+}
+
+.img {
+    width: 90%;
+}
+
+.divTable {
+    display: flex;
+    justify-content: center;
+}
+
+.table {
+    font-size: 20px;
+    width: 70%;
+}
+
+.colVariables {
+    width: 30%;
+}
+
+.nota {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 0 5px;
+}
+
+.img2 {
+    width: 70%;
+}
+
+.divText {
+    width: 80%;
+    padding: 10px 30px;
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+.divText h3 {
+    margin-top: 20px;
+}

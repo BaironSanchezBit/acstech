@@ -1,0 +1,652 @@
+<app-navbar></app-navbar>
+<section class="body">
+  <div class="card-user">
+    <div class="div-car-user zoom" (click)="limpiarFormularios()" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop21">
+      <div>
+        <h2>CONTROL DE ACCESORIOS</h2>
+      </div>
+      <div>
+        <img src="../assets/img/alistamiento.png" alt="" class="w-25">
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROL DE ACCESORIOS -->
+  <div class="modal fade text-dark" id="staticBackdrop12" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 m-0" id="exampleModalToggleLabel6">FASE 2 - CONTROL DE ACCESORIOS</h1>
+          <button class="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRightRe" aria-controls="offcanvasRightRe"><i
+              class="fas fa-user-clock"></i></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <form class="modal-body" [formGroup]="controlAccesoriosForm">
+          <label for="floatingSelect">COPIA LLAVE (<span *ngIf="controlAccesoriosForm.get('copiaLlaveObs')?.value"
+              class="text-danger"> Hay una observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('copiaLlaveObs')?.value && fotosCopiaLlave.length > 0"> y </span> <span
+              *ngIf="fotosCopiaLlave && fotosCopiaLlave.length > 0" class="text-danger">{{fotosCopiaLlave.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="copiaLlave">
+              <option selected>Seleccione una opción</option>
+              <option value="NO TIENE">NO TIENE</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="RECLAMA A PROVEEDOR">RECLAMA A PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN CARPETA">OK EN CARPETA</option>
+            </select>
+            <button *ngIf="!button1" class="btn btn-success" (click)="funcionButton1()">+</button>
+            <button *ngIf="button1" class="btn btn-danger" (click)="funcionButton1()">-</button>
+          </div>
+
+          <div class="col-12 mb-2" *ngIf="button1">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosCopiaLlave')">+</button>
+              <input type="file" id="fotosCopiaLlave" multiple accept="image/*" (change)="onCopiaLlaveSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosCopiaLlave && fotosCopiaLlave.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosCopiaLlave; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosCopiaLlave, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosCopiaLlave', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button1" class="form-control mb-2" id="exampleInputEmail1"
+            aria-describedby="emailHelp" placeholder="Escriba aqui la observacion" formControlName="copiaLlaveObs">
+
+          <label for="floatingSelect">GATO (<span *ngIf="controlAccesoriosForm.get('gatoObs')?.value"
+              class="text-danger"> Hay una observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('gatoObs')?.value && fotosGato.length > 0"> y </span> <span
+              *ngIf="fotosGato && fotosGato.length > 0" class="text-danger">{{fotosGato.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="gato" (change)="onSelectChange('gato', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button2" class="btn btn-success" (click)="funcionButton2()">+</button>
+            <button *ngIf="button2" class="btn btn-danger" (click)="funcionButton2()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button2">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosGato')">+</button>
+              <input type="file" id="fotosGato" multiple accept="image/*" (change)="onGatoSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosGato && fotosGato.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosGato; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosGato, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosGato', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button2" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('gatoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="gatoObs">
+
+          <label for="floatingSelect">LLAVE DE PERNOS (<span *ngIf="controlAccesoriosForm.get('llavePernosObs')?.value"
+              class="text-danger"> Hay una observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('llavePernosObs')?.value && fotosLlavePernos.length > 0"> y </span>
+            <span *ngIf="fotosLlavePernos && fotosLlavePernos.length > 0"
+              class="text-danger">{{fotosLlavePernos.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="llavePernos" (change)="onSelectChange('llavePernos', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button3" class="btn btn-success" (click)="funcionButton3()">+</button>
+            <button *ngIf="button3" class="btn btn-danger" (click)="funcionButton3()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button3">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosLlavePernos')">+</button>
+              <input type="file" id="fotosLlavePernos" multiple accept="image/*"
+                (change)="onLlavePernosSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosLlavePernos && fotosLlavePernos.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosLlavePernos; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosLlavePernos, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosLlavePernos', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button3" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('llavePernosObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="llavePernosObs">
+
+          <label for="floatingSelect">COPA DE SEGURIDAD (<span
+              *ngIf="controlAccesoriosForm.get('copaSeguridadObs')?.value" class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('copaSeguridadObs')?.value && fotosCopaSeguridad.length > 0"> y </span>
+            <span *ngIf="fotosCopaSeguridad && fotosCopaSeguridad.length > 0"
+              class="text-danger">{{fotosCopaSeguridad.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="copaSeguridad" (change)="onSelectChange('copaSeguridad', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button4" class="btn btn-success" (click)="funcionButton4()">+</button>
+            <button *ngIf="button4" class="btn btn-danger" (click)="funcionButton4()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button4">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosCopaSeguridad')">+</button>
+              <input type="file" id="fotosCopaSeguridad" multiple accept="image/*"
+                (change)="onCopaSeguridadSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosCopaSeguridad && fotosCopaSeguridad.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosCopaSeguridad; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosCopaSeguridad, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosCopaSeguridad', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button4" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('copaSeguridadObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="copaSeguridadObs">
+
+          <label for="floatingSelect">TIRO DE ARRASTRE (<span
+              *ngIf="controlAccesoriosForm.get('tiroArrastreObs')?.value" class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('tiroArrastreObs')?.value && fotosTiroArrastre.length > 0"> y </span>
+            <span *ngIf="fotosTiroArrastre && fotosTiroArrastre.length > 0"
+              class="text-danger">{{fotosTiroArrastre.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="tiroArrastre" (change)="onSelectChange('tiroArrastre', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button5" class="btn btn-success" (click)="funcionButton5()">+</button>
+            <button *ngIf="button5" class="btn btn-danger" (click)="funcionButton5()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button5">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosTiroArrastre')">+</button>
+              <input type="file" id="fotosTiroArrastre" multiple accept="image/*"
+                (change)="onTiroArrastreSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosTiroArrastre && fotosTiroArrastre.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosTiroArrastre; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosTiroArrastre, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosTiroArrastre', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button5" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('tiroArrastreObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="tiroArrastreObs">
+
+          <label for="floatingSelect">HISTORIAL MANTENIMIENTOS (<span
+              *ngIf="controlAccesoriosForm.get('historialMantenimientoObs')?.value" class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('historialMantenimientoObs')?.value && fotosHistorialMantenimiento.length > 0">
+              y </span>
+            <span *ngIf="fotosHistorialMantenimiento && fotosHistorialMantenimiento.length > 0"
+              class="text-danger">{{fotosHistorialMantenimiento.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="historialMantenimiento" (change)="onSelectChange('historialMantenimiento', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="PARA MANTENIMIENTO">PARA MANTENIMIENTO</option>
+              <option value="SOLICITAR EN EL CONCESIONARIO">SOLICITAR EN EL CONCESIONARIO</option>
+              <option value="VALIDADO VER OBSERVACIONES">VALIDADO VER OBSERVACIONES</option>
+              <option value="OK EN CARPETA">OK EN CARPETA</option>
+            </select>
+            <button *ngIf="!button6" class="btn btn-success" (click)="funcionButton6()">+</button>
+            <button *ngIf="button6" class="btn btn-danger" (click)="funcionButton6()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button6">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosHistorialMantenimiento')">+</button>
+              <input type="file" id="fotosHistorialMantenimiento" multiple accept="image/*"
+                (change)="onHistorialMantenimientoSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosHistorialMantenimiento && fotosHistorialMantenimiento.length > 0"
+              class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosHistorialMantenimiento; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail"
+                  (click)="openModal2(fotosHistorialMantenimiento, j)">
+                <button type="button" class="btn btn-danger btn-sm"
+                  (click)="eliminarFoto('fotosHistorialMantenimiento', j)"><i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button6" class="form-control mb-2" id="exampleInputEmail1"
+            aria-describedby="emailHelp" placeholder="Escriba aqui la observacion"
+            (change)="onInputChange('historialMantenimientoObs', $event)" formControlName="historialMantenimientoObs">
+
+          <label for="floatingSelect">MANUAL (<span *ngIf="controlAccesoriosForm.get('manualObs')?.value"
+              class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('manualObs')?.value && fotosManual.length > 0">
+              y </span>
+            <span *ngIf="fotosManual && fotosManual.length > 0" class="text-danger">{{fotosManual.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="manual" (change)="onSelectChange('manual', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button7" class="btn btn-success" (click)="funcionButton7()">+</button>
+            <button *ngIf="button7" class="btn btn-danger" (click)="funcionButton7()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button7">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosManual')">+</button>
+              <input type="file" id="fotosManual" multiple accept="image/*" (change)="onManualSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosManual && fotosManual.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosManual; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosManual, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosManual', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button7" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('manualObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="manualObs">
+
+          <label for="floatingSelect">PALOMERA (<span *ngIf="controlAccesoriosForm.get('palomeraObs')?.value"
+              class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('palomeraObs')?.value && fotosPalomera.length > 0">
+              y </span>
+            <span *ngIf="fotosPalomera && fotosPalomera.length > 0" class="text-danger">{{fotosPalomera.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="palomera" (change)="onSelectChange('palomera', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button8" class="btn btn-success" (click)="funcionButton8()">+</button>
+            <button *ngIf="button8" class="btn btn-danger" (click)="funcionButton8()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button8">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosPalomera')">+</button>
+              <input type="file" id="fotosPalomera" multiple accept="image/*" (change)="onPalomeraSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosPalomera && fotosPalomera.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosPalomera; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosPalomera, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosPalomera', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button8" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('palomeraObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="palomeraObs">
+
+          <label for="floatingSelect">TAPETES (<span *ngIf="controlAccesoriosForm.get('tapetesObs')?.value"
+              class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('tapetesObs')?.value && fotosTapetes.length > 0">
+              y </span>
+            <span *ngIf="fotosTapetes && fotosTapetes.length > 0" class="text-danger">{{fotosTapetes.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="tapetes" (change)="onSelectChange('tapetes', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button9" class="btn btn-success" (click)="funcionButton9()">+</button>
+            <button *ngIf="button9" class="btn btn-danger" (click)="funcionButton9()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button9">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosTapetes')">+</button>
+              <input type="file" id="fotosTapetes" multiple accept="image/*" (change)="onTapetesSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosTapetes && fotosTapetes.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosTapetes; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosTapetes, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosTapetes', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button9" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('tapetesObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="tapetesObs">
+
+          <label for="floatingSelect">LLANTA DE REPUESTO (<span
+              *ngIf="controlAccesoriosForm.get('llantaRepuestoObs')?.value" class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('llantaRepuestoObs')?.value && fotosLlantaRepuesto.length > 0">
+              y </span>
+            <span *ngIf="fotosLlantaRepuesto && fotosLlantaRepuesto.length > 0"
+              class="text-danger">{{fotosLlantaRepuesto.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="llantaRepuesto" (change)="onSelectChange('llantaRepuesto', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button10" class="btn btn-success" (click)="funcionButton10()">+</button>
+            <button *ngIf="button10" class="btn btn-danger" (click)="funcionButton10()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button10">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosLlantaRepuesto')">+</button>
+              <input type="file" id="fotosLlantaRepuesto" multiple accept="image/*"
+                (change)="onLlantaRepuestoSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosLlantaRepuesto && fotosLlantaRepuesto.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosLlantaRepuesto; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosLlantaRepuesto, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosLlantaRepuesto', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button10" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('llantaRepuestoObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="llantaRepuestoObs">
+
+          <label for="floatingSelect">KIT DE CARRETERA (<span
+              *ngIf="controlAccesoriosForm.get('kitCarreteraObs')?.value" class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('kitCarreteraObs')?.value && fotosKitCarretera.length > 0">
+              y </span>
+            <span *ngIf="fotosKitCarretera && fotosKitCarretera.length > 0"
+              class="text-danger">{{fotosKitCarretera.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="kitCarretera" (change)="onSelectChange('kitCarretera', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button11" class="btn btn-success" (click)="funcionButton11()">+</button>
+            <button *ngIf="button11" class="btn btn-danger" (click)="funcionButton11()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button11">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosKitCarretera')">+</button>
+              <input type="file" id="fotosKitCarretera" multiple accept="image/*"
+                (change)="onKitCarreteraSelected($event)" style="display: none;">
+            </div>
+            <div *ngIf="fotosKitCarretera && fotosKitCarretera.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosKitCarretera; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosKitCarretera, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosKitCarretera', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" *ngIf="button11" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('kitCarreteraObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="kitCarreteraObs">
+
+
+          <label for="floatingSelect">ANTENA (<span *ngIf="controlAccesoriosForm.get('antenaObs')?.value"
+              class="text-danger"> Hay una
+              observación</span><span class="text-danger"
+              *ngIf="controlAccesoriosForm.get('antenaObs')?.value && fotosAntena.length > 0">
+              y </span>
+            <span *ngIf="fotosAntena && fotosAntena.length > 0" class="text-danger">{{fotosAntena.length}}
+              Foto(s)</span>)</label>
+          <div class="input-group mb-2">
+            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+              formControlName="antena" (change)="onSelectChange('antena', $event)">
+              <option selected>Seleccione una opción</option>
+              <option value="N/A">N/A</option>
+              <option value="DESCONTADO COMPRAR">DESCONTADO COMPRAR</option>
+              <option value="VALIJA PROVEEDOR">VALIJA PROVEEDOR</option>
+              <option value="PENDIENTE ENTREGA PROPIETARIO">PENDIENTE ENTREGA PROPIETARIO</option>
+              <option value="OK EN VEHICULO">OK EN VEHÍCULO</option>
+            </select>
+            <button *ngIf="!button12" class="btn btn-success" (click)="funcionButton12()">+</button>
+            <button *ngIf="button12" class="btn btn-danger" (click)="funcionButton12()">-</button>
+          </div>
+          <div class="col-12 mb-2" *ngIf="button12">
+            <div class="w-100 text-center">
+              <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosAntena')">+</button>
+              <input type="file" id="fotosAntena" multiple accept="image/*" (change)="onAntenaSelected($event)"
+                style="display: none;">
+            </div>
+            <div *ngIf="fotosAntena && fotosAntena.length > 0" class="preview-container mt-1">
+              <div class="preview" *ngFor="let foto of fotosAntena; let j = index">
+                <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosAntena, j)">
+                <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosAntena', j)"><i
+                    class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          <label for="floatingSelect">ELEMENTOS PERSONALES (<span
+            *ngIf="controlAccesoriosForm.get('elementosPersonalesObs')?.value" class="text-danger"> Hay una
+            observación</span><span class="text-danger"
+            *ngIf="controlAccesoriosForm.get('elementosPersonalesObs')?.value && fotosElementosPersonales.length > 0">
+            y </span>
+          <span *ngIf="fotosElementosPersonales && fotosElementosPersonales.length > 0"
+            class="text-danger">{{fotosElementosPersonales.length}}
+            Foto(s)</span>)</label>
+        <div class="input-group mb-2">
+          <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+            formControlName="elementosPersonales" (change)="onSelectChange('elementosPersonales', $event)">
+            <option selected>Seleccione una opción</option>
+            <option value="N/A">N/A</option>
+            <option value="ALMACENADOS">ALMACENADOS</option>
+            <option value="SIN ALMACENAR">SIN ALMACENAR</option>
+          </select>
+          <button *ngIf="!button13" class="btn btn-success" (click)="funcionButton13()">+</button>
+          <button *ngIf="button13" class="btn btn-danger" (click)="funcionButton13()">-</button>
+        </div>
+        <div class="col-12 mb-2" *ngIf="button13">
+          <div class="w-100 text-center">
+            <button class="btn btn-primary mb-2" (click)="triggerFileInput('fotosElementosPersonales')">+</button>
+            <input type="file" id="fotosElementosPersonales" multiple accept="image/*"
+              (change)="onElementosPersonalesSelected($event)" style="display: none;">
+          </div>
+          <div>{{fotosElementosPersonales}}</div>
+          <div *ngIf="fotosElementosPersonales && fotosElementosPersonales.length > 0" class="preview-container mt-1">
+            <div class="preview" *ngFor="let foto of fotosElementosPersonales; let j = index">
+              <img [src]="foto" alt="Vista previa" class="img-thumbnail" (click)="openModal2(fotosElementosPersonales, j)">
+              <button type="button" class="btn btn-danger btn-sm" (click)="eliminarFoto('fotosElementosPersonales', j)"><i
+                  class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <input type="text" *ngIf="button13" class="form-control mb-2" id="exampleInputEmail1"
+          (change)="onInputChange('elementosPersonalesObs', $event)" aria-describedby="emailHelp"
+          placeholder="Escriba aqui la observacion" formControlName="elementosPersonalesObs">
+        </div>
+
+
+        <input type="text" *ngIf="button11" class="form-control mb-2" id="exampleInputEmail1"
+          (change)="onInputChange('kitCarreteraObs', $event)" aria-describedby="emailHelp"
+          placeholder="Escriba aqui la observacion" formControlName="kitCarreteraObs">
+
+          <input type="text" *ngIf="button12" class="form-control mb-2" id="exampleInputEmail1"
+            (change)="onInputChange('antenaObs', $event)" aria-describedby="emailHelp"
+            placeholder="Escriba aqui la observacion" formControlName="antenaObs">
+
+          <div class="d-md-flex mb-3">
+            <div class="col-md-4 text-black">
+              <label for="ultimoKilometraje" class="form-label">KILOMETRAJE ÚLTIMO MANTENIMIENTO</label>
+              <input type="text" class="form-control" formControlName="ultimoKilometraje" id="ultimoKilometraje"
+                (change)="onInputChange('ultimoKilometraje', $event)" name="ultimoKilometraje">
+            </div>
+            <div class="col-md-4 text-black mx-md-2">
+              <label for="lugarUltimoMantenimiento" class="form-label">LUGAR ÚLTIMO MANTENIMIENTO</label>
+              <input type="text" class="form-control" formControlName="lugarUltimoMantenimiento"
+                (change)="onInputChange('lugarUltimoMantenimiento', $event)" id="lugarUltimoMantenimiento"
+                name="lugarUltimoMantenimiento">
+            </div>
+            <div class="col-md-4 text-black">
+              <label for="fechaUltimoMantenimiento" class="form-label">FECHA ÚLTIMO MANTENIMIENTO</label>
+              <input type="date" class="form-control" formControlName="fechaUltimoMantenimiento"
+                (change)="onInputChange('fechaUltimoMantenimiento', $event)" id="fechaUltimoMantenimiento"
+                name="fechaUltimoMantenimiento">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICE BUSCAR INVENTARIO POR PLACA -->
+  <div class="modal fade" id="staticBackdrop21" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg text-dark">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-6 m-0 me-5" id="staticBackdropLabel">BUSCAR INVENTARIO POR PLACA</h1>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="ABC123" aria-label="Search"
+              (input)="onMayuscula($event)" (keyup.enter)="buscarInventarioPlaca()" name="placa"
+              (input)="onPlacaInput($event)" maxlength="6" matInput [formControl]="vehiculoControl"
+              [matAutocomplete]="autoVehiculo">
+            <button class="btn btn-outline-success" type="submit" (click)="buscarInventarioPlaca()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
+            <mat-autocomplete #autoVehiculo="matAutocomplete" [displayWith]="displayFnVeh">
+              <mat-option *ngFor="let vehicle of opcionesFiltradasVeh | async" [value]="vehicle">
+                {{ vehicle }}
+              </mat-option>
+            </mat-autocomplete>
+          </form>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="closeAllModals()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-center" scope="col">N° INVENTARIO</th>
+                  <th class="text-center" scope="col">FECHA CREACIÓN</th>
+                  <th class="text-center" scope="col">NOMBRE PROPIETARIO</th>
+                  <th class="text-center" scope="col">ID PROPIETARIO</th>
+                  <th class="text-center" scope="col" style="width: 200px;">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of inventarios">
+                  <th class="text-center">{{i.inventoryId}}</th>
+                  <td>{{i.createdAt}}</td>
+                  <td>{{i.primerNombreCliente}} {{i.primerApellidoCliente}}</td>
+                  <td>{{i.numeroIdentificacionCliente}}</td>
+                  <td><button class="btn btn-primary" data-bs-target="#staticBackdrop12" data-bs-toggle="modal"
+                      (click)="irAlInventario(i.inventoryId)">Utilizar</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="noHayInventarios" *ngIf="inventarios.length === 0">
+            <p>No hay inventarios</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>
+
+<app-image-modal *ngIf="showModal" [initialIndex]="imagenSeleccionadaIndex" [images]="imagenesModal"
+  (close)="closeModal2()"></app-image-modal>
+
+<div class="offcanvas offcanvas-end bg-dark text-bg-dark" tabindex="-1" id="offcanvasRightRe"
+  aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasRightLabel">REGISTRO DE ACTIVIDAD</h3>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="registro" *ngFor="let registro of registroActividad">
+      <img class="registroImage" [src]="registro?.image" alt="">
+      <div class="registroDesc">
+        <p class="fw-bold">{{registro?.descripcion}}</p>
+        <p class="registroFecha"><i class="fa-regular fa-clock"></i> {{ formatFecha(registro?.fecha) }}</p>
+      </div>
+    </div>
+  </div>
+</div>

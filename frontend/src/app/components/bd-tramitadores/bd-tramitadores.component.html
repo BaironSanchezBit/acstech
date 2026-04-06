@@ -1,0 +1,245 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">TRAMITADORES</h1>
+    <div class="form-floating mx-3">
+      <input type="text" class="form-control" id="floatingInput" [(ngModel)]="busqueda" (input)="filtrarBD()"
+        name="buscar">
+      <label for="floatingInput">BUSCAR</label>
+    </div>
+    <button class="btn btn-success ms-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">DEPARTAMENTO</th>
+          <th scope="col">CIUDAD</th>
+          <th scope="col">PROVEEDOR</th>
+          <th scope="col">RESPONSABLE</th>
+          <th scope="col">TELEFONO</th>
+          <th scope="col">CORREO ELECTRÓNICO</th>
+          <th scope="col">DIRECCIÓN</th>
+          <th scope="col">HONORARIOS PROVEEDOR</th>
+          <th scope="col">CIUDAD RESIDENCIA</th>
+          <th scope="col">NÚMERO DE CUENTA</th>
+          <th scope="col">ENTIDAD</th>
+          <th scope="col">TIPO DE CUENTA </th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let tramitador of tramitadores" (click)="seleccionarTramitador(tramitador)">
+          <th scope="row">{{tramitador.departamento}}</th>
+          <td>{{tramitador.ciudad}}</td>
+          <td>{{tramitador.proveedor}}</td>
+          <td>{{tramitador.responsable}}</td>
+          <td>{{tramitador.telefono}}</td>
+          <td>{{tramitador.correoElectronico}}</td>
+          <td>{{tramitador.direccion}}</td>
+          <td>{{formatSalary(tramitador.honorariosProveedor)}}</td>
+          <td>{{tramitador.ciudadResidencia}}</td>
+          <td>{{tramitador.numeroCuenta}}</td>
+          <td>{{tramitador.entidad}}</td>
+          <td>{{tramitador.tipoCuenta}}</td>
+          <td> <button class="btn btn-warning w-100 mb-1 " data-bs-toggle="modal"
+              data-bs-target="#staticeditar">Editar</button>
+            <button *ngIf="tieneRol(['Programador', 'Gerente'])" class="btn btn-danger w-100" (click)="eliminarTramitador(tramitador._id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear tramitador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="containerTramitadores" [formGroup]="nuevoTramitador">
+        <div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudadIdentificacion" formControlName="departamento">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let departamento of departamentos" [value]="departamento.name">{{departamento.name}}
+              </option>
+            </select>
+            <label for="inputState">Departamento</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudadIdentificacion" formControlName="ciudad">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="inputState">Ciudad</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="proveedor" placeholder="Valor" formControlName="proveedor">
+            <label for="proveedor">Proveedor</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="responsable" placeholder="Valor" formControlName="responsable">
+            <label for="responsable">Responsable</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="telefono" placeholder="Valor" formControlName="telefono">
+            <label for="telefono">Teléfono</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="correoElectronico" placeholder="Valor"
+              formControlName="correoElectronico">
+            <label for="correoElectronico">Correo electronico</label>
+          </div>
+        </div>
+        <div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="direccion" placeholder="Valor" formControlName="direccion">
+            <label for="direccion">Dirección</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="honorariosProveedor" placeholder="Valor"
+              (input)="onCurrencyInput('honorariosProveedor', $event)" formControlName="honorariosProveedor">
+            <label for="honorariosProveedor">Honorarios proveedor</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select id="ciudadResidencia" class="form-select" name="ciudadResidencia"
+              formControlName="ciudadResidencia">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="ciudadResidencia">Ciudad residencia</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="numeroCuenta" placeholder="Valor"
+              formControlName="numeroCuenta">
+            <label for="numeroCuenta">Número de cuenta</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="entidad" placeholder="Valor" formControlName="entidad">
+            <label for="entidad">Entidad bancaria</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="tipoCuenta" placeholder="Valor" formControlName="tipoCuenta">
+            <label for="tipoCuenta">Tipo de cuenta</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearTramitador()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar tramitador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="containerTramitadores">
+        <div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudadIdentificacion"
+              [(ngModel)]="tramitadorSeleccionado.departamento">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let departamento of departamentos" [value]="departamento.name">{{departamento.name}}
+              </option>
+            </select>
+            <label for="inputState">Departamento</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudadIdentificacion"
+              [(ngModel)]="tramitadorSeleccionado.ciudad">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="inputState">Ciudad</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.proveedor">
+            <label for="floatingValor">Proveedor</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.responsable">
+            <label for="floatingValor">Responsable</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.telefono">
+            <label for="floatingValor">Teléfono</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.correoElectronico">
+            <label for="floatingValor">Correo electronico</label>
+          </div>
+        </div>
+        <div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.direccion">
+            <label for="floatingValor">Dirección</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [value]="honorariosProveedorFormateado" (input)="onCurrencyInput2($event)">
+            <label for="floatingValor">Honorarios proveedor</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudadResidencia"
+              [(ngModel)]="tramitadorSeleccionado.ciudadResidencia">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="inputState">Ciudad residencia</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.numeroCuenta">
+            <label for="floatingValor">Número de cuenta</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.entidad">
+            <label for="floatingValor">Entidad bancaria</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor"
+              [(ngModel)]="tramitadorSeleccionado.tipoCuenta">
+            <label for="floatingValor">Tipo de cuenta</label>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarTramitador()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

@@ -1,0 +1,148 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">SITIOS WEBS</h1>
+    <button class="btn btn-success ms-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">SITIO WEB</th>
+          <th scope="col">CORREO ELECTRÓNICO</th>
+          <th scope="col">CONTRASEÑA</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="cargar" class="table-group-divider">
+        <tr *ngFor="let user of datos" (click)="seleccionarDato(user)">
+          <th scope="row">{{user.website}}</th>
+          <td>{{user.email}}</td>
+          <td>
+            <input type="password" class="form-control" [value]="user.password" readonly>
+          </td>
+          <td>
+            <button class="btn btn-warning ms-4" data-bs-toggle="modal" data-bs-target="#staticeditar">Editar</button>
+            <button class="btn btn-danger ms-4" (click)="eliminarDato(user._id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body row" [formGroup]="datosForm">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="website" name="website" formControlName="website"
+                [ngClass]="{'is-invalid': datosForm.get('website')?.invalid && datosForm.get('website')?.touched}">
+              <label for="website">SITIO WEB</label>
+              <div *ngIf="datosForm.get('website')?.invalid && datosForm.get('website')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese un sitio web válido.
+              </div>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="email" name="email" formControlName="email"
+                [ngClass]="{'is-invalid': datosForm.get('email')?.invalid && datosForm.get('email')?.touched}">
+              <label for="email">CORREO ELECTRÓNICO</label>
+              <div *ngIf="datosForm.get('email')?.invalid && datosForm.get('email')?.touched" class="invalid-feedback">
+                Por favor ingrese un correo válido.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="password" name="password" formControlName="password"
+                [ngClass]="{'is-invalid': datosForm.get('password')?.invalid && datosForm.get('password')?.touched}">
+              <label for="password">CONTRASEÑA</label>
+              <div *ngIf="datosForm.get('password')?.invalid && datosForm.get('password')?.touched"
+                class="invalid-feedback">
+                Por favor ingrese una contraseña válida.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearDato()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">EDITAR</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="nombre" placeholder="nombre"
+                [(ngModel)]="datosSeleccionado.website">
+              <label for="nombre">SITIO WEB</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="emailEdit" placeholder="email"
+                [(ngModel)]="datosSeleccionado.email">
+              <label for="emailEdit">CORREO ELECTRÓNICO</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="passwordEdit" placeholder="password"
+                [(ngModel)]="datosSeleccionado.password">
+              <label for="passwordEdit">CONTRASEÑA</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarDato()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

@@ -1,0 +1,134 @@
+<section class="body">
+    <h1 class="divLogin-h2">BIENVENIDOS</h1>
+    <div class="divLogin">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+            <div class="input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512">
+                    <path
+                        d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                </svg>
+                <input formControlName="email" class="inputU" type="email" placeholder="Correo electrónico" required>
+            </div>
+            <div class="input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 448 512">
+                    <path
+                        d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z" />
+                </svg>
+                <input type="{{ passwordFieldType }}" formControlName="password" class="inputP" placeholder="Contraseña"
+                    required>
+                <svg *ngIf="passwordFieldType === 'password'" xmlns="http://www.w3.org/2000/svg"
+                    (click)="togglePasswordVisibility()" height="1.5em" viewBox="0 0 640 512" class="icon-start">
+                    <path
+                        d="M38.8 5.1C32.4-.6 23.4-.1 17.8 6.3S-1.1 23.4 5.1 29.8L67 87.6C24.6 130.4 2.7 188.3 1.5 191.2c-2 5.1-2 10.7 0 15.8C9.4 222.8 80.5 352 224 352c36.7 0 67.7-10.3 93.5-24.9l47.3 42.5c-24.4 11.3-52 20.2-84.7 23.9-4.4-7.6-12.7-12.7-22.1-12.7h-32c-14.2 0-26 11.5-24 25.7C204.1 455.4 233.7 480 272 480h96c39.7 0 63.3-30.4 63.3-55.2c0-19.6-8.7-34.3-21.3-43.3c-3.2-20.5-15.7-38.6-33.8-50.1L609 506.2c6.4 5.7 15.4 5.2 21.8-1.2s5.2-15.4-1.2-21.8L38.8 5.1zM144 288c-53 0-102.6-47.3-144-112C41.4 111.3 104.2 48 144 48c19.5 0 37.3 8.4 52.3 21.5l25.7 23c-14.7 16.3-25.7 35.9-31.7 57.6L235 186.5c-.3 1.9-.6 3.9-.9 5.8c-9.8 60.8-46 108.5-90.1 113.3zm95.5-1.5c27.8-17.6 49.9-48.3 60.2-86.2c5.8-20.5 7.4-41.7 5.5-62.6L311.6 119c.9-.1 1.7-.3 2.6-.4c53 0 102.6 47.3 144 112c-11.3 15.5-24.1 30.4-37.6 43.7l-75-67.3c-8.1 24.4-22.6 45.1-41.1 61.2l-64.8-58.2c3 29.6-3.3 59.2-15.6 84.5z" />
+                </svg>
+                <svg *ngIf="passwordFieldType === 'text'" xmlns="http://www.w3.org/2000/svg"
+                    (click)="togglePasswordVisibility()" height="1.5em" viewBox="0 0 576 512" class="icon-start">
+                    <path
+                        d="M279.6 64C146.5 64 43.6 131.3 1.5 191.2c-2 5.1-2 10.7 0 15.8C41.4 304.7 138.4 384 279.6 384c26.3 0 50.7-5 73.8-12.9l-35.8-30.7c-12.3 2.2-24.9 3.6-38 3.6c-97.2 0-176-86-176-176c0-12.1 1.2-23.9 3.3-35.4L61.2 102.8c5.9-6.7 5.4-16.8-1.3-22.7s-16.8-5.4-22.7 1.3L5.1 38.8C-.6 32.4-.1 23.4 6.3 17.8s15.4-5.7 21.8 1.2L275.8 239.8c.6 1.2 1.4 2.4 2.4 3.5L429.3 366c2.1-1.9 4.1-3.8 6.1-5.8c29.7-29.7 54.2-66.5 74.3-102.7c2-5.1 2-10.7 0-15.8C473.8 143.3 376.8 64 235.6 64zM573.3 481.1L546 453.8c-6.4-5.7-15.4-5.2-21.8 1.2L304.5 478c-3.2-.2-6.4-.4-9.7-.4c-34.8 0-64 13.8-78.3 32H32c-4.4 0-8 3.6-8 8s3.6 8 8 8H225c3.5 0 6.7-1.2 9.4-3.2c20.5-17.8 47.1-29.8 76.8-29.8c14.2 0 26-11.5 24-25.7c-2-14.2-13.8-25.7-28-25.7h-32c-8.7 0-16.5 4.4-21 11.4c-7.4-1-14.7-2.2-21.8-3.7L573.3 481.1c6.4 5.7 15.4 5.2 21.8-1.2s5.2-15.4-1.2-21.8z" />
+                </svg>
+            </div>
+            <button type="submit" class="btnLogin"><i class="fa-solid fa-right-to-bracket"></i> INGRESAR</button>
+        </form>
+        <!--
+        <button class="btn-google" (click)="onGoogleLogin()"><img class="imgGoogle" src="../assets/img/google.png" alt=""></button>
+        -->
+    </div>
+</section>
+
+
+<!--
+    <section class="body">
+    <h1 class="divLogin-h2">BIENVENIDOS</h1>
+    <div class="divLogin">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" *ngIf="!noMostrar" class="login-form">
+            <div class="input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512">
+                    <path
+                        d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+                </svg>
+                <input formControlName="email" class="inputU" type="email" placeholder="Correo electrónico" required>
+            </div>
+            <div class="input-container">
+                <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 448 512">
+                    <path
+                        d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z" />
+                </svg>
+                <input type="{{ passwordFieldType }}" formControlName="password" class="inputP" placeholder="Contraseña"
+                    required>
+                <svg *ngIf="passwordFieldType === 'password'" xmlns="http://www.w3.org/2000/svg"
+                    (click)="togglePasswordVisibility()" height="1.5em" viewBox="0 0 640 512" class="icon-start">
+                    <path
+                        d="M38.8 5.1C32.4-.6 23.4-.1 17.8 6.3S-1.1 23.4 5.1 29.8L67 87.6C24.6 130.4 2.7 188.3 1.5 191.2c-2 5.1-2 10.7 0 15.8C9.4 222.8 80.5 352 224 352c36.7 0 67.7-10.3 93.5-24.9l47.3 42.5c-24.4 11.3-52 20.2-84.7 23.9-4.4-7.6-12.7-12.7-22.1-12.7h-32c-14.2 0-26 11.5-24 25.7C204.1 455.4 233.7 480 272 480h96c39.7 0 63.3-30.4 63.3-55.2c0-19.6-8.7-34.3-21.3-43.3c-3.2-20.5-15.7-38.6-33.8-50.1L609 506.2c6.4 5.7 15.4 5.2 21.8-1.2s5.2-15.4-1.2-21.8L38.8 5.1zM144 288c-53 0-102.6-47.3-144-112C41.4 111.3 104.2 48 144 48c19.5 0 37.3 8.4 52.3 21.5l25.7 23c-14.7 16.3-25.7 35.9-31.7 57.6L235 186.5c-.3 1.9-.6 3.9-.9 5.8c-9.8 60.8-46 108.5-90.1 113.3zm95.5-1.5c27.8-17.6 49.9-48.3 60.2-86.2c5.8-20.5 7.4-41.7 5.5-62.6L311.6 119c.9-.1 1.7-.3 2.6-.4c53 0 102.6 47.3 144 112c-11.3 15.5-24.1 30.4-37.6 43.7l-75-67.3c-8.1 24.4-22.6 45.1-41.1 61.2l-64.8-58.2c3 29.6-3.3 59.2-15.6 84.5z" />
+                </svg>
+                <svg *ngIf="passwordFieldType === 'text'" xmlns="http://www.w3.org/2000/svg"
+                    (click)="togglePasswordVisibility()" height="1.5em" viewBox="0 0 576 512" class="icon-start">
+                    <path
+                        d="M279.6 64C146.5 64 43.6 131.3 1.5 191.2c-2 5.1-2 10.7 0 15.8C41.4 304.7 138.4 384 279.6 384c26.3 0 50.7-5 73.8-12.9l-35.8-30.7c-12.3 2.2-24.9 3.6-38 3.6c-97.2 0-176-86-176-176c0-12.1 1.2-23.9 3.3-35.4L61.2 102.8c5.9-6.7 5.4-16.8-1.3-22.7s-16.8-5.4-22.7 1.3L5.1 38.8C-.6 32.4-.1 23.4 6.3 17.8s15.4-5.7 21.8 1.2L275.8 239.8c.6 1.2 1.4 2.4 2.4 3.5L429.3 366c2.1-1.9 4.1-3.8 6.1-5.8c29.7-29.7 54.2-66.5 74.3-102.7c2-5.1 2-10.7 0-15.8C473.8 143.3 376.8 64 235.6 64zM573.3 481.1L546 453.8c-6.4-5.7-15.4-5.2-21.8 1.2L304.5 478c-3.2-.2-6.4-.4-9.7-.4c-34.8 0-64 13.8-78.3 32H32c-4.4 0-8 3.6-8 8s3.6 8 8 8H225c3.5 0 6.7-1.2 9.4-3.2c20.5-17.8 47.1-29.8 76.8-29.8c14.2 0 26-11.5 24-25.7c-2-14.2-13.8-25.7-28-25.7h-32c-8.7 0-16.5 4.4-21 11.4c-7.4-1-14.7-2.2-21.8-3.7L573.3 481.1c6.4 5.7 15.4 5.2 21.8-1.2s5.2-15.4-1.2-21.8z" />
+                </svg>
+            </div>
+            <button type="submit" class="btnLogin"><i class="fa-solid fa-right-to-bracket"></i> INGRESAR</button>
+        </form>
+
+        <form class="showTwoFactorMethodSelection" *ngIf="showTwoFactorMethodSelection">
+            <h2>Seleccione el método de autenticación de dos factores</h2>
+            <div class="divBtnTwoFactor">
+                <button type="button" class="btnTwoFactor" (click)="selectTwoFactorMethod('email')"><i
+                        class="fa-solid fa-envelope"></i></button>
+                <button type="button" class="btnTwoFactor" (click)="selectTwoFactorMethod('googleAuthenticator')"><i
+                        class="fa-solid fa-key"></i></button>
+            </div>
+        </form>
+
+        <div *ngIf="showTwoFactorSetup">
+            <h2 class="m-0 fw-bold">Autenticación multifactor (MFA)</h2>
+            <p>Escanea este código QR con tu aplicación de autenticación:</p>
+            <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
+        </div>
+
+        <form [formGroup]="twoFactorAuthForm"
+            *ngIf="showTwoFactorAuth && selectedTwoFactorMethod === 'googleAuthenticator'">
+            <div class="input-container verification-code-container">
+                <h2 class="m-0 fw-bold">Autenticación multifactor (MFA)</h2>
+                <p class="pt-2">Por favor ingresa al Google Authenticator. Introduce el código para continuar y ser
+                    redirigido.</p>
+                <input *ngFor="let ctrl of controls; let i = index" [formControlName]="ctrl" class="input-code"
+                    type="text" maxlength="1" (input)="onInput($event, i)" (keydown)="onKeydown($event, i)"
+                    (paste)="onPaste($event)">
+            </div>
+            <div class="loading" *ngIf="isLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="success" *ngIf="isSuccess">
+                <i class="fa-solid fa-check-circle"></i> ¡Verificación exitosa!
+            </div>
+            <div class="error" *ngIf="isError">
+                <i class="fa-solid fa-times-circle"></i> Código de verificación incorrecto!
+            </div>
+        </form>
+
+
+        <form [formGroup]="emailVerificationForm" *ngIf="showTwoFactorEmail && selectedTwoFactorMethod === 'email'">
+            <div class="input-container verification-code-container">
+                <h2 class="m-0 fw-bold">Verificación por Email</h2>
+                <p class="pt-2">Por favor, ingresa el código enviado a tu email.</p>
+                <input *ngFor="let ctrl of controlsEmail; let i = index" [formControlName]="ctrl" class="input-code"
+                    type="text" maxlength="1" (input)="onInputEmail($event, i)" (keydown)="onKeydownEmail($event, i)"
+                    (paste)="onPasteEmail($event)">
+            </div>
+            <div class="loading" *ngIf="isLoading">
+                <div class="spinner"></div>
+            </div>
+            <div class="success" *ngIf="isSuccess">
+                <i class="fa-solid fa-check-circle"></i> ¡Verificación exitosa!
+            </div>
+            <div class="error" *ngIf="isError">
+                <i class="fa-solid fa-times-circle"></i> Código de verificación incorrecto!
+            </div>
+        </form>
+
+        <div class="form-loading-overlay" *ngIf="isFormLoading">
+            <div class="form-spinner"></div>
+        </div>
+    </div>
+</section>
+-->

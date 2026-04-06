@@ -1,0 +1,237 @@
+<app-navbar></app-navbar>
+
+
+<section class="body">
+  <div class="d-flex justify-content-center align-items-center my-3">
+    <h1 class="m-0">COSTOS DE TRÁMITES</h1>
+    <div class="form-floating mx-3">
+      <input type="text" class="form-control" id="floatingInput" [(ngModel)]="busqueda"
+        (input)="filtrarBD()" name="buscar">
+      <label for="floatingInput">BUSCAR</label>
+    </div>
+    <button class="btn btn-success ms-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Agregar</button>
+  </div>
+  <div class="table-container">
+    <table class="table table-hover">
+      <thead class="table-secondary">
+        <tr>
+          <th scope="col">CUIDAD</th>
+          <th scope="col">TRASPASO 100%</th>
+          <th scope="col">INSCRIPCIÓN PRENDA</th>
+          <th scope="col">LEVANTAMIENTO PRENDA</th>
+          <th scope="col">TRASLADO DE CUENTA</th>
+          <th scope="col">RADICACIÓN DE CUENTA</th>
+          <th scope="col">DUPLICADO DE PLACAS</th>
+          <th scope="col">CERTIFICADO DE TRADICIÓN</th>
+          <th scope="col">CERTIFICACIÓN DE IMPUESTOS</th>
+          <th scope="col">HISTÓRICO VEHICULAR</th>
+          <th scope="col">HONORARIOS TRAMITADOR</th>
+          <th scope="col">HONORARIOS AUTOMAGNO</th>
+          <th scope="col">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr *ngFor="let costo of costosTramites" (click)="seleccionarCostoTramite(costo)">
+          <th scope="row">{{costo.ciudad}}</th>
+          <td>{{formatSalary(costo.traspaso100)}}</td>
+          <td>{{formatSalary(costo.inscripcionPrenda)}}</td>
+          <td>{{formatSalary(costo.levantamientoPrenda)}}</td>
+          <td>{{formatSalary(costo.trasladoDeCuenta)}}</td>
+          <td>{{formatSalary(costo.radicacionDeCuenta)}}</td>
+          <td>{{formatSalary(costo.duplicadoDePlacas)}}</td>
+          <td>{{formatSalary(costo.certificadoDeTradicion)}}</td>
+          <td>{{formatSalary(costo.certificacionDeImpuestos)}}</td>
+          <td>{{formatSalary(costo.historicoVehicular)}}</td>
+          <td>{{formatSalary(costo.honorariosTramitado)}}</td>
+          <td>{{formatSalary(costo.honorariosAutomagno)}}</td>
+          <td> <button class="btn btn-warning ms-4" data-bs-toggle="modal"
+              data-bs-target="#staticeditar">Editar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear costo trámite</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="containerCostosTramites" [formGroup]="nuevoCostoTramites">
+        <div>
+          <div class="form-floating mb-3">
+            <select id="inputState" class="form-select" name="ciudad" formControlName="ciudad">
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="inputState">Ciudad</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="traspaso100" placeholder="Maximo" formControlName="traspaso100"
+              (input)="onCurrencyInput('traspaso100', $event)">
+            <label for="traspaso100">Traspaso 100%</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="inscripcionPrenda" placeholder="Valor"
+              (input)="onCurrencyInput('inscripcionPrenda', $event)" formControlName="inscripcionPrenda">
+            <label for="inscripcionPrenda">Inscripción prenda</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="levantamientoPrenda" placeholder="Valor"
+              (input)="onCurrencyInput('levantamientoPrenda', $event)" formControlName="levantamientoPrenda">
+            <label for="levantamientoPrenda">Levantamiento prenda</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="trasladoDeCuenta" placeholder="Valor"
+              (input)="onCurrencyInput('trasladoDeCuenta', $event)" formControlName="trasladoDeCuenta">
+            <label for="trasladoDeCuenta">Traslado de cuenta</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="radicacionDeCuenta" placeholder="Valor"
+              (input)="onCurrencyInput('radicacionDeCuenta', $event)" formControlName="radicacionDeCuenta">
+            <label for="radicacionDeCuenta">Radicación de cuenta</label>
+          </div>
+        </div>
+        <div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="duplicadoDePlacas" placeholder="Valor"
+              (input)="onCurrencyInput('duplicadoDePlacas', $event)" formControlName="duplicadoDePlacas">
+            <label for="duplicadoDePlacas">Duplicado de placa</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="certificadoDeTradicion" placeholder="Valor"
+              (input)="onCurrencyInput('certificadoDeTradicion', $event)" formControlName="certificadoDeTradicion">
+            <label for="certificadoDeTradicion">Certificado de tradición</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="certificacionDeImpuestos" placeholder="Valor"
+              (input)="onCurrencyInput('certificacionDeImpuestos', $event)" formControlName="certificacionDeImpuestos">
+            <label for="certificacionDeImpuestos">Certificación de impuesto</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="historicoVehicular" placeholder="Valor"
+              (input)="onCurrencyInput('historicoVehicular', $event)" formControlName="historicoVehicular">
+            <label for="historicoVehicular">Histórico vehicular</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="honorariosTramitado" placeholder="Valor"
+              (input)="onCurrencyInput('honorariosTramitado', $event)" formControlName="honorariosTramitado">
+            <label for="honorariosTramitado">Honorarios tramitador</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="honorariosAutomagno" placeholder="Valor"
+              (input)="onCurrencyInput('honorariosAutomagno', $event)" formControlName="honorariosAutomagno">
+            <label for="honorariosAutomagno">Honorarios automagno</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearCostoTramite()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticeditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar costo trámite</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="containerCostosTramites">
+        <div>
+          <div class="form-floating mb-3">
+            <select id="inputState" [(ngModel)]="costoTramiteSeleccionado.ciudad" class="form-select"
+              name="ciudadIdentificacion" required>
+              <option selected>Seleccione una opción</option>
+              <option *ngFor="let lugar of lugares" [value]="lugar.name">{{lugar.name}}</option>
+            </select>
+            <label for="inputState">Ciudad</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="traspaso100" placeholder="Maximo" [value]="traspaso100Formatted"
+              (input)="onCurrencyInput2('traspaso100', $event)">
+            <label for="traspaso100">Traspaso 100%</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingValor" placeholder="Valor" [value]="inscripcionPrenda"
+              (input)="onCurrencyInput2('inscripcionPrenda', $event)">
+            <label for="floatingValor">Inscripción prenda</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="levantamientoPrenda" (input)="onCurrencyInput2('levantamientoPrenda', $event)">
+            <label for="floatingMinimo">Levantamiento penda</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo" [value]="trasladoDeCuenta"
+              (input)="onCurrencyInput2('trasladoDeCuenta', $event)">
+            <label for="floatingMinimo">Traslado de cuenta</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="radicacionDeCuenta" (input)="onCurrencyInput2('radicacionDeCuenta', $event)">
+            <label for="floatingMinimo">Radicación de cuenta</label>
+          </div>
+        </div>
+        <div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo" [value]="duplicadoDePlacas"
+              (input)="onCurrencyInput2('duplicadoDePlacas', $event)">
+            <label for="floatingMinimo">Duplicado de placa</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="certificadoDeTradicion" (input)="onCurrencyInput2('certificadoDeTradicion', $event)">
+            <label for="floatingMinimo">Certificación de tradición</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="certificacionDeImpuestos" (input)="onCurrencyInput2('certificacionDeImpuestos', $event)">
+            <label for="floatingMinimo">Certificación de impuesto</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="historicoVehicular" (input)="onCurrencyInput2('historicoVehicular', $event)">
+            <label for="floatingMinimo">Histórico vehicular</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="honorariosTramitado" (input)="onCurrencyInput2('honorariosTramitado', $event)">
+            <label for="floatingMinimo">Honorarios tramitador</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingMinimo" placeholder="Minimo"
+              [value]="honorariosAutomagno" (input)="onCurrencyInput2('honorariosAutomagno', $event)">
+            <label for="floatingMinimo">Honorarios automagno</label>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" (click)="actualizarCostoTramite()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="car-spinner">
+    <img src="../assets/img/loading.png" width="200px" alt="">
+  </div>
+  <p class="loading">Cargando
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+  </p>
+</div>

@@ -1,0 +1,153 @@
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.938);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2147483647;
+}
+
+.modal-content {
+  position: relative;
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-image {
+  width: 60vw;
+  /* Ancho automático basado en la altura */
+  height: 90vh;
+  /* Altura automática basada en el ancho */
+  max-width: 60vw;
+  max-height: 90vh;
+  object-fit: contain;
+  /* Mantiene las proporciones sin recortar */
+}
+
+.prev {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 60px;
+  height: 100px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  user-select: none;
+  border: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 60px;
+  height: 100px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  user-select: none;
+  border: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+.image-index {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.title {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 27px;
+  transition: 0.6s ease;
+  user-select: none;
+  border: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 6.4%;
+  right: 0%;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 27px;
+  transition: 0.6s ease;
+  user-select: none;
+  border: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+.fullScreen {
+  cursor: pointer;
+  position: absolute;
+  top: 7%;
+  right: 3%;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+  border: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+i {
+  width: 50px;
+}
+
+.prev:hover,
+.next:hover,
+.close:hover,
+.fullScreen:hover {
+  color: rgb(131, 131, 131);
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+
+
+@media screen and (min-width: 249px) and (max-width: 899px) {
+  .fullScreen {
+    top: 6.8%;
+    right: 8%;
+  }
+  
+  .modal-content{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

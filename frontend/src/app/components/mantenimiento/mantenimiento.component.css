@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+
+.body {
+  background-color: #0F1922;
+  width: 100vw;
+  height: 100vh;
+  color: #ffffff;
+  background-image: url("/assets/img/logo.png");
+  background-repeat: no-repeat;
+  background-size: 15vw;
+  background-position: 40% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1{
+  font-size: 40px;
+  font-weight: bold;
+  padding-bottom: 25%;
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 30vw ;
+  }
+}
+
+@media screen and (min-width: 249px) and (max-width: 799px) {
+  .body {
+    padding: 0% 5% !important;
+    background-position-x: center;
+    background-size: 40vw ;
+  }
+}
