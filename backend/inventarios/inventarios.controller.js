@@ -324,6 +324,14 @@ exports.updateSpecificFields = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
+        // Campos protegidos: no se puede cambiar vehiculo/cliente
+        ['vehiculo', 'cliente'].forEach(field => {
+            if (updateData[field]) {
+                delete updateData[field];
+                console.log('[PROTECCION] Intento de cambiar ' + field + ' bloqueado via updateSpecificFields');
+            }
+        });
+
         // Actualización de los campos específicos
         const updatedInventory = await Inventories.findByIdAndUpdate(
             id,
@@ -363,6 +371,16 @@ exports.update = async (req, res) => {
 
         // Secciones anidadas que requieren merge especial (sin sobrescribir fotos)
         const nestedSections = ['documentosTraspasos', 'documentosValoresIniciales', 'controlAccesorios', 'ImagenesIngreso'];
+
+        // Campos protegidos: no se puede cambiar vehiculo/cliente de un inventario existente
+        const protectedFields = ['vehiculo', 'cliente'];
+        protectedFields.forEach(field => {
+            if (inventoryData[field] && inventory[field] && 
+                inventoryData[field].toString() !== inventory[field].toString()) {
+                delete inventoryData[field];
+                console.log('[PROTECCION] Intento de cambiar ' + field + ' bloqueado en inventario ' + inventory.inventoryId);
+            }
+        });
 
         // 1. Actualizar campos de nivel superior (excepto secciones anidadas)
         Object.keys(inventoryData).forEach(key => {
