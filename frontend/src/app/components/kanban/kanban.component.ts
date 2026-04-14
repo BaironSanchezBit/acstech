@@ -104,23 +104,44 @@ export class KanbanComponent implements OnInit, OnDestroy {
   private loadInventoriesAndAssociatedData(): void {
     this.loading = true;
 
-    const vehiculoCache: { [id: string]: any } = {};
-    const clienteCache: { [id: string]: any } = {};
-    const compradorCache: { [id: string]: any } = {};
-
     forkJoin({
-      inventarios: this.http.get<any[]>(`${this.apiUrl}/api/getInventoriesAll`),
-      preInventarios: this.http.get<any[]>(`${this.apiUrl}/api/getpreinventoriesAll`)
-    }).pipe(
-      switchMap(({ inventarios, preInventarios }) => {
-        // Asignación de datos a las variables correspondientes
+      inventarios: this.http.get<any[]>(`${this.apiUrl}/api/getInventoriesAllPopulated`),
+      preInventarios: this.http.get<any[]>(`${this.apiUrl}/api/getpreinventoriesAllPopulated`)
+    }).subscribe(
+      ({ inventarios, preInventarios }) => {
+        // Inventarios: extraer datos populados a los caches existentes
         this.inventarios = inventarios.map(inventario => {
           inventario.infoExtra = inventario.infoExtra || [];
+          if (inventario.vehiculo && inventario.vehiculo._id) {
+            this.vehiculos[inventario.vehiculo._id] = inventario.vehiculo;
+            inventario.vehiculo = inventario.vehiculo._id;
+          }
+          if (inventario.cliente && inventario.cliente._id) {
+            this.clientes[inventario.cliente._id] = inventario.cliente;
+            inventario.cliente = inventario.cliente._id;
+          }
+          if (inventario.comprador && inventario.comprador._id) {
+            this.compradores[inventario.comprador._id] = inventario.comprador;
+            inventario.comprador = inventario.comprador._id;
+          }
           return inventario;
         }).sort((a, b) => this.sortByPriority(a, b));
 
+        // Pre-inventarios: misma logica
         this.preInventarios = preInventarios.map(preInventario => {
           preInventario.infoExtra = preInventario.infoExtra || [];
+          if (preInventario.vehiculo && preInventario.vehiculo._id) {
+            this.vehiculos[preInventario.vehiculo._id] = preInventario.vehiculo;
+            preInventario.vehiculo = preInventario.vehiculo._id;
+          }
+          if (preInventario.cliente && preInventario.cliente._id) {
+            this.clientes[preInventario.cliente._id] = preInventario.cliente;
+            preInventario.cliente = preInventario.cliente._id;
+          }
+          if (preInventario.comprador && preInventario.comprador._id) {
+            this.compradores[preInventario.comprador._id] = preInventario.comprador;
+            preInventario.comprador = preInventario.comprador._id;
+          }
           return preInventario;
         });
 
@@ -129,30 +150,7 @@ export class KanbanComponent implements OnInit, OnDestroy {
         this.preInventariosFiltrados = [...this.preInventarios];
         this.totalItems = this.inventariosFiltrados.length;
 
-        this.actualizarInventariosPaginados(); // Lógica de paginación
-
-        const preInventarioDetails$ = this.preInventarios.map(preInventario =>
-          forkJoin({
-            cliente: this.buscarClienteCache(preInventario.cliente, clienteCache),
-            comprador: this.buscarCompradorCache(preInventario.comprador, compradorCache),
-            vehiculo: this.buscarVehiculoCache(preInventario.vehiculo, vehiculoCache)
-          })
-        );
-
-        
-        // Carga de clientes, compradores y vehículos tanto de inventarios como de pre-inventarios
-        const inventarioDetails$ = this.inventarios.map(inventario =>
-          forkJoin({
-            cliente: this.buscarClienteCache(inventario.cliente, clienteCache),
-            comprador: this.buscarCompradorCache(inventario.comprador, compradorCache),
-            vehiculo: this.buscarVehiculoCache(inventario.vehiculo, vehiculoCache)
-          })
-        );
-
-        return forkJoin([...inventarioDetails$, ...preInventarioDetails$]);
-      })
-    ).subscribe(
-      () => {
+        this.actualizarInventariosPaginados();
         this.loading = false;
         this.cargarFiltros();
         this.aplicarFiltrosYBusqueda();
