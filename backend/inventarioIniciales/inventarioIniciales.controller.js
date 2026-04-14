@@ -394,6 +394,22 @@ exports.getAll = async (req, res) => {
     }
 };
 
+
+
+exports.getAllPopulated = async (req, res) => {
+    try {
+        const inventories = await Inventories.find({})
+            .populate('vehiculo', 'imagenVehiculo marca linea version modelo placa ciudadPlaca combustible')
+            .populate('cliente', 'primerNombre segundoNombre primerApellido segundoApellido celularOne')
+            .populate({ path: 'comprador', model: 'Clientes', select: 'primerNombre segundoNombre primerApellido segundoApellido celularOne' })
+            .lean();
+        res.status(200).send(inventories);
+    } catch (error) {
+        console.error("Error al obtener pre-inventarios populados:", error);
+        res.status(500).send({ error: "Error interno del servidor" });
+    }
+};
+
 exports.getByIdInventory = async (req, res) => {
     try {
         const inventory = await Inventories.findOne({ inventoryId: req.params.idInventory });

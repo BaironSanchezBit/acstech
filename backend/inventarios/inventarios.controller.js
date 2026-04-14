@@ -476,6 +476,21 @@ exports.getInventoriesByPageF = async (req, res) => {
  * @param {*} req 
  * @param {*total} res 
  */
+exports.getAllPopulated = async (req, res) => {
+    try {
+        const inventories = await Inventories.find({})
+            .populate('vehiculo', 'imagenVehiculo marca linea version modelo placa ciudadPlaca combustible')
+            .populate('cliente', 'primerNombre segundoNombre primerApellido segundoApellido celularOne')
+            .populate({ path: 'comprador', model: 'Clientes', select: 'primerNombre segundoNombre primerApellido segundoApellido celularOne' })
+            .sort({ inventoryId: -1 })
+            .lean();
+        res.status(200).send(inventories);
+    } catch (error) {
+        console.error("Error al obtener inventarios populados:", error);
+        res.status(500).send({ error: "Error interno del servidor" });
+    }
+};
+
 exports.getAllCount = async (req, res) => {
     try {
         const total = await Inventories.estimatedDocumentCount(); // ⚡ Más rápido con índices

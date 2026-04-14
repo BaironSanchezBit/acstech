@@ -6,6 +6,7 @@ module.exports = (router) => {
     router.put('/updatePreInventoryPhotos/:id', preinventories.updatePhotos);
     router.delete('/deletePreInventoryPhoto', preinventories.deletePhoto);
     router.get('/getpreinventoriesAll', preinventories.getAll);
+    router.get('/getpreinventoriesAllPopulated', preinventories.getAllPopulated);
     router.put('/updatepreinventories/:id', preinventories.update);
     router.post('/preinventarios/addActivityLog/:id', preinventories.addActivityLog);
     router.get('/getpreinventories/idpreinventories/:idInventory', preinventories.getByIdInventory);

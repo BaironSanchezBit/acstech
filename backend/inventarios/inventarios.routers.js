@@ -18,6 +18,7 @@ module.exports = (router) => {
     router.put('/updateSpecificFields/:id', Inventories.updateSpecificFields);
 
     /*Nuevas rutas 17/02/2025 contar total de datos en la BD*/
+    router.get('/getInventoriesAllPopulated', Inventories.getAllPopulated);
     router.get('/getInventoriesCount', Inventories.getAllCount);
     router.get("/getInventoriesByPage", Inventories.getInventoriesByPage);
     router.get("/getInventoriesByPageF", Inventories.getInventoriesByPageF);
